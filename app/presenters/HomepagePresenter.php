@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Presenters;
+namespace Archivist;
 
 use Nette,
 	App\Model;

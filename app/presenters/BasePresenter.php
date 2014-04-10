@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Presenters;
+namespace Archivist;
 
-use Nette,
-	App\Model;
+use Kdyby\Autowired\AutowireComponentFactories;
+use Kdyby\Autowired\AutowireProperties;
+use Nette;
+
 
 
 /**
@@ -11,5 +13,7 @@ use Nette,
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
+	use AutowireProperties;
+	use AutowireComponentFactories;
 
 }

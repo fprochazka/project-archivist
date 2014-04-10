@@ -1,31 +1,54 @@
 {
-	"name": "nette/sandbox",
-	"description": "The sandbox is a pre-packaged Nette Framework project, basic configured structure for your application.",
-	"homepage": "http://nette.org",
+	"name": "kdyby/project-archivist",
+	"description": "Archivist is guide in your opensource project",
+	"homepage": "http://help.kdyby.org",
 	"type": "project",
 	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
 	"authors": [
 		{
-			"name": "David Grudl",
-			"homepage": "http://davidgrudl.com"
-		},
-		{
-			"name": "Nette Community",
-			"homepage": "http://nette.org/contributors"
+			"name": "Filip Procházka",
+			"homepage": "http://filip-prochazka.com",
+			"email": "filip@prochazka.su"
 		}
 	],
 	"require": {
-		"php": ">= 5.3.7",
-		"nette/nette": "@dev",
-		"dg/adminer-custom": "~1.0"
+		"php": ">= 5.5",
+
+		"nette/nette": "dev-master as 2.2",
+		"latte/latte": "@dev",
+		"nette/application": "@dev",
+		"nette/caching": "@dev",
+		"nette/component-model": "@dev",
+		"nette/database": "@dev",
+		"nette/di": "@dev",
+		"nette/finder": "@dev",
+		"nette/forms": "@dev",
+		"nette/http": "@dev",
+		"nette/mail": "@dev",
+		"nette/neon": "@dev",
+		"nette/php-generator": "@dev",
+		"nette/reflection": "@dev",
+		"nette/robot-loader": "@dev",
+		"nette/safe-stream": "@dev",
+		"nette/security": "@dev",
+		"nette/tester": "@dev",
+		"nette/tokenizer": "@dev",
+		"nette/utils": "@dev",
+		"tracy/tracy": "@dev",
+
+		"janmarek/webloader": "@dev",
+		"kdyby/doctrine": "@dev",
+		"kdyby/events": "~2.0@dev",
+		"kdyby/console": "~2.0@dev",
+		"kdyby/translation": "~2.0@dev",
+		"kdyby/autowired": "~1.0@dev",
+		"texy/texy": "dev-master"
 	},
 	"require-dev": {
 		"nette/tester": "~1.0"
 	},
-	"minimum-stability": "dev",
-	"extra": {
-		"branch-alias": {
-			"dev-master": "2.2-dev"
-		}
+	"autoload": {
+		"classmap": ["app/", "libs/"],
+		"files": ["libs/shortcuts.php"]
 	}
 }
