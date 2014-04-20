@@ -40,3 +40,7 @@ doctrine:
 	user: root
 	password:
 	dbname: archivist
+
+
+includes:
+	- webloader.neon

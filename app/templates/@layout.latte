@@ -15,12 +15,13 @@
 
 	<title>{block title|striptags|upper}Nette Application Skeleton{/block}</title>
 
-	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/screen.css">
+	{control webloaderCss}
 	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
 	<link rel="shortcut icon" href="{$basePath}/favicon.ico">
 	{block head}{/block}
-</head>
 
+	<script src="{$basePath}/js/modernizr.js"></script>
+</head>
 <body>
 	<script> document.documentElement.className+=' js' </script>
 
@@ -28,10 +29,7 @@
 
 	{include content}
 
-	{block scripts}
-	<script src="{$basePath}/js/jquery.js"></script>
-	<script src="{$basePath}/js/netteForms.js"></script>
-	<script src="{$basePath}/js/main.js"></script>
-	{/block}
+	{block scripts}{/block}
+	{control webloaderJs}
 </body>
 </html>
