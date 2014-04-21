@@ -48,4 +48,13 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		return $this->webloader->createJavaScriptLoader('default');
 	}
 
+
+
+	public function handleSignOut()
+	{
+		$this->getUser()->logout();
+		$this->flashMessage('You have been signed out.');
+		$this->redirect('this');
+	}
+
 }
