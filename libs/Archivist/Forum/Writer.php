@@ -52,4 +52,16 @@ class Writer extends Nette\Object
 		return $question;
 	}
 
+
+
+	public function answerQuestion(Answer $answer, Question $question)
+	{
+		$question->addAnswer($answer);
+		$answer->setAuthor($this->user->getIdentity());
+
+		$this->em->persist($answer)->flush();
+
+		return $answer;
+	}
+
 }

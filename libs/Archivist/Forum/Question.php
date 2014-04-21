@@ -63,4 +63,12 @@ class Question extends Post
 		return $this->title;
 	}
 
+
+
+	public function addAnswer(Answer $answer)
+	{
+		$this->answers[] = $answer;
+		$answer->question = $this;
+	}
+
 }
