@@ -6,3 +6,5 @@ services:
 
 	- Archivist\Users\Manager()
 	authenticator: @Archivist\Users\Manager
+
+	- Archivist\Forum\Writer()

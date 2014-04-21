@@ -29,6 +29,28 @@ class Question extends Post
 	 * @ORM\Column(type="string", nullable=FALSE)
 	 * @var string
 	 */
-	protected $title;
+	private $title;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="Answer", mappedBy="question", cascade={"persist"}, fetch="EXTRA_LAZY")
+	 * @var Answer[]
+	 */
+	protected $answers;
+
+
+
+	public function __construct($title, $content)
+	{
+		$this->title = $title;
+		parent::__construct($content);
+	}
+
+
+
+	public function changeTitle($title)
+	{
+		$this->title = $title;
+		$this->updated();
+	}
 
 }

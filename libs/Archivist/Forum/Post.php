@@ -10,6 +10,8 @@
 
 namespace Archivist\Forum;
 
+use Archivist\InvalidStateException;
+use Archivist\Users\Identity;
 use Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby;
@@ -38,13 +40,7 @@ abstract class Post extends Kdyby\Doctrine\Entities\IdentifiedEntity
 	 * @ORM\Column(type="text", nullable=FALSE)
 	 * @var string
 	 */
-	protected $content;
-
-	/**
-	 * @ORM\ManyToOne(targetEntity="Topic", inversedBy="posts", cascade={"persist"})
-	 * @var Topic
-	 */
-	protected $topic;
+	private $content;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="posts", cascade={"persist"})
@@ -56,18 +52,92 @@ abstract class Post extends Kdyby\Doctrine\Entities\IdentifiedEntity
 	 * @ORM\ManyToOne(targetEntity="\Archivist\Users\Identity", inversedBy="posts", cascade={"persist"})
 	 * @var \Archivist\Users\Identity
 	 */
-	protected $author;
+	private $author;
 
 	/**
 	 * @ORM\Column(type="datetime", nullable=FALSE)
 	 * @var \DateTime
 	 */
-	protected $createdAt;
+	private $createdAt;
 
 	/**
 	 * @ORM\Column(type="datetime", nullable=TRUE)
 	 * @var \DateTime
 	 */
-	protected $editedAt;
+	private $editedAt;
+
+
+
+	public function __construct($content)
+	{
+		$this->content = $content;
+		$this->createdAt = new \DateTime();
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	public function getContent()
+	{
+		return $this->content;
+	}
+
+
+
+	public function editContent($content)
+	{
+		$this->content = $content;
+		$this->updated();
+	}
+
+
+
+	public function setAuthor(Identity $author)
+	{
+		if ($this->author) {
+			throw new InvalidStateException();
+		}
+
+		$this->author = $author;
+	}
+
+
+
+	/**
+	 * @return Identity
+	 */
+	public function getAuthor()
+	{
+		return $this->author;
+	}
+
+
+
+	/**
+	 * @return \DateTime|NULL
+	 */
+	public function getCreatedAt()
+	{
+		return $this->createdAt ? clone $this->createdAt : NULL;
+	}
+
+
+
+	/**
+	 * @return \DateTime|NULL
+	 */
+	public function getEditedAt()
+	{
+		return $this->editedAt ? clone $this->editedAt : NULL;
+	}
+
+
+
+	protected function updated()
+	{
+		$this->editedAt = new \DateTime();
+	}
 
 }

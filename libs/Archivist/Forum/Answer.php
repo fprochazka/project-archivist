@@ -35,4 +35,10 @@ class Answer extends Post
 	 */
 	protected $ranks;
 
+	/**
+	 * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers", cascade={"persist"})
+	 * @var Question
+	 */
+	protected $question;
+
 }

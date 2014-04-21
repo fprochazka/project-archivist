@@ -3,7 +3,10 @@
 namespace Archivist;
 
 use Archivist\Forum\Category;
+use Archivist\Forum\Question;
+use Archivist\UI\BaseForm;
 use Nette;
+
 
 
 class TopicsPresenter extends BasePresenter
@@ -15,16 +18,27 @@ class TopicsPresenter extends BasePresenter
 	public $categoryId;
 
 	/**
+	 * @var Category
+	 */
+	private $category;
+
+	/**
 	 * @var \Kdyby\Doctrine\EntityManager
 	 * @autowire
 	 */
 	protected $em;
 
+	/**
+	 * @var \Archivist\Forum\Writer
+	 * @autowire
+	 */
+	protected $writer;
+
 
 
 	public function actionDefault($categoryId)
 	{
-		if (!$this->em->getDao(Category::class)->find($categoryId)) {
+		if (!$this->category = $this->em->getDao(Category::class)->find($categoryId)) {
 			$this->error();
 		}
 	}
@@ -33,11 +47,40 @@ class TopicsPresenter extends BasePresenter
 
 	public function renderDefault($categoryId)
 	{
-		$categories = $this->em->getDao(Category::class);
-		$category = $categories->find($categoryId);
-
-		$this->template->category = $category;
+		$this->template->category = $this->category;
 
 	}
+
+
+
+	/**
+	 * @return BaseForm
+	 */
+	protected function createComponentCreateTopicForm()
+	{
+		$form = new BaseForm();
+		$form->addText('title', 'Topic');
+		$form->addTextArea('content', 'Question')
+			->setAttribute('rows', 10);
+
+	    $form->addSubmit("send", "Odeslat");
+		$form->onSuccess[] = function (BaseForm $form, $values) {
+			if (!$this->user->isLoggedIn()) {
+				$form->addError("Please login first before posting");
+				return;
+			}
+
+			if (!$this->category) {
+				$this->error();
+			}
+
+			$topic = $this->writer->askQuestion(new Question($values->title, $values->content), $this->category);
+			$this->redirect('Question:', array('questionId' => $topic->id));
+		};
+
+		$form->setupBootstrap3Rendering();
+		return $form;
+	}
+
 
 }

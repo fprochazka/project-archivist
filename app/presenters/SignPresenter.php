@@ -39,9 +39,7 @@ class SignPresenter extends BasePresenter
 		$form->addSubmit('send', 'Sign in');
 
 		// call method signInFormSucceeded() on success
-		$form->onSuccess[] = function (Baseform $form) {
-			$values = $form->getValues();
-
+		$form->onSuccess[] = function (Baseform $form, $values) {
 			if ($values->remember) {
 				$this->getUser()->setExpiration('14 days', FALSE);
 			} else {
@@ -73,8 +71,7 @@ class SignPresenter extends BasePresenter
 		$form->addPassword('password', 'Password:');
 
 	    $form->addSubmit("send", "Register");
-		$form->onSuccess[] = function (BaseForm $form) {
-			$values = $form->getValues();
+		$form->onSuccess[] = function (BaseForm $form, $values) {
 			$this->user->login($this->usersManager->registerWithPassword($values->email, $values->password));
 			$this->redirect('Categories:');
 		};
