@@ -5,24 +5,24 @@
 	<a n:href="Topics:, categoryId => $question->category->id">&laquo; {$question->category->name}</a>
 </div>
 
-<div class="panel panel-default panel-primary">
+<div class="panel panel-default panel-primary forum-post">
 	<div class="panel-heading">
 		<strong class="pull-right text-right">{$question->createdAt|date:'j.n.Y G:i'}</strong>
 		<h3 class="panel-title">{$question->author->name}</h3>
 	</div>
 	<div class="panel-body">
-		{$question->content}
+		{cache [(string)$question], if => $productionMode}{$question->content|noescape|texifyForumPost}{/cache}
 	</div>
 	{*<div class="panel-footer">Panel footer</div>*}
 </div>
 
-<div class="panel panel-default" n:foreach="$answers as $answer">
+<div n:foreach="$answers as $answer" n:class="panel, panel-default, forum-post">
 	<div class="panel-heading">
 		<strong class="pull-right text-right">{$answer->createdAt|date:'j.n.Y G:i'}</strong>
 		<h3 class="panel-title">{$answer->author->name}</h3>
 	</div>
 	<div class="panel-body">
-		{$answer->content}
+		{cache [(string)$answer], if => $productionMode}{$answer->content|noescape|texifyForumPost}{/cache}
 	</div>
 	{*<div class="panel-footer">Panel footer</div>*}
 </div>
@@ -35,7 +35,7 @@
 		</div>
 	{else}
 		<div class="col-sm-10 col-sm-offset-1">
-			<div class="alert alert-warning">You must first <a n:href="Sign:in">login</a> to open a discussion</div>
+			<div class="alert alert-warning">You must first <a n:href="Sign:in">login</a> to participate in a discussion</div>
 		</div>
 	{/if}
 </div>

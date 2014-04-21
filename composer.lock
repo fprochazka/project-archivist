@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "df41f2d6d1e57b4374889576d4ecd730",
+    "hash": "4c157a3a99cb74c080188ff95823e1e2",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -606,6 +606,53 @@
             "time": "2014-04-21 14:33:57"
         },
         {
+            "name": "jantvrdik/nette-doc-converter",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JanTvrdik/NetteDocumentationConverter.git",
+                "reference": "680b84e53bbb1551dd884cfc20847a1f17ac7b42"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JanTvrdik/NetteDocumentationConverter/zipball/680b84e53bbb1551dd884cfc20847a1f17ac7b42",
+                "reference": "680b84e53bbb1551dd884cfc20847a1f17ac7b42",
+                "shasum": ""
+            },
+            "require": {
+                "kukulich/fshl": "~2.1",
+                "texy/texy": "~2.3"
+            },
+            "require-dev": {
+                "nette/tester": "~0.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "http://davidgrudl.com"
+                },
+                {
+                    "name": "Jan Tvrdik"
+                }
+            ],
+            "time": "2014-03-04 00:58:17"
+        },
+        {
             "name": "kdyby/annotations",
             "version": "v2.0.3",
             "source": {
@@ -1037,6 +1084,48 @@
                 "translation"
             ],
             "time": "2014-04-10 17:01:38"
+        },
+        {
+            "name": "kukulich/fshl",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kukulich/fshl.git",
+                "reference": "974c294ade5d76c0c16b6fe3fd3a584ba999b24f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kukulich/fshl/zipball/974c294ade5d76c0c16b6fe3fd3a584ba999b24f",
+                "reference": "974c294ade5d76c0c16b6fe3fd3a584ba999b24f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "FSHL": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Jaroslav Hanslík",
+                    "homepage": "https://github.com/kukulich"
+                }
+            ],
+            "description": "FSHL is a free, open source, universal, fast syntax highlighter written in PHP.",
+            "homepage": "http://fshl.kukulich.cz/",
+            "keywords": [
+                "highlight",
+                "library",
+                "syntax"
+            ],
+            "time": "2012-09-08 19:00:07"
         },
         {
             "name": "latte/latte",

@@ -57,6 +57,9 @@ class TopicsPresenter extends BasePresenter
 
 		$questions = $this->em->getDao(Question::class);
 		$qb = $questions->createQueryBuilder('q')
+			->innerJoin('q.author', 'i')->addSelect('i')
+			->innerJoin('i.user', 'u')->addSelect('u')
+			->innerJoin('q.category', 'c')->addSelect('c')
 			->andWhere('q.category = :category')->setParameter('category', $this->category->getId())
 			->orderBy('q.createdAt', 'DESC');
 

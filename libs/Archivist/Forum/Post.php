@@ -142,4 +142,11 @@ abstract class Post extends Kdyby\Doctrine\Entities\IdentifiedEntity
 		$this->editedAt = new \DateTime();
 	}
 
+
+
+	public function __toString()
+	{
+		return $this->id . '#' . ($this->editedAt ? $this->editedAt->format('YmdHis') : $this->createdAt->format('YmdHis'));
+	}
+
 }

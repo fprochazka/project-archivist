@@ -26,6 +26,12 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	 */
 	public $webloader;
 
+	/**
+	 * @var \Nette\DI\Container
+	 * @autowire
+	 */
+	protected $serviceLocator;
+
 
 
 	protected function startup()
@@ -55,6 +61,14 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		$this->getUser()->logout();
 		$this->flashMessage('You have been signed out.');
 		$this->redirect('this');
+	}
+
+
+
+	protected function beforeRender()
+	{
+		parent::beforeRender();
+		$this->template->productionMode = !$this->serviceLocator->expand('%debugMode%');
 	}
 
 }

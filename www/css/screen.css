@@ -35,6 +35,10 @@ html.js .jshidden {
 	padding-top: 16px;
 }
 
+.forum-post .panel-body p:last-child {
+	margin-bottom: 0;
+}
+
 
 
 /* Sticky footer styles

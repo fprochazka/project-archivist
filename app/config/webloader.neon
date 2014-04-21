@@ -18,6 +18,7 @@ webloader:
 			files:
 				- %wwwDir%/css/bootstrap.css
 				- %wwwDir%/css/bootstrap-theme.css
+				- %appDir%/../vendor/kukulich/fshl/style.css
 				- %wwwDir%/css/screen.css
 
 
