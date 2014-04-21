@@ -22,7 +22,8 @@ html.js .jshidden {
 	display: none;
 }
 
-.category table tr:first-child td {
+.category table tr:first-child td,
+.topics table tr:first-child td {
 	border-top: 0;
 }
 

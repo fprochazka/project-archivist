@@ -1,0 +1,16 @@
+{block content}
+
+<div class="page-header">
+	<h1 n:block=title>{$question->title}</h1>
+</div>
+
+<div class="panel panel-default panel-primary">
+	<div class="panel-heading">
+		<strong class="pull-right text-right">{$question->createdAt|date:'j.n.Y G:i'}</strong>
+		<h3 class="panel-title">{$question->author->name}</h3>
+	</div>
+	<div class="panel-body">
+		{$question->content}
+	</div>
+	{*<div class="panel-footer">Panel footer</div>*}
+</div>

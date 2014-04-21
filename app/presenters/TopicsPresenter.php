@@ -34,6 +34,12 @@ class TopicsPresenter extends BasePresenter
 	 */
 	protected $writer;
 
+	/**
+	 * @var \Archivist\Users\Manager
+	 * @autowire
+	 */
+	protected $users;
+
 
 
 	public function actionDefault($categoryId)
@@ -49,6 +55,11 @@ class TopicsPresenter extends BasePresenter
 	{
 		$this->template->category = $this->category;
 
+		$questions = $this->em->getDao(Question::class);
+		$qb = $questions->createQueryBuilder('q')
+			->orderBy('q.createdAt', 'DESC');
+
+		$this->template->topics = $qb->getQuery()->getResult();
 	}
 
 
@@ -59,9 +70,17 @@ class TopicsPresenter extends BasePresenter
 	protected function createComponentCreateTopicForm()
 	{
 		$form = new BaseForm();
-		$form->addText('title', 'Topic');
+
+		$form->addText('username', 'Your name')
+			->setDefaultValue($this->user->getIdentity()->name)
+			->setRequired();
+
+		$form->addText('title', 'Topic')
+			->setRequired();
+
 		$form->addTextArea('content', 'Question')
-			->setAttribute('rows', 10);
+			->setAttribute('rows', 10)
+			->setRequired();
 
 	    $form->addSubmit("send", "Odeslat");
 		$form->onSuccess[] = function (BaseForm $form, $values) {
@@ -73,6 +92,15 @@ class TopicsPresenter extends BasePresenter
 			if (!$this->category) {
 				$this->error();
 			}
+
+			if (!$this->category->parent) {
+				$form->addError("Please create your topic in specific category");
+				return;
+			}
+
+			$identity = $this->getUser()->getIdentity();
+			$user = $identity->getUser();
+			$user->name = $values->username;
 
 			$topic = $this->writer->askQuestion(new Question($values->title, $values->content), $this->category);
 			$this->redirect('Question:', array('questionId' => $topic->id));

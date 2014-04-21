@@ -41,16 +41,26 @@ class Question extends Post
 
 	public function __construct($title, $content)
 	{
-		$this->title = $title;
 		parent::__construct($content);
+		$this->title = Nette\Utils\Strings::firstUpper($title);
 	}
 
 
 
 	public function changeTitle($title)
 	{
-		$this->title = $title;
+		$this->title = Nette\Utils\Strings::firstUpper($title);
 		$this->updated();
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	public function getTitle()
+	{
+		return $this->title;
 	}
 
 }

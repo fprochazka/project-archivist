@@ -86,4 +86,16 @@ abstract class Identity extends Kdyby\Doctrine\Entities\IdentifiedEntity impleme
 		return $this->user->roles;
 	}
 
+
+
+	public function &__get($name)
+	{
+		if (!property_exists($this, $name) && property_exists($this->user, $name)) {
+			$tmp = $this->getUser()->{$name};
+			return $tmp;
+		}
+
+		return parent::__get($name);
+	}
+
 }
