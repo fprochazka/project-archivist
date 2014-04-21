@@ -1,16 +1,17 @@
 services:
 	- App\RouterFactory
 	router: @App\RouterFactory::createRouter
-	user:
-		class: Archivist\Security\UserContext()
+
+	user: {class: Archivist\Security\UserContext()}
+	- Archivist\Users\Manager()
+	authenticator: @Archivist\Users\Manager
 
 	nette.latte:
 		setup:
 			- addFilter(NULL, Archivist\UI\TemplateHelpers::register(@self))
-
-	- Archivist\Users\Manager()
-	authenticator: @Archivist\Users\Manager
+	- Archivist\Forum\PostContentRenderer("Help", "en", "")
 
 	- Archivist\Forum\Writer()
 
-	- Archivist\Forum\PostContentRenderer("Help", "en", "")
+	# componnets
+	- Archivist\IPostFormFactory

@@ -32,6 +32,19 @@ class PostContentRenderer extends Converter
 			'mdBlocks'
 		);
 
+		$texy->addHandler('image', function (\TexyHandlerInvocation $invocation, \TexyImage $image, $link) {
+			if ($image->width !== NULL) {
+				$image->width = min($image->width, 900);
+			}
+			if ($image->height !== NULL) {
+				$image->height = min($image->height, 1000);
+			}
+
+			// todo: fix ratio
+
+			return $invocation->proceed();
+		});
+
 		return $texy;
 	}
 

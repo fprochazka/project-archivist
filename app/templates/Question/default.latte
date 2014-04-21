@@ -5,27 +5,32 @@
 	<a n:href="Topics:, categoryId => $question->category->id">&laquo; {$question->category->name}</a>
 </div>
 
-<div class="panel panel-default panel-primary forum-post">
+{block post}
+{default $post = $question}
+{default $panelType = $post->isQuestion() ? 'panel-primary' : ''}
+<div n:class="panel, panel-default, forum-post, $panelType">
 	<div class="panel-heading">
-		<strong class="pull-right text-right">{$question->createdAt|date:'j.n.Y G:i'}</strong>
-		<h3 class="panel-title">{$question->author->name}</h3>
+		<strong class="pull-right text-right">{$post->createdAt|date:'j.n.Y G:i'}</strong>
+		<h3 class="panel-title">{$post->author->name}</h3>
 	</div>
 	<div class="panel-body">
-		{cache [(string)$question], if => $productionMode}{$question->content|noescape|texifyForumPost}{/cache}
+		{cache [(string)$post], if => $productionMode}{$post->content|noescape|texifyForumPost}{/cache}
 	</div>
-	{*<div class="panel-footer">Panel footer</div>*}
+	<div class="panel-footer" n:if="$user->loggedIn && ($user->isInRole(moderator) || $post->isAuthor($user->identity))">
+		<div class="text-right">
+			<a n:href="markAsSpam!, postId => $post->id" n:if="$user->isInRole(moderator)" onclick="return confirm('Really mark as spam?');"><span class="glyphicon glyphicon-trash"></span> Spam</a>
+			<a n:href="delete!, postId => $post->id" n:if="$user->isInRole(moderator) || $post->isAuthor($user->identity)" onclick="return confirm('Really delete?');"><span class="glyphicon glyphicon-remove"></span> Delete</a>
+			<a n:href="edit, postId => $post->id" n:if="$user->isInRole(moderator) || $post->isAuthor($user->identity)"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+		</div>
+	</div>
 </div>
+{/block}
 
-<div n:foreach="$answers as $answer" n:class="panel, panel-default, forum-post">
-	<div class="panel-heading">
-		<strong class="pull-right text-right">{$answer->createdAt|date:'j.n.Y G:i'}</strong>
-		<h3 class="panel-title">{$answer->author->name}</h3>
-	</div>
-	<div class="panel-body">
-		{cache [(string)$answer], if => $productionMode}{$answer->content|noescape|texifyForumPost}{/cache}
-	</div>
-	{*<div class="panel-footer">Panel footer</div>*}
-</div>
+{foreach $answers as $answer}
+	{include post, post => $answer}
+{/foreach}
+
+<hr>
 
 <div class="row">
 	{if $user->loggedIn}

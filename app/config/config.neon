@@ -21,6 +21,13 @@ nette:
 	session:
 		expiration: 14 days
 
+	security:
+		roles:
+			authenticated:
+			guest:
+			user: [authenticated]
+			moderator: [user]
+
 
 extensions:
 	console: Kdyby\Console\DI\ConsoleExtension

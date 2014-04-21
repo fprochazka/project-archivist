@@ -21,7 +21,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	use AutowireComponentFactories;
 
 	/**
-	 * @var \WebLoader\LoaderFactory
+	 * @var \WebLoader\Nette\LoaderFactory
 	 * @inject
 	 */
 	public $webloader;

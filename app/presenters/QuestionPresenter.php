@@ -3,9 +3,13 @@
 namespace Archivist;
 
 use Archivist\Forum\Answer;
+use Archivist\Forum\Post;
 use Archivist\Forum\Question;
+use Archivist\Security\Role;
 use Archivist\UI\BaseForm;
 use Nette;
+use Nette\Forms\Controls\SubmitButton;
+use Nette\Forms\Controls\TextInput;
 
 
 
@@ -18,9 +22,19 @@ class QuestionPresenter extends BasePresenter
 	public $questionId;
 
 	/**
+	 * @persistent
+	 */
+	public $postId;
+
+	/**
 	 * @var Question
 	 */
 	private $question;
+
+	/**
+	 * @var Question|Answer
+	 */
+	private $editingPost;
 
 	/**
 	 * @var \Kdyby\Doctrine\EntityManager
@@ -36,9 +50,11 @@ class QuestionPresenter extends BasePresenter
 
 
 
-	public function actionDefault($questionId)
+	protected function startup()
 	{
-		if (!$this->question = $this->em->getDao(Question::class)->find($questionId)) {
+		parent::startup();
+
+		if (!$this->question = $this->em->getDao(Question::class)->find($this->questionId)) {
 			$this->error("Topic not found");
 
 		} elseif ($this->question->deleted || $this->question->spam) {
@@ -48,10 +64,16 @@ class QuestionPresenter extends BasePresenter
 
 
 
+	protected function beforeRender()
+	{
+		parent::beforeRender();
+		$this->template->question = $this->question;
+	}
+
+
+
 	public function renderDefault($questionId)
 	{
-		$this->template->question = $this->question;
-
 		$answers = $this->em->getDao(Answer::class);
 		$qb = $answers->createQueryBuilder('a')
 			->innerJoin('a.author', 'i')->addSelect('i')
@@ -99,6 +121,99 @@ class QuestionPresenter extends BasePresenter
 			$this->writer->answerQuestion(new Answer($values->content), $this->question);
 
 			$this->redirect('this');
+		};
+
+		$form->setupBootstrap3Rendering();
+		return $form;
+	}
+
+
+
+	public function actionEdit($postId)
+	{
+		/** @var Answer|Question $post */
+		if (!$post = $this->em->getDao(Post::class)->findOneBy(['id' => $postId])) {
+			$this->error("Post not found");
+
+		} elseif ($post->deleted || $post->spam) {
+			$this->error("Post was deleted");
+
+		} elseif ($post->isAnswer() && $post->getQuestion() !== $this->question) {
+			$this->error("Collision");
+
+		} elseif (!($post->isAuthor($this->getUser()->getIdentity()) || $this->getUser()->isInRole(Role::MODERATOR))) {
+			throw new Nette\Application\ForbiddenRequestException();
+		}
+
+		return $this->editingPost = $post;
+	}
+
+
+
+	public function renderEdit($postId)
+	{
+		$this->template->editingPost = $this->editingPost;
+	}
+
+
+
+	public function handleDelete($postId)
+	{
+		if (!$this->actionEdit($postId)) {
+			$this->error();
+		}
+
+		$this->editingPost->deleted = TRUE;
+		$this->em->flush();
+
+		$this->redirect('this', ['postId' => NULL]);
+	}
+
+
+
+	public function handleMarkAsSpam($postId)
+	{
+		if (!$this->actionEdit($postId)) {
+			$this->error();
+		}
+
+		$this->editingPost->spam = TRUE;
+		$this->em->flush();
+
+		$this->redirect('this', ['postId' => NULL]);
+	}
+
+
+
+	protected function createComponentEditPostForm(IPostFormFactory $factory)
+	{
+		if (!$this->editingPost) {
+			$this->error();
+		}
+
+		/** @var PostForm|SubmitButton[] $form */
+		$form = $factory->create();
+		$form['send']->caption = "Save changes";
+		$form['content']->setAttribute('rows', 25);
+
+		if ($this->editingPost->isQuestion()) {
+			$form->addComponent(new TextInput('Topic'), 'title', 'content');
+			$form['title']->setDefaultValue($this->editingPost->getTitle())->setRequired();
+		}
+
+		/** @var QuestionPresenter|BaseForm[] $this */
+		$form->setDefaults(['content' => $this->editingPost->getContent()]);
+
+		$form->onSuccess[] = function (PostForm $form, $values) {
+			$this->editingPost->editContent($values->content);
+
+			if ($this->editingPost->isQuestion()) {
+				$this->editingPost->changeTitle($values->title);
+			}
+
+			$this->em->flush();
+
+			$this->redirect('Question:', array('postId' => NULL));
 		};
 
 		$form->setupBootstrap3Rendering();

@@ -6,6 +6,7 @@ use Archivist\Forum\Category;
 use Archivist\Forum\Question;
 use Archivist\UI\BaseForm;
 use Nette;
+use Nette\Forms\Controls\SubmitButton;
 
 
 
@@ -72,28 +73,13 @@ class TopicsPresenter extends BasePresenter
 	/**
 	 * @return BaseForm
 	 */
-	protected function createComponentCreateTopicForm()
+	protected function createComponentCreateTopicForm(IPostFormFactory $factory)
 	{
-		$form = new BaseForm();
+		/** @var PostForm|SubmitButton[] $form */
+		$form = $factory->create();
+		$form['send']->caption = "Post question";
 
-		$form->addText('username', 'Your name')
-			->setDefaultValue($this->user->getIdentity()->name)
-			->setRequired();
-
-		$form->addText('title', 'Topic')
-			->setRequired();
-
-		$form->addTextArea('content', 'Question')
-			->setAttribute('rows', 10)
-			->setRequired();
-
-	    $form->addSubmit("send", "Post question");
 		$form->onSuccess[] = function (BaseForm $form, $values) {
-			if (!$this->user->isLoggedIn()) {
-				$form->addError("Please login first before posting");
-				return;
-			}
-
 			if (!$this->category) {
 				$this->error();
 			}
@@ -102,10 +88,6 @@ class TopicsPresenter extends BasePresenter
 				$form->addError("Please create your topic in specific category");
 				return;
 			}
-
-			$identity = $this->getUser()->getIdentity();
-			$user = $identity->getUser();
-			$user->name = $values->username;
 
 			$topic = $this->writer->askQuestion(new Question($values->title, $values->content), $this->category);
 			$this->redirect('Question:', array('questionId' => $topic->id));

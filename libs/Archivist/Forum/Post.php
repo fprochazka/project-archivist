@@ -149,9 +149,31 @@ abstract class Post extends Kdyby\Doctrine\Entities\IdentifiedEntity
 
 
 
+	public function isAuthor(Identity $identity = NULL)
+	{
+		// todo: check other user identities
+		return $this->author === $identity;
+	}
+
+
+
 	protected function updated()
 	{
 		$this->editedAt = new \DateTime();
+	}
+
+
+
+	public function isQuestion()
+	{
+		return $this instanceof Question;
+	}
+
+
+
+	public function isAnswer()
+	{
+		return $this instanceof Answer;
 	}
 
 

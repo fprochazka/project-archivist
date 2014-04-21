@@ -41,4 +41,14 @@ class Answer extends Post
 	 */
 	protected $question;
 
+
+
+	/**
+	 * @return Question
+	 */
+	public function getQuestion()
+	{
+		return $this->question;
+	}
+
 }

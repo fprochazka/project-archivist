@@ -1,0 +1,12 @@
+{block content}
+
+<div class="page-header">
+	<h1 n:block=title>{$question->title}</h1>
+	<a n:href="Question:, postId => NULL">&laquo; Back to thread without saving</a>
+</div>
+
+<div class="row">
+	<div class="col-sm-11">
+		{control editPostForm}
+	</div>
+</div>

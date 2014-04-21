@@ -12,6 +12,9 @@ namespace Archivist\Security;
 
 use Kdyby;
 use Nette;
+use Nette\Security\IAuthenticator;
+use Nette\Security\IAuthorizator;
+use Nette\Security\IUserStorage;
 
 
 
@@ -22,6 +25,32 @@ use Nette;
  */
 class UserContext extends Nette\Security\User
 {
+
+	/**
+	 * @var \Kdyby\Doctrine\EntityManager
+	 */
+	private $em;
+
+
+
+	public function __construct(Kdyby\Doctrine\EntityManager $em, IUserStorage $storage, IAuthenticator $authenticator = NULL, IAuthorizator $authorizator = NULL)
+	{
+		parent::__construct($storage, $authenticator, $authorizator);
+		$this->em = $em;
+	}
+
+
+
+	public function isInRole($role)
+	{
+		if (!$role = $this->em->getDao(Role::class)->find($role)) {
+			return FALSE;
+		}
+
+		return parent::isInRole($role);
+	}
+
+
 
 	public function &__get($name)
 	{

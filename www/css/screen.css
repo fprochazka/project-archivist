@@ -39,6 +39,14 @@ html.js .jshidden {
 	margin-bottom: 0;
 }
 
+.forum-post .panel-footer a {
+	padding-left: 15px;
+}
+
+.forum-post .panel-footer a .glyphicon {
+	padding-right: 3px;
+}
+
 
 
 /* Sticky footer styles
