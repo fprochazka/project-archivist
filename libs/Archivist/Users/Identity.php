@@ -10,6 +10,7 @@
 
 namespace Archivist\Users;
 
+use Archivist\InvalidStateException;
 use Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby;
@@ -33,19 +34,56 @@ use Nette;
  *    "twitter" = "Archivist\Users\Identity\Twitter"
  * })
  */
-abstract class Identity extends Kdyby\Doctrine\Entities\IdentifiedEntity
+abstract class Identity extends Kdyby\Doctrine\Entities\IdentifiedEntity implements Nette\Security\IIdentity
 {
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Archivist\Users\User", inversedBy="identities", cascade={"persist"})
 	 * @var User
 	 */
-	protected $user;
+	private $user;
 
 	/**
 	 * @ORM\OneToMany(targetEntity="\Archivist\Forum\Post", mappedBy="author", cascade={"persist"})
 	 * @var \Archivist\Forum\Post[]
 	 */
 	protected $posts;
+
+
+
+	/**
+	 * @return User
+	 */
+	public function getUser()
+	{
+		return $this->user;
+	}
+
+
+
+	/**
+	 * @param User $user
+	 * @return Identity
+	 */
+	public function setUser(User $user)
+	{
+		if ($this->user !== NULL) {
+			throw new InvalidStateException();
+		}
+
+		$this->user = $user;
+		return $this;
+	}
+
+
+
+	/**
+	 * Returns a list of roles that the user is a member of.
+	 * @return array|Nette\Security\IRole[]
+	 */
+	public function getRoles()
+	{
+		return $this->user->roles;
+	}
 
 }

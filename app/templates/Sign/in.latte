@@ -1,6 +1,16 @@
 {block content}
-<h1 n:block=title>Sign in</h1>
 
-{control signInForm}
+<div class="page-header">
+	<h1 n:block=title>Sign in</h1>
+</div>
 
-{* or use {include '../components/form.latte', form => signInForm} *}
+<div class="row">
+	<div class="col-sm-5">
+		<h2>Registered user</h2>
+		{control signInForm}
+	</div>
+	<div class="col-sm-5 col-sm-offset-1">
+		<h2>New user</h2>
+		{control registerForm}
+	</div>
+</div>

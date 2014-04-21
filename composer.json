@@ -14,27 +14,26 @@
 	"require": {
 		"php": ">= 5.5",
 
-		"nette/nette": "dev-master as 2.2",
-		"latte/latte": "@dev",
-		"nette/application": "@dev",
-		"nette/caching": "@dev",
-		"nette/component-model": "@dev",
-		"nette/database": "@dev",
-		"nette/di": "@dev",
-		"nette/finder": "@dev",
-		"nette/forms": "@dev",
-		"nette/http": "@dev",
-		"nette/mail": "@dev",
-		"nette/neon": "@dev",
-		"nette/php-generator": "@dev",
-		"nette/reflection": "@dev",
-		"nette/robot-loader": "@dev",
-		"nette/safe-stream": "@dev",
-		"nette/security": "@dev",
-		"nette/tester": "@dev",
-		"nette/tokenizer": "@dev",
-		"nette/utils": "@dev",
-		"tracy/tracy": "@dev",
+		"nette/nette": "dev-devel-2.2 as 2.1.99",
+		"latte/latte": "~2.2@rc",
+		"nette/application": "~2.2@rc",
+		"nette/caching": "~2.2@rc",
+		"nette/component-model": "~2.2@rc",
+		"nette/database": "~2.2@rc",
+		"nette/di": "~2.2@rc",
+		"nette/finder": "~2.2@rc",
+		"nette/forms": "~2.2@rc",
+		"nette/http": "~2.2@rc",
+		"nette/mail": "~2.2@rc",
+		"nette/neon": "~2.2@rc",
+		"nette/php-generator": "~2.2@rc",
+		"nette/reflection": "~2.2@rc",
+		"nette/robot-loader": "~2.2@rc",
+		"nette/safe-stream": "~2.2@rc",
+		"nette/security": "~2.2@rc",
+		"nette/tokenizer": "~2.2@rc",
+		"nette/utils": "~2.2@rc",
+		"tracy/tracy": "~2.2@rc",
 
 		"janmarek/webloader": "@dev",
 		"kdyby/doctrine": "@dev",
@@ -42,13 +41,18 @@
 		"kdyby/console": "~2.0@dev",
 		"kdyby/translation": "~2.0@dev",
 		"kdyby/autowired": "~1.0@dev",
-		"texy/texy": "dev-master"
+		"texy/texy": "dev-master",
+		"majkl578/nette-identity-doctrine": "@dev"
 	},
+	"minimum-stability": "rc",
 	"require-dev": {
-		"nette/tester": "~1.0"
+		"nette/tester": "~1.1@dev"
 	},
 	"autoload": {
 		"classmap": ["app/", "libs/"],
 		"files": ["libs/shortcuts.php"]
-	}
+	},
+	"repositories": [
+		{ "type": "vcs", "url": "https://github.com/fprochazka/nette.git" }
+	]
 }

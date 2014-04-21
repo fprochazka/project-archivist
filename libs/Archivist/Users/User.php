@@ -11,6 +11,7 @@
 namespace Archivist\Users;
 
 use Doctrine;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby;
 use Nette;
@@ -50,8 +51,33 @@ class User extends Kdyby\Doctrine\Entities\IdentifiedEntity
 	 *        joinColumns={@ORM\JoinColumn(name="user_id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="role")}
 	 *    )
-	 * @var Role[]|\Doctrine\Common\Collections\ArrayCollection
+	 * @var Role[]|ArrayCollection
 	 */
 	protected $roles;
+
+
+
+	public function __construct($email)
+	{
+		$this->email = $email;
+
+		$this->identities = new ArrayCollection();
+		$this->roles = new ArrayCollection();
+	}
+
+
+
+	public function addIdentity(Identity $identity)
+	{
+		$this->identities[] = $identity;
+		$identity->setUser($this);
+	}
+
+
+
+	public function addRole(Role $role)
+	{
+		$this->roles[] = $role;
+	}
 
 }

@@ -1,3 +1,8 @@
 services:
 	- App\RouterFactory
 	router: @App\RouterFactory::createRouter
+	user:
+		class: Archivist\Security\UserContext()
+
+	- Archivist\Users\Manager()
+	authenticator: @Archivist\Users\Manager

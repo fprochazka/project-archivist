@@ -9,20 +9,30 @@ use Nette;
 
 
 /**
- * Base presenter for all application presenters.
+ * @property \Nette\Templating\FileTemplate|\stdClass $template
+ * @method \Nette\Templating\FileTemplate|\stdClass getTemplate()
+ * @method \Nette\Http\Session|\Nette\Http\SessionSection|\stdClass getSession($section = NULL)
+ * @method \Archivist\Security\UserContext getUser()
+ * @property-read \Archivist\Security\UserContext $user
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
 	use AutowireProperties;
 	use AutowireComponentFactories;
 
-
-
 	/**
 	 * @var \WebLoader\LoaderFactory
 	 * @inject
 	 */
 	public $webloader;
+
+
+
+	protected function startup()
+	{
+		parent::startup();
+		$this->getSession()->start();
+	}
 
 
 

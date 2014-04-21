@@ -23,8 +23,11 @@ use Nette;
  * @ORM\Entity(readOnly=TRUE)
  * @ORM\Table(name="roles")
  */
-class Role extends Kdyby\Doctrine\Entities\BaseEntity
+class Role extends Kdyby\Doctrine\Entities\BaseEntity implements Nette\Security\IRole
 {
+
+	const USER = 'user';
+	const MODERATOR = 'moderator';
 
 	/**
 	 * @ORM\Id()
@@ -42,5 +45,25 @@ class Role extends Kdyby\Doctrine\Entities\BaseEntity
 	 * @var Role[]|\Doctrine\Common\Collections\ArrayCollection
 	 */
 	protected $inherits;
+
+
+
+	/**
+	 * @return string
+	 */
+	final public function getId()
+	{
+		return $this->id;
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	final public function getRoleId()
+	{
+		return $this->id;
+	}
 
 }

@@ -2,8 +2,8 @@ webloader:
 	js:
 		default:
 			files:
-				- %wwwDir%/js/bootstrap.js
 				- %wwwDir%/js/jquery.js
+				- %wwwDir%/js/bootstrap.js
 				- %wwwDir%/js/nette.forms.js
 				- %wwwDir%/js/nette.ajax.js
 				- %wwwDir%/js/nette.ajax.confirm.js

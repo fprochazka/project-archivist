@@ -2,8 +2,8 @@
 
 namespace Archivist;
 
-use Nette,
-	App\Model;
+use Archivist\UI\BaseForm;
+use Nette;
 
 
 /**
@@ -12,6 +12,13 @@ use Nette,
 class SignPresenter extends BasePresenter
 {
 
+	/**
+	 * @var \Archivist\Users\Manager
+	 * @autowire
+	 */
+	protected $usersManager;
+
+
 
 	/**
 	 * Sign-in form factory.
@@ -19,9 +26,10 @@ class SignPresenter extends BasePresenter
 	 */
 	protected function createComponentSignInForm()
 	{
-		$form = new Nette\Application\UI\Form;
-		$form->addText('username', 'Username:')
-			->setRequired('Please enter your username.');
+		$form = new BaseForm();
+
+		$form->addText('email', 'Email:')
+			->setRequired('Please enter your email.');
 
 		$form->addPassword('password', 'Password:')
 			->setRequired('Please enter your password.');
@@ -31,29 +39,50 @@ class SignPresenter extends BasePresenter
 		$form->addSubmit('send', 'Sign in');
 
 		// call method signInFormSucceeded() on success
-		$form->onSuccess[] = $this->signInFormSucceeded;
+		$form->onSuccess[] = function (Baseform $form) {
+			$values = $form->getValues();
+
+			if ($values->remember) {
+				$this->getUser()->setExpiration('14 days', FALSE);
+			} else {
+				$this->getUser()->setExpiration('20 minutes', TRUE);
+			}
+
+			try {
+				$this->getUser()->login($values->email, $values->password);
+				$this->redirect('Categories:');
+
+			} catch (Nette\Security\AuthenticationException $e) {
+				$form->addError($e->getMessage());
+			}
+		};
+
+		$form->setupBootstrap3Rendering();
 		return $form;
 	}
 
 
-	public function signInFormSucceeded($form)
+
+	/**
+	 * @return BaseForm
+	 */
+	protected function createComponentRegisterForm()
 	{
-		$values = $form->getValues();
+		$form = new BaseForm();
+		$form->addText('email', 'Email:');
+		$form->addPassword('password', 'Password:');
 
-		if ($values->remember) {
-			$this->getUser()->setExpiration('14 days', FALSE);
-		} else {
-			$this->getUser()->setExpiration('20 minutes', TRUE);
-		}
+	    $form->addSubmit("send", "Register");
+		$form->onSuccess[] = function (BaseForm $form) {
+			$values = $form->getValues();
+			$this->user->login($this->usersManager->registerWithPassword($values->email, $values->password));
+			$this->redirect('Categories:');
+		};
 
-		try {
-			$this->getUser()->login($values->username, $values->password);
-			$this->redirect('Homepage:');
-
-		} catch (Nette\Security\AuthenticationException $e) {
-			$form->addError($e->getMessage());
-		}
+		$form->setupBootstrap3Rendering();
+		return $form;
 	}
+
 
 
 	public function actionOut()

@@ -15,6 +15,7 @@ use Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby;
 use Nette;
+use Nette\Security\Passwords;
 
 
 
@@ -43,5 +44,37 @@ class EmailPassword extends Identity
 	 * @var boolean
 	 */
 	protected $invalid = FALSE;
+
+
+
+	public function __construct($email, $rawPassword)
+	{
+		$this->email = $email;
+		$this->hashPassword($rawPassword);
+	}
+
+
+
+	/**
+	 * @param string $rawPassword
+	 * @return bool
+	 */
+	public function verifyPassword($rawPassword)
+	{
+		$verified = Passwords::verify($rawPassword, $this->password);
+
+		if ($verified && Passwords::needsRehash($this->password)) {
+			$this->hashPassword($rawPassword);
+		}
+
+		return $verified;
+	}
+
+
+
+	private function hashPassword($rawPassword)
+	{
+		$this->password = Passwords::hash($rawPassword, ['cost' => 10]);
+	}
 
 }

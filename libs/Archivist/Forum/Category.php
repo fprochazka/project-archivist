@@ -44,4 +44,16 @@ class Category extends Kdyby\Doctrine\Entities\IdentifiedEntity
 	 */
 	protected $position = 0;
 
+	/**
+	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="children", cascade={"persist"})
+	 * @var Category
+	 */
+	protected $parent;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="Category", mappedBy="parent", cascade={"persist"})
+	 * @var Category[]
+	 */
+	protected $children;
+
 }
