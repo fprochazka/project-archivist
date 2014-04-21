@@ -57,6 +57,7 @@ class TopicsPresenter extends BasePresenter
 
 		$questions = $this->em->getDao(Question::class);
 		$qb = $questions->createQueryBuilder('q')
+			->andWhere('q.category = :category')->setParameter('category', $this->category->getId())
 			->orderBy('q.createdAt', 'DESC');
 
 		$this->template->topics = $qb->getQuery()->getResult();
@@ -82,7 +83,7 @@ class TopicsPresenter extends BasePresenter
 			->setAttribute('rows', 10)
 			->setRequired();
 
-	    $form->addSubmit("send", "Odeslat");
+	    $form->addSubmit("send", "Post question");
 		$form->onSuccess[] = function (BaseForm $form, $values) {
 			if (!$this->user->isLoggedIn()) {
 				$form->addError("Please login first before posting");

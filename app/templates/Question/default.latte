@@ -2,6 +2,7 @@
 
 <div class="page-header">
 	<h1 n:block=title>{$question->title}</h1>
+	<a n:href="Topics:, categoryId => $question->category->id">&laquo; {$question->category->name}</a>
 </div>
 
 <div class="panel panel-default panel-primary">
