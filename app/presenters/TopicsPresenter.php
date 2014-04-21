@@ -77,6 +77,7 @@ class TopicsPresenter extends BasePresenter
 	{
 		/** @var PostForm|SubmitButton[] $form */
 		$form = $factory->create();
+		$form->addTitle();
 		$form['send']->caption = "Post question";
 
 		$form->onSuccess[] = function (BaseForm $form, $values) {

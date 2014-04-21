@@ -197,8 +197,7 @@ class QuestionPresenter extends BasePresenter
 		$form['content']->setAttribute('rows', 25);
 
 		if ($this->editingPost->isQuestion()) {
-			$form->addComponent(new TextInput('Topic'), 'title', 'content');
-			$form['title']->setDefaultValue($this->editingPost->getTitle())->setRequired();
+			$form->addTitle($this->editingPost->getTitle());
 		}
 
 		/** @var QuestionPresenter|BaseForm[] $this */

@@ -14,6 +14,8 @@ use Archivist\Security\UserContext;
 use Archivist\UI\BaseForm;
 use Kdyby;
 use Nette;
+use Nette\Forms\Controls\BaseControl;
+use Nette\Forms\Controls\TextInput;
 
 
 
@@ -59,6 +61,19 @@ class PostForm extends BaseForm
 		};
 
 
+	}
+
+
+
+	/**
+	 * @param string $defaultValue
+	 * @return TextInput
+	 */
+	public function addTitle($defaultValue = NULL)
+	{
+		$this->addComponent($title = new TextInput('Topic'), 'title', 'content');
+		$title->setDefaultValue($defaultValue)->setRequired();
+		return $title;
 	}
 
 }
