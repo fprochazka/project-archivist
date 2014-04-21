@@ -10,6 +10,7 @@
 
 namespace Archivist\Users;
 
+use Archivist\Security\Role;
 use Archivist\Users\Identity\EmailPassword;
 use Kdyby;
 use Nette;

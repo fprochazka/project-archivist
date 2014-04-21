@@ -8,10 +8,10 @@
  * For the full copyright and license information, please view the file license.txt that was distributed with this source code.
  */
 
-namespace Archivist\Users;
+namespace Archivist\Security;
 
-use Doctrine;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine;
 use Kdyby;
 use Nette;
 

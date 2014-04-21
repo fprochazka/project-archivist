@@ -10,8 +10,9 @@
 
 namespace Archivist\Users;
 
-use Doctrine;
+use Archivist\Security\Role;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby;
 use Nette;
@@ -46,12 +47,12 @@ class User extends Kdyby\Doctrine\Entities\IdentifiedEntity
 	protected $identities;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Role", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="\Archivist\Security\Role", cascade={"persist"})
 	 * @ORM\JoinTable(name="user_roles",
 	 *        joinColumns={@ORM\JoinColumn(name="user_id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="role")}
 	 *    )
-	 * @var Role[]|ArrayCollection
+	 * @var \Archivist\Security\Role[]|ArrayCollection
 	 */
 	protected $roles;
 
