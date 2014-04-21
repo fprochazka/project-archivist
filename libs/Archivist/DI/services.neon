@@ -1,5 +1,5 @@
 services:
-	- App\RouterFactory
+	- App\RouterFactory(%productionMode%)
 	router: @App\RouterFactory::createRouter
 
 	user: {class: Archivist\Security\UserContext()}
