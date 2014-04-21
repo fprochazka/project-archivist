@@ -47,6 +47,14 @@ html.js .jshidden {
 	padding-right: 3px;
 }
 
+.forum-post .panel-footer {
+	background-color: #faeeee;
+}
+
+.forum-post.panel-primary .panel-footer {
+	background-color: #f6f1fa;
+}
+
 
 
 /* Sticky footer styles
