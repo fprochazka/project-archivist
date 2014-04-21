@@ -68,6 +68,18 @@ abstract class Post extends Kdyby\Doctrine\Entities\IdentifiedEntity
 	 */
 	private $editedAt;
 
+	/**
+	 * @ORM\Column(type="boolean", nullable=FALSE, options={"default":"0"})
+	 * @var boolean
+	 */
+	protected $deleted = FALSE;
+
+	/**
+	 * @ORM\Column(type="boolean", nullable=FALSE, options={"default":"0"})
+	 * @var boolean
+	 */
+	protected $spam = FALSE;
+
 
 
 	public function __construct($content)

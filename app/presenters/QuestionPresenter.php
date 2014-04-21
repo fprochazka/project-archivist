@@ -39,7 +39,10 @@ class QuestionPresenter extends BasePresenter
 	public function actionDefault($questionId)
 	{
 		if (!$this->question = $this->em->getDao(Question::class)->find($questionId)) {
-			$this->error();
+			$this->error("Topic not found");
+
+		} elseif ($this->question->deleted || $this->question->spam) {
+			$this->error("Topic was deleted");
 		}
 	}
 
@@ -55,6 +58,7 @@ class QuestionPresenter extends BasePresenter
 			->innerJoin('i.user', 'u')->addSelect('u')
 			->innerJoin('a.category', 'c')->addSelect('c')
 			->andWhere('a.question = :question')->setParameter('question', $this->question->getId())
+			->andWhere('a.deleted = FALSE AND a.spam = FALSE')
 			->orderBy('a.createdAt', 'ASC');
 
 		$this->template->answers = $qb->getQuery()->getResult();
