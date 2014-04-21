@@ -35,13 +35,14 @@
 		"nette/utils": "~2.2@rc",
 		"tracy/tracy": "~2.2@rc",
 
+		"texy/texy": "~2.4",
+
 		"janmarek/webloader": "@dev",
 		"kdyby/doctrine": "@dev",
 		"kdyby/events": "~2.0@dev",
 		"kdyby/console": "~2.0@dev",
 		"kdyby/translation": "~2.0@dev",
 		"kdyby/autowired": "~1.0@dev",
-		"texy/texy": "dev-master",
 		"majkl578/nette-identity-doctrine": "@dev"
 	},
 	"minimum-stability": "rc",
