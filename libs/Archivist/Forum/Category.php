@@ -39,6 +39,12 @@ class Category extends Kdyby\Doctrine\Entities\IdentifiedEntity
 	protected $posts;
 
 	/**
+	 * @ORM\Column(type="string", nullable=TRUE)
+	 * @var string
+	 */
+	protected $url;
+
+	/**
 	 * @ORM\Column(type="smallint", nullable=FALSE)
 	 * @var integer
 	 */

@@ -6,9 +6,6 @@ use Archivist\Forum\Category;
 use Nette;
 
 
-/**
- * Homepage presenter.
- */
 class CategoriesPresenter extends BasePresenter
 {
 

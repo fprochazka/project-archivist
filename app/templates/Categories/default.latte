@@ -1,2 +1,31 @@
 {block content}
-dsads
+
+<div class="page-header">
+	<h1 n:block=title>Support Forum</h1>
+</div>
+
+{foreach $categories as $category}
+
+
+
+<div class="panel panel-default category">
+	<div class="panel-heading">
+		<h3 class="panel-title">{$category->name}</h3>
+	</div>
+	<div class="panel-body">
+
+		<table class="table">
+			<tr n:foreach="$category->children as $child">
+				<td n:if="!$child->url">
+					<a n:href="Topics:, categoryId => $child->id">{$child->name}</a>
+				</td>
+				<td n:if="$child->url">
+					<a href="{$child->url}" target="_blank">{$child->name}</a>
+				</td>
+			</tr>
+		</table>
+
+	</div>
+</div>
+
+{/foreach}

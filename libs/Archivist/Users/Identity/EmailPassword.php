@@ -34,7 +34,7 @@ class EmailPassword extends Identity
 	protected $email;
 
 	/**
-	 * @ORM\Column(type="string", nullable=TRUE)
+	 * @ORM\Column(type="string", length=60, nullable=TRUE)
 	 * @var string
 	 */
 	protected $password;
