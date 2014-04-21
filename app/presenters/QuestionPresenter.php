@@ -166,6 +166,12 @@ class QuestionPresenter extends BasePresenter
 		$this->editingPost->deleted = TRUE;
 		$this->em->flush();
 
+		if ($this->editingPost->isQuestion()) {
+			$this->flashMessage("Topic '" . $this->editingPost->getTitle() . "' was deleted.");
+			$this->redirect('Topics:', ['categoryId' => $this->editingPost->category->getId()]);
+		}
+
+		$this->flashMessage("Post was deleted.");
 		$this->redirect('this', ['postId' => NULL]);
 	}
 
