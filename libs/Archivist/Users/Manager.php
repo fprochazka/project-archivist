@@ -62,12 +62,15 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 	 */
 	public function registerWithPassword($email, $password)
 	{
+		if ($this->users->findOneBy(['email' => $email]) || $this->passwordIdentities->findOneBy(['email' => $email])) {
+			throw new EmailAlreadyTakenException();
+		}
+
 		$user = new User($email);
 		$user->addIdentity($identity = new EmailPassword($email, $password));
 		$user->addRole($this->roles->find(Role::USER));
 
-		$this->users->add($user);
-		$this->em->flush();
+		$this->em->persist($user)->flush();
 
 		return $identity;
 	}

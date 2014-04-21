@@ -70,6 +70,8 @@ class BaseForm extends \Nette\Application\UI\Form
 		$renderer->wrappers['label']['container'] = 'div class="col-sm-3 control-label"';
 		$renderer->wrappers['control']['description'] = 'span class=help-block';
 		$renderer->wrappers['control']['errorcontainer'] = 'span class=help-block';
+		$renderer->wrappers['error']['container'] = 'div';
+		$renderer->wrappers['error']['item'] = 'div class="alert alert-danger"';
 
 		// make form and controls compatible with Twitter Bootstrap
 		$this->getElementPrototype()->class('form-horizontal');

@@ -22,7 +22,9 @@ use Nette;
  * @author Filip Procházka <filip@prochazka.su>
  *
  * @ORM\Entity()
- * @ORM\Table(name="user_identities")
+ * @ORM\Table(name="user_identities", uniqueConstraints={
+ * 		@ORM\UniqueConstraint(columns={"email"})
+ * })
  *
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string", length=10)
@@ -39,6 +41,7 @@ abstract class Identity extends Kdyby\Doctrine\Entities\IdentifiedEntity impleme
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Archivist\Users\User", inversedBy="identities", cascade={"persist"})
+	 * @ORM\JoinColumn(nullable=FALSE)
 	 * @var User
 	 */
 	private $user;

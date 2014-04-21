@@ -44,12 +44,14 @@ abstract class Post extends Kdyby\Doctrine\Entities\IdentifiedEntity
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="posts", cascade={"persist"})
+	 * @ORM\JoinColumn(nullable=FALSE)
 	 * @var Category
 	 */
 	protected $category;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="\Archivist\Users\Identity", inversedBy="posts", cascade={"persist"})
+	 * @ORM\JoinColumn(nullable=FALSE)
 	 * @var \Archivist\Users\Identity
 	 */
 	private $author;

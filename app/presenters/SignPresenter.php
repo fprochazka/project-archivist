@@ -3,6 +3,7 @@
 namespace Archivist;
 
 use Archivist\UI\BaseForm;
+use Archivist\Users\EmailAlreadyTakenException;
 use Nette;
 
 
@@ -72,7 +73,14 @@ class SignPresenter extends BasePresenter
 
 	    $form->addSubmit("send", "Register");
 		$form->onSuccess[] = function (BaseForm $form, $values) {
-			$this->user->login($this->usersManager->registerWithPassword($values->email, $values->password));
+			try {
+				$this->user->login($this->usersManager->registerWithPassword($values->email, $values->password));
+
+			} catch (EmailAlreadyTakenException $e) {
+				$form->addError("Account with this email already exists");
+				return;
+			}
+
 			$this->redirect('Categories:');
 		};
 

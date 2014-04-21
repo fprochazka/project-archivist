@@ -69,6 +69,7 @@ class Question extends Post
 	{
 		$this->answers[] = $answer;
 		$answer->question = $this;
+		$answer->category = $this->category;
 	}
 
 }
