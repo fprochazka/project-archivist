@@ -38,8 +38,8 @@ annotations:
 
 doctrine:
 	user: root
-	password:
 	dbname: archivist
+	namingStrategy: Doctrine\ORM\Mapping\UnderscoreNamingStrategy
 
 
 includes:

@@ -18,7 +18,7 @@ use Nette;
 /**
  * @author Filip Procházka <filip@prochazka.su>
  */
-class ArchivistExtension extends Nette\DI\CompilerExtension
+class ArchivistExtension extends Nette\DI\CompilerExtension implements Kdyby\Doctrine\DI\IEntityProvider
 {
 
 	public function loadConfiguration()
@@ -28,6 +28,20 @@ class ArchivistExtension extends Nette\DI\CompilerExtension
 
 		$res = $this->loadFromFile(__DIR__ . '/services.neon');
 		$this->compiler->parseServices($builder, $res);
+	}
+
+
+
+	/**
+	 * Returns associative array of Namespace => mapping definition
+	 *
+	 * @return array
+	 */
+	public function getEntityMappings()
+	{
+		return [
+			'Archivist' => __DIR__ . '/..',
+		];
 	}
 
 }
