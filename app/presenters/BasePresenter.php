@@ -69,6 +69,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	{
 		parent::beforeRender();
 		$this->template->productionMode = !$this->serviceLocator->expand('%debugMode%');
+		$this->template->analytics = $this->serviceLocator->expand('%googleAnalytics%');
 	}
 
 }

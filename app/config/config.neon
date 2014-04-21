@@ -5,6 +5,7 @@
 # http://nette.org/security-warning
 #
 parameters:
+	googleAnalytics: {}
 
 
 php:
