@@ -93,6 +93,8 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 			throw new Nette\Security\AuthenticationException("User not found", self::INVALID_CREDENTIAL);
 		}
 
+		$this->em->flush(); // save new password if it was regenerated
+
 		return $identity;
 	}
 
