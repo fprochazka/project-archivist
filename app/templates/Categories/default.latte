@@ -21,9 +21,10 @@
 				<td>
 					<a n:href="Topics:, categoryId => $child->c2_id">{$child->c2_name}</a>
 				</td>
-				<td n:inner-if="$child->l_id" class="text-right">
-					by {$child->l_author_name} at <a n:href="Question:, $child->l_id">{$child->l_createdAt|date:'j.n.Y G:i'}</a><br>
-					<a n:href="Question:, $child->l_id">{$child->l_title|truncate:90}</a>
+				<td n:inner-if="isset($lastQuestions[$child->c2_id])" class="text-right">
+					{var $question = $lastQuestions[$child->c2_id]}
+					by {$question->l_author_name} at <a n:href="Question:, $question->l_id">{$question->l_createdAt|date:'j.n.Y G:i'}</a><br>
+					<a n:href="Question:, $question->l_id">{$question->l_title|truncate:90}</a>
 				</td>
 				<td n:inner-if="!$child->c2_url" class="text-center">
 					<span class="label label-success">{$child['solved_count']}</span> / <span class="label label-primary">{$child['posts_count']}</span>
