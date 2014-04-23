@@ -43,6 +43,12 @@ class Category extends Kdyby\Doctrine\Entities\IdentifiedEntity
 	protected $posts;
 
 	/**
+	 * @ORM\ManyToOne(targetEntity="Question", cascade={"persist"})
+	 * @var Question
+	 */
+	protected $lastQuestion;
+
+	/**
 	 * @ORM\Column(type="string", nullable=TRUE)
 	 * @var string
 	 */

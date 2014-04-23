@@ -84,6 +84,10 @@ class QuestionPresenter extends BasePresenter
 			->orderBy('a.createdAt', 'ASC');
 
 		$this->template->answers = $qb->getQuery()->getResult();
+
+		if ($this->postId && !$this->isSignalReceiver($this)) {
+			$this->redirect('this', ['postId' => NULL]);
+		}
 	}
 
 
@@ -234,6 +238,12 @@ class QuestionPresenter extends BasePresenter
 		$this->editingPost->spam = TRUE;
 		$this->em->flush();
 
+		if ($this->editingPost->isQuestion()) {
+			$this->flashMessage("Topic '" . $this->editingPost->getTitle() . "' was marked as spam.", 'danger');
+			$this->redirect('Topics:', ['categoryId' => $this->editingPost->category->getId()]);
+		}
+
+		$this->flashMessage("Post was marked as spam.", 'danger');
 		$this->redirect('this', ['postId' => NULL]);
 	}
 

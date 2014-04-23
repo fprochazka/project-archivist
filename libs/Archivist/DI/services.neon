@@ -12,6 +12,7 @@ services:
 	- Archivist\Forum\PostContentRenderer("Help", "en", "")
 
 	- Archivist\Forum\Writer()
+	- Archivist\Forum\NewestQuestionListener()
 
 	# componnets
 	- Archivist\IPostFormFactory

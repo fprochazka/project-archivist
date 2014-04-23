@@ -25,6 +25,8 @@ use Nette;
  * @ORM\Entity()
  * @ORM\Table(name="forum_posts")
  *
+ * @ORM\EntityListeners({"Archivist\Forum\NewestQuestionListener"})
+ *
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string", length=10)
  * @ORM\DiscriminatorMap({
