@@ -24,6 +24,8 @@ use Nette;
  *
  * @ORM\Entity()
  * @ORM\Table(name="forum_category")
+ *
+ * @property string $url
  */
 class Category extends Kdyby\Doctrine\Entities\IdentifiedEntity
 {

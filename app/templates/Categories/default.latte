@@ -18,11 +18,8 @@
 			<col>
 			<col width="120">
 			<tr n:foreach="$children as $child">
-				<td n:if="!$child->c2_url">
+				<td>
 					<a n:href="Topics:, categoryId => $child->c2_id">{$child->c2_name}</a>
-				</td>
-				<td n:if="$child->c2_url">
-					<a href="{$child->c2_url}" target="_blank">{$child->c2_name}</a>
 				</td>
 				<td n:inner-if="$child->l_id" class="text-right">
 					by {$child->l_author_name} at <a n:href="Question:, $child->l_id">{$child->l_createdAt|date:'j.n.Y G:i'}</a><br>

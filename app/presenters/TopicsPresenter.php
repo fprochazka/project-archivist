@@ -47,6 +47,9 @@ class TopicsPresenter extends BasePresenter
 	{
 		if (!$this->category = $this->em->getDao(Category::class)->find($categoryId)) {
 			$this->error();
+
+		} elseif ($this->category->url) {
+			$this->redirectUrl($this->category->url);
 		}
 	}
 
