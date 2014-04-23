@@ -11,6 +11,8 @@
 namespace Archivist\Forum;
 
 use Doctrine;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby;
 use Nette;
@@ -34,7 +36,7 @@ class Category extends Kdyby\Doctrine\Entities\IdentifiedEntity
 
 	/**
 	 * @ORM\OneToMany(targetEntity="Post", mappedBy="category", cascade={"persist"})
-	 * @var Post
+	 * @var Post[]|ArrayCollection
 	 */
 	protected $posts;
 
@@ -58,8 +60,16 @@ class Category extends Kdyby\Doctrine\Entities\IdentifiedEntity
 
 	/**
 	 * @ORM\OneToMany(targetEntity="Category", mappedBy="parent", cascade={"persist"})
-	 * @var Category[]
+	 * @var Category[]|ArrayCollection
 	 */
 	protected $children;
+
+
+
+	public function __construct()
+	{
+		$this->posts = new ArrayCollection();
+		$this->children = new ArrayCollection();
+	}
 
 }
