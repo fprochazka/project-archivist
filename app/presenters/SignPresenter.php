@@ -30,7 +30,8 @@ class SignPresenter extends BasePresenter
 		$form = new BaseForm();
 
 		$form->addText('email', 'Email:')
-			->setRequired('Please enter your email.');
+			->setRequired('Please enter your email.')
+			->addRule($form::EMAIL);
 
 		$form->addPassword('password', 'Password:')
 			->setRequired('Please enter your password.');
@@ -68,7 +69,7 @@ class SignPresenter extends BasePresenter
 	protected function createComponentRegisterForm()
 	{
 		$form = new BaseForm();
-		$form->addText('email', 'Email:');
+		$form->addText('email', 'Email:')->addRule($form::EMAIL);
 		$form->addPassword('password', 'Password:');
 
 	    $form->addSubmit("send", "Register");
