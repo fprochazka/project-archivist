@@ -55,6 +55,10 @@ html.js .jshidden {
 	background-color: #faf4eb;
 }
 
+.forum-post .panel-body img {
+	padding-bottom: 10px;
+}
+
 
 
 /* Sticky footer styles
