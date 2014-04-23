@@ -20,9 +20,9 @@
 		<div class="text-right">
 			{if !$post->isQuestion() && $question->isAuthor($user->identity)}
 				{if $question->solution !== $post}
-					<a n:href="markResolved!, postId => $post->id"><span class="glyphicon glyphicon-check"></span>Vyřešeno</a>
+					<a n:href="markResolved!, postId => $post->id"><span class="glyphicon glyphicon-check"></span>Solved</a>
 				{else}
-					<a n:href="markNotResolved!, postId => $post->id"><span class="glyphicon glyphicon-unchecked"></span>Není vyřešeno</a>
+					<a n:href="markNotResolved!, postId => $post->id"><span class="glyphicon glyphicon-unchecked"></span>Not solved</a>
 				{/if}
 			{/if}
 			<a n:href="markAsSpam!, postId => $post->id" n:if="$user->isInRole(moderator)" onclick="return confirm('Really mark as spam?');"><span class="glyphicon glyphicon-trash"></span> Spam</a>
