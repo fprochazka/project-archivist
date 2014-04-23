@@ -72,4 +72,15 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		$this->template->analytics = $this->serviceLocator->expand('%googleAnalytics%');
 	}
 
+
+
+	/**
+	 * @param string $message
+	 * @throws \Nette\Application\ForbiddenRequestException
+	 */
+	public function notAllowed($message = NULL)
+	{
+		throw new Nette\Application\ForbiddenRequestException($message);
+	}
+
 }

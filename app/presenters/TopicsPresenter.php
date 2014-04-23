@@ -63,7 +63,8 @@ class TopicsPresenter extends BasePresenter
 			->innerJoin('q.category', 'c')->addSelect('c')
 			->andWhere('q.category = :category')->setParameter('category', $this->category->getId())
 			->andWhere('q.deleted = FALSE AND q.spam = FALSE')
-			->orderBy('q.createdAt', 'DESC');
+			->addSelect('FIELD(IsNull(q.solution), TRUE, FALSE) as HIDDEN hasSolution')->addOrderBy("hasSolution", 'ASC')
+			->addOrderBy('q.createdAt', 'DESC');
 
 		$this->template->topics = $qb->getQuery()->getResult();
 	}

@@ -7,7 +7,7 @@
 
 {block post}
 {default $post = $question}
-{default $panelType = $post->isQuestion() ? 'panel-primary' : ($post->isAuthor($question->author) ? 'panel-warning' : '')}
+{default $panelType = $post->isQuestion() ? 'panel-primary' : ($post === $question->solution ? 'panel-success' : ($post->isAuthor($question->author) ? 'panel-warning' : ''))}
 <div n:class="panel, panel-default, forum-post, $panelType">
 	<div class="panel-heading">
 		<strong class="pull-right text-right">{$post->createdAt|date:'j.n.Y G:i'}</strong>
@@ -18,6 +18,13 @@
 	</div>
 	<div class="panel-footer" n:if="$user->loggedIn && ($user->isInRole(moderator) || $post->isAuthor($user->identity))">
 		<div class="text-right">
+			{if !$post->isQuestion() && $question->isAuthor($user->identity)}
+				{if $question->solution !== $post}
+					<a n:href="markResolved!, postId => $post->id"><span class="glyphicon glyphicon-check"></span>Vyřešeno</a>
+				{else}
+					<a n:href="markNotResolved!, postId => $post->id"><span class="glyphicon glyphicon-unchecked"></span>Není vyřešeno</a>
+				{/if}
+			{/if}
 			<a n:href="markAsSpam!, postId => $post->id" n:if="$user->isInRole(moderator)" onclick="return confirm('Really mark as spam?');"><span class="glyphicon glyphicon-trash"></span> Spam</a>
 			<a n:href="delete!, postId => $post->id" n:if="$user->isInRole(moderator) || $post->isAuthor($user->identity)" onclick="return confirm('Really delete?');"><span class="glyphicon glyphicon-remove"></span> Delete</a>
 			<a n:href="edit, postId => $post->id" n:if="$user->isInRole(moderator) || $post->isAuthor($user->identity)"><span class="glyphicon glyphicon-pencil"></span> Edit</a>

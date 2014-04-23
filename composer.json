@@ -44,7 +44,9 @@
 		"kdyby/translation": "~2.0@dev",
 		"kdyby/autowired": "~1.0@dev",
 
-		"majkl578/nette-identity-doctrine": "@dev"
+		"majkl578/nette-identity-doctrine": "@dev",
+
+		"beberlei/DoctrineExtensions": "@dev"
 	},
 	"minimum-stability": "rc",
 	"require-dev": {

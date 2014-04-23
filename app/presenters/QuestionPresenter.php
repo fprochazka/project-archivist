@@ -142,7 +142,7 @@ class QuestionPresenter extends BasePresenter
 			$this->error("Collision");
 
 		} elseif (!($post->isAuthor($this->getUser()->getIdentity()) || $this->getUser()->isInRole(Role::MODERATOR))) {
-			throw new Nette\Application\ForbiddenRequestException();
+			$this->notAllowed();
 		}
 
 		return $this->editingPost = $post;
@@ -157,6 +157,54 @@ class QuestionPresenter extends BasePresenter
 
 
 
+	public function handleMarkResolved($postId)
+	{
+		/** @var Answer|Question $post */
+		if (!$post = $this->em->getDao(Post::class)->findOneBy(['id' => $postId])) {
+			$this->error("Post not found");
+
+		} elseif ($post->deleted || $post->spam) {
+			$this->error("Post was deleted");
+
+		} elseif (!$post->isAnswer()) {
+			$this->error("Not an answer");
+
+		} elseif ($post->getQuestion() !== $this->question || !$this->question->isAuthor($this->getUser()->getIdentity())) {
+			$this->notAllowed();
+		}
+
+		$this->question->solution = $post;
+		$this->em->flush();
+
+		$this->redirect('this', ['postId' => NULL]);
+	}
+
+
+
+	public function handleMarkNotResolved($postId)
+	{
+		/** @var Answer|Question $post */
+		if (!$post = $this->em->getDao(Post::class)->findOneBy(['id' => $postId])) {
+			$this->error("Post not found");
+
+		} elseif ($post->deleted || $post->spam) {
+			$this->error("Post was deleted");
+
+		} elseif (!$post->isAnswer()) {
+			$this->error("Not an answer");
+
+		} elseif ($post->getQuestion() !== $this->question || !$this->question->isAuthor($this->getUser()->getIdentity())) {
+			$this->notAllowed();
+		}
+
+		$this->question->solution = NULL;
+		$this->em->flush();
+
+		$this->redirect('this', ['postId' => NULL]);
+	}
+
+
+
 	public function handleDelete($postId)
 	{
 		if (!$this->actionEdit($postId)) {
@@ -167,11 +215,11 @@ class QuestionPresenter extends BasePresenter
 		$this->em->flush();
 
 		if ($this->editingPost->isQuestion()) {
-			$this->flashMessage("Topic '" . $this->editingPost->getTitle() . "' was deleted.");
+			$this->flashMessage("Topic '" . $this->editingPost->getTitle() . "' was deleted.", 'danger');
 			$this->redirect('Topics:', ['categoryId' => $this->editingPost->category->getId()]);
 		}
 
-		$this->flashMessage("Post was deleted.");
+		$this->flashMessage("Post was deleted.", 'danger');
 		$this->redirect('this', ['postId' => NULL]);
 	}
 

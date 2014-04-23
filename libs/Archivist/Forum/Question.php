@@ -32,6 +32,12 @@ class Question extends Post
 	private $title;
 
 	/**
+	 * @ORM\ManyToOne(targetEntity="Answer", cascade={"persist"})
+	 * @var Answer
+	 */
+	protected $solution;
+
+	/**
 	 * @ORM\OneToMany(targetEntity="Answer", mappedBy="question", cascade={"persist"}, fetch="EXTRA_LAZY")
 	 * @var Answer[]
 	 */

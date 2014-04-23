@@ -49,6 +49,10 @@ doctrine:
 	user: root
 	dbname: archivist
 	namingStrategy: Doctrine\ORM\Mapping\UnderscoreNamingStrategy
+	dql:
+		string:
+			isnull: Archivist\Doctrine\Dql\IsNull
+			field: DoctrineExtensions\Query\Mysql\Field
 
 
 includes:

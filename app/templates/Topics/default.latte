@@ -18,7 +18,7 @@
 			<col>
 			<col width="160">
 			<col width="120">
-			<tr n:foreach="$topics as $question">
+			<tr n:foreach="$topics as $question" n:class="$question->solution? success">
 				<td><a n:href="Question:, questionId => $question->id">{$question->title}</a></td>
 				<td class="text-right">{$question->author->name}</td>
 				<td class="text-right">{$question->createdAt|date:'j.n.Y G:i'}</td>
