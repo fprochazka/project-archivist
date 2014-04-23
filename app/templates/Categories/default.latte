@@ -28,7 +28,7 @@
 					by {$child->l_author_name} at <a n:href="Question:, $child->l_id">{$child->l_createdAt|date:'j.n.Y G:i'}</a><br>
 					<a n:href="Question:, $child->l_id">{$child->l_title|truncate:90}</a>
 				</td>
-				<td class="text-center">
+				<td n:inner-if="!$child->c2_url" class="text-center">
 					<span class="label label-success">{$child['solved_count']}</span> / <span class="label label-primary">{$child['posts_count']}</span>
 				</td>
 			</tr>
