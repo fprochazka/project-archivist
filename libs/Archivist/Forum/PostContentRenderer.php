@@ -25,6 +25,7 @@ class PostContentRenderer extends Converter
 	public function createTexy()
 	{
 		$texy = parent::createTexy();
+		$texy->headingModule->top = 2;
 
 		$texy->registerBlockPattern(
 			array($texy->blockModule, 'pattern'),
