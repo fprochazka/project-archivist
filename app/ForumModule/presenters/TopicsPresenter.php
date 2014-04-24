@@ -1,6 +1,6 @@
 <?php
 
-namespace Archivist;
+namespace Archivist\ForumModule;
 
 use Archivist\Forum\Category;
 use Archivist\Forum\Question;
@@ -75,6 +75,7 @@ class TopicsPresenter extends BasePresenter
 
 
 	/**
+	 * @param IPostFormFactory $factory
 	 * @return BaseForm
 	 */
 	protected function createComponentCreateTopicForm(IPostFormFactory $factory)

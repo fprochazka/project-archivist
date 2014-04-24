@@ -35,7 +35,8 @@ class RouterFactory
 		$router = new RouteList();
 		$flags = $this->productionMode ? Route::SECURED : 0;
 
-		$router[] = new Route('<presenter>/<action>', 'Categories:default', $flags);
+		$router[] = new Route('login/<action=in>', ['presenter' => 'Sign'], $flags);
+		$router[] = new Route('<presenter=Categories>/<action=default>', ['module' => 'Forum'], $flags);
 
 		return $router;
 	}

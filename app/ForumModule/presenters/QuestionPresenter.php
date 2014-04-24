@@ -1,19 +1,14 @@
 <?php
 
-namespace Archivist;
+namespace Archivist\ForumModule;
 
 use Archivist\Forum\Answer;
 use Archivist\Forum\ModificationsNotAllowedException;
-use Archivist\Forum\Post;
 use Archivist\Forum\PostIsNotReadableException;
-use Archivist\Forum\PostQuestionCollisionException;
 use Archivist\Forum\Question;
-use Archivist\Forum\Reader;
-use Archivist\Security\Role;
 use Archivist\UI\BaseForm;
 use Nette;
 use Nette\Forms\Controls\SubmitButton;
-use Nette\Forms\Controls\TextInput;
 
 
 

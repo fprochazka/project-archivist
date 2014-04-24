@@ -1,10 +1,9 @@
 <?php
 
-namespace Archivist;
+namespace Archivist\ForumModule;
 
 use Archivist\Forum\Category;
 use Archivist\Forum\Question;
-use Doctrine\ORM\Query\Expr\Join;
 use Nette;
 
 

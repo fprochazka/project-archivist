@@ -50,7 +50,7 @@ class SignPresenter extends BasePresenter
 
 			try {
 				$this->getUser()->login($values->email, $values->password);
-				$this->redirect('Categories:');
+				$this->redirect(':Forum:Categories:');
 
 			} catch (Nette\Security\AuthenticationException $e) {
 				$form->addError($e->getMessage());
@@ -82,7 +82,7 @@ class SignPresenter extends BasePresenter
 				return;
 			}
 
-			$this->redirect('Categories:');
+			$this->redirect(':Forum:Categories:');
 		};
 
 		$form->setupBootstrap3Rendering();

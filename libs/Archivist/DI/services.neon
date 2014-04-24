@@ -16,4 +16,4 @@ services:
 	- Archivist\Forum\NewestQuestionListener()
 
 	# componnets
-	- Archivist\IPostFormFactory
+	- Archivist\ForumModule\IPostFormFactory
