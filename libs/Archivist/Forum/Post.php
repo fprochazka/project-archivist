@@ -59,6 +59,12 @@ abstract class Post extends Kdyby\Doctrine\Entities\IdentifiedEntity
 	private $author;
 
 	/**
+	 * @ORM\ManyToOne(targetEntity="\Archivist\Users\User", inversedBy="posts", cascade={"persist"})
+	 * @var \Archivist\Users\User
+	 */
+	private $user;
+
+	/**
 	 * @ORM\Column(type="datetime", nullable=FALSE)
 	 * @var \DateTime
 	 */
@@ -117,6 +123,7 @@ abstract class Post extends Kdyby\Doctrine\Entities\IdentifiedEntity
 		}
 
 		$this->author = $author;
+		$this->user = $author->getUser();
 	}
 
 
@@ -153,8 +160,15 @@ abstract class Post extends Kdyby\Doctrine\Entities\IdentifiedEntity
 
 	public function isAuthor(Identity $identity = NULL)
 	{
-		// todo: check other user identities
-		return $this->author === $identity;
+		if ($this->author === $identity) {
+			return TRUE;
+		}
+
+		if ($this->user === NULL) {
+			$this->user = $this->author->getUser();
+		}
+
+		return $this->user === $identity->getUser();
 	}
 
 
