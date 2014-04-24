@@ -3,8 +3,12 @@
 namespace Archivist;
 
 use Archivist\Forum\Answer;
+use Archivist\Forum\ModificationsNotAllowedException;
 use Archivist\Forum\Post;
+use Archivist\Forum\PostIsNotReadableException;
+use Archivist\Forum\PostQuestionCollisionException;
 use Archivist\Forum\Question;
+use Archivist\Forum\Reader;
 use Archivist\Security\Role;
 use Archivist\UI\BaseForm;
 use Nette;
@@ -48,17 +52,25 @@ class QuestionPresenter extends BasePresenter
 	 */
 	protected $writer;
 
+	/**
+	 * @var \Archivist\Forum\Reader
+	 * @autowire
+	 */
+	protected $reader;
+
 
 
 	protected function startup()
 	{
 		parent::startup();
 
-		if (!$this->question = $this->em->getDao(Question::class)->find($this->questionId)) {
-			$this->error("Topic not found");
+		try {
+			if (!$this->question = $this->reader->readQuestion($this->questionId)) {
+				$this->error("Topic not found");
+			}
 
-		} elseif ($this->question->deleted || $this->question->spam) {
-			$this->error("Topic was deleted");
+		} catch (PostIsNotReadableException $e) {
+			$this->error($e->getMessage());
 		}
 	}
 
@@ -74,16 +86,7 @@ class QuestionPresenter extends BasePresenter
 
 	public function renderDefault($questionId)
 	{
-		$answers = $this->em->getDao(Answer::class);
-		$qb = $answers->createQueryBuilder('a')
-			->innerJoin('a.author', 'i')->addSelect('i')
-			->innerJoin('i.user', 'u')->addSelect('u')
-			->innerJoin('a.category', 'c')->addSelect('c')
-			->andWhere('a.question = :question')->setParameter('question', $this->question->getId())
-			->andWhere('a.deleted = FALSE AND a.spam = FALSE')
-			->orderBy('a.createdAt', 'ASC');
-
-		$this->template->answers = $qb->getQuery()->getResult();
+		$this->template->answers = $this->reader->readAnswers($this->question);
 
 		if ($this->postId && !$this->isSignalReceiver($this)) {
 			$this->redirect('this', ['postId' => NULL]);
@@ -109,18 +112,17 @@ class QuestionPresenter extends BasePresenter
 
 		$form->addSubmit("send", "Post answer");
 		$form->onSuccess[] = function (BaseForm $form, $values) {
+			if (!$this->question) {
+				$this->error();
+			}
+
 			if (!$this->user->isLoggedIn()) {
 				$form->addError("Please login first before posting");
 				return;
 			}
 
-			if (!$this->question) {
-				$this->error();
-			}
-
 			$identity = $this->getUser()->getIdentity();
-			$user = $identity->getUser();
-			$user->name = $values->username;
+			$identity->getUser()->name = $values->username;
 
 			$this->writer->answerQuestion(new Answer($values->content), $this->question);
 
@@ -135,21 +137,19 @@ class QuestionPresenter extends BasePresenter
 
 	public function actionEdit($postId)
 	{
-		/** @var Answer|Question $post */
-		if (!$post = $this->em->getDao(Post::class)->findOneBy(['id' => $postId])) {
-			$this->error("Post not found");
+		try {
+			if (!$this->editingPost = $this->reader->readForModification($postId)) {
+				$this->error("Post not found");
+			}
 
-		} elseif ($post->deleted || $post->spam) {
-			$this->error("Post was deleted");
+		} catch (PostIsNotReadableException $e) {
+			$this->error($e->getMessage());
 
-		} elseif ($post->isAnswer() && $post->getQuestion() !== $this->question) {
-			$this->error("Collision");
-
-		} elseif (!($post->isAuthor($this->getUser()->getIdentity()) || $this->getUser()->isInRole(Role::MODERATOR))) {
-			$this->notAllowed();
+		} catch (ModificationsNotAllowedException $e) {
+			$this->error($e->getMessage());
 		}
 
-		return $this->editingPost = $post;
+		return $this->editingPost;
 	}
 
 
@@ -161,48 +161,19 @@ class QuestionPresenter extends BasePresenter
 
 
 
-	public function handleMarkResolved($postId)
+	public function handleToggleResolved($postId)
 	{
-		/** @var Answer|Question $post */
-		if (!$post = $this->em->getDao(Post::class)->findOneBy(['id' => $postId])) {
-			$this->error("Post not found");
+		try {
+			if (!$answer = $this->reader->readAnswer($postId, $this->question)) {
+				$this->error("Post not found");
+			}
 
-		} elseif ($post->deleted || $post->spam) {
-			$this->error("Post was deleted");
+			$this->writer->toggleResolvedBy($this->question, $answer);
+			$this->em->flush();
 
-		} elseif (!$post->isAnswer()) {
-			$this->error("Not an answer");
-
-		} elseif ($post->getQuestion() !== $this->question || !$this->question->isAuthor($this->getUser()->getIdentity())) {
-			$this->notAllowed();
+		} catch (PostIsNotReadableException $e) {
+			$this->error($e->getMessage());
 		}
-
-		$this->question->solution = $post;
-		$this->em->flush();
-
-		$this->redirect('this', ['postId' => NULL]);
-	}
-
-
-
-	public function handleMarkNotResolved($postId)
-	{
-		/** @var Answer|Question $post */
-		if (!$post = $this->em->getDao(Post::class)->findOneBy(['id' => $postId])) {
-			$this->error("Post not found");
-
-		} elseif ($post->deleted || $post->spam) {
-			$this->error("Post was deleted");
-
-		} elseif (!$post->isAnswer()) {
-			$this->error("Not an answer");
-
-		} elseif ($post->getQuestion() !== $this->question || !$this->question->isAuthor($this->getUser()->getIdentity())) {
-			$this->notAllowed();
-		}
-
-		$this->question->solution = NULL;
-		$this->em->flush();
 
 		$this->redirect('this', ['postId' => NULL]);
 	}

@@ -19,11 +19,13 @@
 	<div class="panel-footer" n:if="$user->loggedIn && ($user->isInRole(moderator) || $post->isAuthor($user->identity))">
 		<div class="text-right">
 			{if !$post->isQuestion() && $question->isAuthor($user->identity)}
-				{if $question->solution !== $post}
-					<a n:href="markResolved!, postId => $post->id"><span class="glyphicon glyphicon-check"></span>Solved</a>
-				{else}
-					<a n:href="markNotResolved!, postId => $post->id"><span class="glyphicon glyphicon-unchecked"></span>Not solved</a>
-				{/if}
+				<a n:href="toggleResolved!, postId => $post->id"><span n:class="glyphicon, $question->solution !== $post? glyphicon-check : glyphicon-unchecked"></span>
+					{if $question->solution !== $post}
+						Solved
+					{else}
+						Not solved
+					{/if}
+				</a>
 			{/if}
 			<a n:href="markAsSpam!, postId => $post->id" n:if="$user->isInRole(moderator)" onclick="return confirm('Really mark as spam?');"><span class="glyphicon glyphicon-trash"></span> Spam</a>
 			<a n:href="delete!, postId => $post->id" n:if="$user->isInRole(moderator) || $post->isAuthor($user->identity)" onclick="return confirm('Really delete?');"><span class="glyphicon glyphicon-remove"></span> Delete</a>

@@ -78,4 +78,20 @@ class Question extends Post
 		$answer->category = $this->category;
 	}
 
+
+
+	/**
+	 * @param Answer $solution
+	 * @return Question
+	 */
+	public function setSolution(Answer $solution = NULL)
+	{
+		if ($solution->deleted || $solution->spam) {
+			throw new PostIsNotReadableException;
+		}
+
+		$this->solution = $solution;
+		return $this;
+	}
+
 }

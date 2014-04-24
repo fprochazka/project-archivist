@@ -56,10 +56,8 @@ class PostForm extends BaseForm
 
 		$this->onSuccess[] = function (PostForm $form, $values) {
 			$identity = $this->user->getIdentity();
-			$user = $identity->getUser();
-			$user->name = $values->username;
+			$identity->getUser()->name = $values->username;
 		};
-
 
 	}
 

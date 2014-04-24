@@ -11,6 +11,7 @@ services:
 			- addFilter(NULL, Archivist\UI\TemplateHelpers::register(@self))
 	- Archivist\Forum\PostContentRenderer("Help", "en", "")
 
+	- Archivist\Forum\Reader()
 	- Archivist\Forum\Writer()
 	- Archivist\Forum\NewestQuestionListener()
 

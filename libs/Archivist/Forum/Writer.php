@@ -10,6 +10,7 @@
 
 namespace Archivist\Forum;
 
+use Archivist\Security\Role;
 use Archivist\Security\UserContext;
 use Kdyby;
 use Nette;
@@ -62,6 +63,29 @@ class Writer extends Nette\Object
 		$this->em->persist($answer)->flush();
 
 		return $answer;
+	}
+
+
+
+	/**
+	 * @param Question $question
+	 * @param Answer $answer
+	 * @return Question
+	 */
+	public function toggleResolvedBy(Question $question, Answer $answer)
+	{
+		if (!$question->isAuthor($this->user->getIdentity()) && !$this->user->isInRole(Role::MODERATOR)) {
+			throw new ModificationsNotAllowedException();
+		}
+
+		if ($question->solution === $answer) {
+			$question->solution = NULL;
+
+		} else {
+			$question->setSolution($answer);
+		}
+
+		return $question;
 	}
 
 }

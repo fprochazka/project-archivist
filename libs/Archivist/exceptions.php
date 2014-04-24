@@ -141,3 +141,8 @@ class StaticClassException extends \LogicException implements Exception
 {
 
 }
+
+class InsufficientPermissionsException extends \LogicException implements Exception
+{
+
+}

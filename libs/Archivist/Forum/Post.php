@@ -182,7 +182,8 @@ abstract class Post extends Kdyby\Doctrine\Entities\IdentifiedEntity
 
 	public function __toString()
 	{
-		return $this->id . '#' . ($this->editedAt ? $this->editedAt->format('YmdHis') : $this->createdAt->format('YmdHis'));
+		$type = $this->isQuestion() ? 'Question' : 'Answer';
+		return $type . ' ' . $this->id . '#' . ($this->editedAt ? $this->editedAt->format('YmdHis') : $this->createdAt->format('YmdHis'));
 	}
 
 }
