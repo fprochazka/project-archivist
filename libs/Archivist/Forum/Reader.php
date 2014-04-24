@@ -38,6 +38,11 @@ class Reader extends Nette\Object
 	/**
 	 * @var \Kdyby\Doctrine\EntityDao
 	 */
+	private $categories;
+
+	/**
+	 * @var \Kdyby\Doctrine\EntityDao
+	 */
 	private $posts;
 
 	/**
@@ -55,10 +60,49 @@ class Reader extends Nette\Object
 	public function __construct(EntityManager $em, UserContext $user)
 	{
 		$this->em = $em;
+		$this->categories = $em->getDao(Category::class);
 		$this->posts = $em->getDao(Post::class);
 		$this->questions = $em->getDao(Question::class);
 		$this->answers = $em->getDao(Answer::class);
 		$this->user = $user;
+	}
+
+
+
+	/**
+	 * @param int $categoryId
+	 * @return Category
+	 */
+	public function readCategory($categoryId)
+	{
+		if (!$categoryId || !($category = $this->categories->find($categoryId))) {
+			return NULL;
+		}
+
+		return $category;
+	}
+
+
+
+	/**
+	 * @param Category $category
+	 * @return \Kdyby\Doctrine\ResultSet
+	 */
+	public function readTopics(Category $category = NULL)
+	{
+		$qb = $this->questions->createQueryBuilder('q')
+			->innerJoin('q.author', 'i')->addSelect('i')
+			->innerJoin('i.user', 'u')->addSelect('u')
+			->innerJoin('q.category', 'c')->addSelect('c')
+			->andWhere('q.deleted = FALSE AND q.spam = FALSE')
+			->addSelect('FIELD(IsNull(q.solution), TRUE, FALSE) as HIDDEN hasSolution')
+			->addOrderBy('q.createdAt', 'DESC');
+
+		if ($category !== NULL) {
+			$qb->andWhere('q.category = :category')->setParameter('category', $category->getId());
+		}
+
+		return new ResultSet($qb->getQuery());
 	}
 
 

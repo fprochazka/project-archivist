@@ -24,28 +24,22 @@ class TopicsPresenter extends BasePresenter
 	private $category;
 
 	/**
-	 * @var \Kdyby\Doctrine\EntityManager
-	 * @autowire
-	 */
-	protected $em;
-
-	/**
 	 * @var \Archivist\Forum\Writer
 	 * @autowire
 	 */
 	protected $writer;
 
 	/**
-	 * @var \Archivist\Users\Manager
+	 * @var \Archivist\Forum\Reader
 	 * @autowire
 	 */
-	protected $users;
+	protected $reader;
 
 
 
 	public function actionDefault($categoryId)
 	{
-		if (!$this->category = $this->em->getDao(Category::class)->find($categoryId)) {
+		if (!$this->category = $this->reader->readCategory($categoryId)) {
 			$this->error();
 
 		} elseif ($this->category->url) {
@@ -58,18 +52,8 @@ class TopicsPresenter extends BasePresenter
 	public function renderDefault($categoryId)
 	{
 		$this->template->category = $this->category;
-
-		$questions = $this->em->getDao(Question::class);
-		$qb = $questions->createQueryBuilder('q')
-			->innerJoin('q.author', 'i')->addSelect('i')
-			->innerJoin('i.user', 'u')->addSelect('u')
-			->innerJoin('q.category', 'c')->addSelect('c')
-			->andWhere('q.category = :category')->setParameter('category', $this->category->getId())
-			->andWhere('q.deleted = FALSE AND q.spam = FALSE')
-			->addSelect('FIELD(IsNull(q.solution), TRUE, FALSE) as HIDDEN hasSolution')->addOrderBy("hasSolution", 'ASC')
-			->addOrderBy('q.createdAt', 'DESC');
-
-		$this->template->topics = $qb->getQuery()->getResult();
+		$this->template->topics = $this->reader->readTopics($this->category)
+			->applySorting('hasSolution ASC');
 	}
 
 
@@ -102,6 +86,5 @@ class TopicsPresenter extends BasePresenter
 		$form->setupBootstrap3Rendering();
 		return $form;
 	}
-
 
 }
