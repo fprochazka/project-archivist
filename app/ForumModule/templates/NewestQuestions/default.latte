@@ -1,0 +1,35 @@
+{block content}
+
+<div class="page-header">
+	<h1 n:block=title>
+		Newest questions
+	</h1>
+	<a n:href="Categories:">&laquo; All categories</a>
+</div>
+
+<div class="row topics">
+	<div class="col-sm-12">
+		{if}
+		<table class="table">
+			<col width="120">
+			<col>
+			<col width="160">
+			<tr n:foreach="$topics as $question" n:class="$question->solution? success">
+				<td class="text-right">{$question->createdAt|date:'j.n.Y G:i'}</td>
+				<td>
+					<a n:href="Question:, $question->id">{$question->title}</a>
+
+					<div class="text-right pull-right">
+						<a n:href="Topics:, $question->category->id">
+							{if $parentCategory = $question->category->parent}{$parentCategory->name}{else}{$question->category->name}{/if}
+						</a>
+					</div>
+				</td>
+				<td class="text-right">{$question->author->name}</td>
+			</tr>
+		</table>
+		{/if $iterations}
+
+		<div n:if="!$iterations">No open discussions</div>
+	</div>
+</div>
