@@ -26,8 +26,8 @@
 					<a n:href="Question:, $child->l_id">{$child->l_title|truncate:90}</a>
 				</td>
 				<td n:inner-if="!$child->c2_url" class="text-center">
-					<span title="Unresolved questions" n:class="label, $child['unsolved_count'] ? label-warning : label-success" data-toggle="tooltip" data-placement="top">{$child['unsolved_count']}</span> /
-					<span title="Total questions" class="label label-primary" data-toggle="tooltip" data-placement="top">{$child['posts_count']}</span>
+					<span title="Unresolved questions" n:class="label, $child['unsolved_count'] ? label-warning : label-success" data-toggle="tooltip" data-placement="left">{$child['unsolved_count']}</span><br>
+					<span title="Total questions" class="label label-primary" data-toggle="tooltip" data-placement="left">{$child['posts_count']}</span>
 				</td>
 			</tr>
 		</table>
