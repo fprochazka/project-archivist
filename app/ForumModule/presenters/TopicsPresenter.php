@@ -5,6 +5,7 @@ namespace Archivist\ForumModule;
 use Archivist\Forum\Category;
 use Archivist\Forum\Question;
 use Archivist\UI\BaseForm;
+use Archivist\VisualPaginator;
 use Nette;
 use Nette\Forms\Controls\SubmitButton;
 
@@ -51,9 +52,12 @@ class TopicsPresenter extends BasePresenter
 
 	public function renderDefault($categoryId)
 	{
+		/** @var TopicsPresenter|VisualPaginator[] $this */
+
 		$this->template->category = $this->category;
 		$this->template->topics = $this->reader->readTopics($this->category)
-			->applySorting('hasSolution ASC');
+			->applySorting('hasSolution ASC')
+			->applyPaginator($this['vp']->getPaginator());
 	}
 
 
@@ -85,6 +89,13 @@ class TopicsPresenter extends BasePresenter
 
 		$form->setupBootstrap3Rendering();
 		return $form;
+	}
+
+
+
+	protected function createComponentVp()
+	{
+		return new VisualPaginator(30);
 	}
 
 }

@@ -23,7 +23,10 @@ use Nette;
  * @author Filip Procházka <filip@prochazka.su>
  *
  * @ORM\Entity()
- * @ORM\Table(name="forum_posts")
+ * @ORM\Table(name="forum_posts", indexes={
+ * 		@ORM\Index(columns={"spam", "deleted", "type"}),
+ * 		@ORM\Index(columns={"deleted", "spam", "type"})
+ * })
  *
  * @ORM\EntityListeners({"Archivist\Forum\NewestQuestionListener"})
  *

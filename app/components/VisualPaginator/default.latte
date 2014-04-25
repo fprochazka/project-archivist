@@ -1,0 +1,19 @@
+
+<div class="text-center">
+	<ul class="pagination pagination-sm">
+		<li n:if="$showWords" n:class="$paginator->isFirst() ? disabled">
+			<a {if $paginator->isFirst()}href="javascript:;"{else}href="{link this page => $paginator->page - 1}"{/if}>&laquo; Předchozí</a>
+		</li>
+		{foreach $steps as $step}
+		<li n:class="$step == $paginator->page ? active">
+			<a {if $step == $paginator->page}href="javascript:;"{else}href="{link this page => $step}"{/if}>{$step}</a>
+		</li>
+		<li n:if="$iterator->nextValue > $step + 1" n:class="$iterator->nextValue > $step + 1 ? disabled">
+			<a href="javascript:;">…</a>
+		</li>
+		{/foreach}
+		<li n:if="$showWords" n:class="$paginator->isLast() ? disabled">
+			<a {if $paginator->isLast()}href="javascript:;" {else}href="{link this page => $paginator->page + 1}"{/if}>Další &raquo;</a>
+		</li>
+	</ul>
+</div>
