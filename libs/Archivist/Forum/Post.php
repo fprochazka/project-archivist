@@ -28,7 +28,10 @@ use Nette;
  * 		@ORM\Index(columns={"deleted", "spam", "type"})
  * })
  *
- * @ORM\EntityListeners({"Archivist\Forum\NewestQuestionListener"})
+ * @ORM\EntityListeners({
+ * 		"Archivist\Forum\Events\NewestQuestionListener",
+ * 		"Archivist\Forum\Events\LastPostListener"
+ * })
  *
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string", length=10)
@@ -83,13 +86,13 @@ abstract class Post extends Kdyby\Doctrine\Entities\IdentifiedEntity
 	 * @ORM\Column(type="boolean", nullable=FALSE, options={"default":"0"})
 	 * @var boolean
 	 */
-	protected $deleted = FALSE;
+	private $deleted = FALSE;
 
 	/**
 	 * @ORM\Column(type="boolean", nullable=FALSE, options={"default":"0"})
 	 * @var boolean
 	 */
-	protected $spam = FALSE;
+	private $spam = FALSE;
 
 
 
@@ -97,6 +100,50 @@ abstract class Post extends Kdyby\Doctrine\Entities\IdentifiedEntity
 	{
 		$this->content = $content;
 		$this->createdAt = new \DateTime();
+	}
+
+
+
+	/**
+	 * @return boolean
+	 */
+	public function isDeleted()
+	{
+		return $this->deleted;
+	}
+
+
+
+	/**
+	 * @param boolean $deleted
+	 * @return Post
+	 */
+	public function setDeleted($deleted)
+	{
+		$this->deleted = (bool) $deleted;
+		return $this;
+	}
+
+
+
+	/**
+	 * @return boolean
+	 */
+	public function isSpam()
+	{
+		return $this->spam;
+	}
+
+
+
+	/**
+	 * @param boolean $spam
+	 * @return Post
+	 */
+	public function setSpam($spam)
+	{
+		$this->spam = (bool) $spam;
+		return $this;
 	}
 
 

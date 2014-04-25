@@ -13,7 +13,8 @@ services:
 
 	- Archivist\Forum\Reader()
 	- Archivist\Forum\Writer()
-	- Archivist\Forum\NewestQuestionListener()
+	- Archivist\Forum\Events\NewestQuestionListener()
+	- Archivist\Forum\Events\LastPostListener()
 
 	# componnets
 	- Archivist\ForumModule\IPostFormFactory

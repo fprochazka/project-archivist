@@ -190,10 +190,10 @@ class Reader extends Nette\Object
 	 */
 	protected function assertReadable(Post $post)
 	{
-		if ($post->deleted) {
+		if ($post->isDeleted()) {
 			throw new PostIsNotReadableException("$post was deleted");
 
-		} elseif ($post->spam) {
+		} elseif ($post->isSpam()) {
 			throw new PostIsNotReadableException("$post is spam");
 		}
 	}

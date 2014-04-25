@@ -10,6 +10,7 @@
 
 namespace Archivist\Forum;
 
+use Archivist\InvalidArgumentException;
 use Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby;
@@ -41,7 +42,7 @@ class Question extends Post
 	 * @ORM\ManyToOne(targetEntity="Answer", cascade={"persist"})
 	 * @var Answer
 	 */
-	protected $lastPost;
+	private $lastPost;
 
 	/**
 	 * @ORM\OneToMany(targetEntity="Answer", mappedBy="question", cascade={"persist"}, fetch="EXTRA_LAZY")
@@ -92,11 +93,41 @@ class Question extends Post
 	 */
 	public function setSolution(Answer $solution = NULL)
 	{
-		if ($solution->deleted || $solution->spam) {
+		if ($solution->isDeleted() || $solution->isSpam()) {
 			throw new PostIsNotReadableException;
 		}
 
 		$this->solution = $solution;
+		return $this;
+	}
+
+
+
+	/**
+	 * @return Answer
+	 */
+	public function getLastPost()
+	{
+		if ($this->lastPost && ($this->lastPost->isDeleted() || $this->lastPost->isSpam())) {
+			$this->lastPost = NULL;
+		}
+
+		return $this->lastPost;
+	}
+
+
+
+	/**
+	 * @param Answer $lastPost
+	 * @return Question
+	 */
+	public function setLastPost(Answer $lastPost = NULL)
+	{
+		if ($lastPost && ($lastPost->getQuestion() !== $this || $lastPost->isSpam() || $lastPost->isDeleted())) {
+			throw new InvalidArgumentException;
+		}
+
+		$this->lastPost = $lastPost;
 		return $this;
 	}
 

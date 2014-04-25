@@ -192,7 +192,7 @@ class QuestionPresenter extends BasePresenter
 			$this->error();
 		}
 
-		$this->editingPost->deleted = TRUE;
+		$this->editingPost->setDeleted(TRUE);
 		$this->em->flush();
 
 		if ($this->editingPost->isQuestion()) {
@@ -212,7 +212,7 @@ class QuestionPresenter extends BasePresenter
 			$this->error();
 		}
 
-		$this->editingPost->spam = TRUE;
+		$this->editingPost->setSpam(TRUE);
 		$this->em->flush();
 
 		if ($this->editingPost->isQuestion()) {

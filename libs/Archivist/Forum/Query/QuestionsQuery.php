@@ -11,6 +11,7 @@
 namespace Archivist\Forum\Query;
 
 use Archivist\Forum\Category;
+use Doctrine\ORM\Query\Expr\Join;
 use Kdyby;
 use Kdyby\Persistence\Queryable;
 use Nette;
@@ -100,8 +101,8 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 		}
 
 		if ($this->with['lastPost']) {
-			$qb->addSelect('partial lp.{id}, partial lpa.{id}, partial lpau.{id, name}')
-				->leftJoin('q.lastPost', 'lp')
+			$qb->addSelect('partial lp.{id, createdAt}, partial lpa.{id}, partial lpau.{id, name}')
+				->leftJoin('q.lastPost', 'lp', Join::WITH, 'lp.spam = FALSE AND lp.deleted = FALSE')
 				->leftJoin('lp.author', 'lpa')
 				->leftJoin('lpa.user', 'lpau');
 		}

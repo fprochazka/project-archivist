@@ -8,8 +8,11 @@
  * For the full copyright and license information, please view the file license.txt that was distributed with this source code.
  */
 
-namespace Archivist\Forum;
+namespace Archivist\Forum\Events;
 
+use Archivist\Forum\Category;
+use Archivist\Forum\Post;
+use Archivist\Forum\Question;
 use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\NoResultException;
 use Kdyby;
@@ -37,6 +40,10 @@ class NewestQuestionListener extends Nette\Object
 
 
 
+	/**
+	 * @param Post|Question $post
+	 * @param PreFlushEventArgs $args
+	 */
 	public function preFlush(Post $post, PreFlushEventArgs $args)
 	{
 		if (!$post->isQuestion()) {
@@ -44,11 +51,12 @@ class NewestQuestionListener extends Nette\Object
 		}
 
 		$questions = $this->em->getDao(Question::class);
+		$UoW = $this->em->getUnitOfWork();
 
 		$category = $post->category;
 		$lastQuestion = $category->lastQuestion;
 
-		if ($post->deleted || $post->spam) {
+		if ($post->isDeleted() || $post->isSpam()) {
 			if ($category->lastQuestion !== $post) {
 				return;
 			}
@@ -68,12 +76,11 @@ class NewestQuestionListener extends Nette\Object
 				$category->lastQuestion = NULL;
 			}
 
-			return;
-		}
-
-		if (!$lastQuestion || $post->getCreatedAt() > $lastQuestion->getCreatedAt()) {
+		} elseif (!$lastQuestion || $post->getCreatedAt() > $lastQuestion->getCreatedAt()) {
 			$category->lastQuestion = $post;
 		}
+
+		$UoW->computeChangeSet($this->em->getClassMetadata(Category::class), $category);
 	}
 
 }
