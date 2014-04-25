@@ -68,6 +68,7 @@ class TopicsPresenter extends BasePresenter
 
 		/** @var TopicsPresenter|VisualPaginator[] $this */
 		$this->template->topics = $this->reader->fetch($query)
+			->setFetchJoinCollection(FALSE)
 			->applyPaginator($this['vp']->getPaginator());
 	}
 

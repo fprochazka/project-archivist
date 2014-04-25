@@ -91,8 +91,7 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 	protected function doCreateQuery(Kdyby\Persistence\Queryable $repository)
 	{
 		$qb = $this->createBasicDql($repository)
-			->addSelect('partial i.{id}, partial u.{id, name}')
-			->addSelect('FIELD(IsNull(q.solution), TRUE, FALSE) as HIDDEN hasSolution');
+			->addSelect('partial i.{id}, partial u.{id, name}');
 
 		if ($this->with['category']) {
 			$qb->addSelect('c, pc')
@@ -115,6 +114,11 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 
 		foreach ($this->orderBy as $by) {
 			list($sort, $order) = explode(' ', $by);
+
+			if ($sort === 'hasSolution') {
+				$qb->addSelect('FIELD(IsNull(q.solution), TRUE, FALSE) as HIDDEN hasSolution');
+			}
+
 			$qb->addOrderBy($sort, $order);
 		}
 

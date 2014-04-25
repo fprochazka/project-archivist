@@ -10,26 +10,24 @@
 <div class="row topics">
 	<div class="col-sm-12">
 		{if}
-		<table class="table">
-			<col width="120">
-			<col>
-			<col width="160">
-			<tr n:foreach="$topics as $question" n:class="$question->solution? success">
-				<td class="text-right">{$question->createdAt|date:'j.n.Y G:i'}</td>
-				<td>
-					<a n:href="Question:, $question->id">{$question->title}</a>
-
-					<div class="text-right pull-right">
-						<a n:href="Topics:, $question->category->id">
-							{if $parentCategory = $question->category->parent}{$parentCategory->name}{else}{$question->category->name}{/if}
-						</a>
-					</div>
-				</td>
-				<td class="text-right">{$question->author->name}</td>
-			</tr>
+		<table class="table table-hover">
+			{foreach $topics as $item}
+				{var $question = $item[0]}
+				<tr n:class="$question->solution? success">
+					<td class="text-right">
+						{if $parentCategory = $question->category->parent}{$parentCategory->name}<br>{/if}
+						<a n:href="Topics:, $question->category->id">{$question->category->name}</a>
+					</td>
+					<td class="title text-middle"><a n:href="Question:, questionId => $question->id">{$question->title}</a></td>
+					<td class="text-right">{$question->author->name}<br>at {$question->createdAt|date:'j.n.Y G:i'}</td>
+					<td class="text-center text-middle"><span class="label label-info" title="Answers in thread" data-toggle="tooltip" data-placement="top">{$item['answers_count']}</span></td>
+				</tr>
+			{/foreach}
 		</table>
 		{/if $iterations}
 
 		<div n:if="!$iterations">No open discussions</div>
 	</div>
 </div>
+
+{control vp}

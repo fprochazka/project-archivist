@@ -24,7 +24,6 @@
 				<th class="text-right">Author</th>
 			</tr>
 			{foreach $topics as $item}
-				{?bd($item)}
 				{var $question = $item[0]}
 				<tr n:class="$question->solution? success">
 					<td class="title text-middle"><a n:href="Question:, questionId => $question->id">{$question->title}</a></td>

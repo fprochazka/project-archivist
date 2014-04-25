@@ -102,29 +102,6 @@ class Reader extends Nette\Object
 
 
 	/**
-	 * @param Category $category
-	 * @return \Kdyby\Doctrine\ResultSet
-	 */
-	public function readTopics(Category $category = NULL)
-	{
-		$qb = $this->questions->createQueryBuilder('q')
-			->innerJoin('q.author', 'i')->addSelect('i')
-			->innerJoin('i.user', 'u')->addSelect('u')
-			->innerJoin('q.category', 'c')->addSelect('c')
-			->andWhere('q.deleted = FALSE AND q.spam = FALSE')
-			->addSelect('FIELD(IsNull(q.solution), TRUE, FALSE) as HIDDEN hasSolution')
-			->addOrderBy('q.createdAt', 'DESC');
-
-		if ($category !== NULL) {
-			$qb->andWhere('q.category = :category')->setParameter('category', $category->getId());
-		}
-
-		return new ResultSet($qb->getQuery());
-	}
-
-
-
-	/**
 	 * @param int $questionId
 	 * @throws PostIsNotReadableException
 	 * @return Question
