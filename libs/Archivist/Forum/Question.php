@@ -38,6 +38,12 @@ class Question extends Post
 	protected $solution;
 
 	/**
+	 * @ORM\ManyToOne(targetEntity="Answer", cascade={"persist"})
+	 * @var Answer
+	 */
+	protected $lastPost;
+
+	/**
 	 * @ORM\OneToMany(targetEntity="Answer", mappedBy="question", cascade={"persist"}, fetch="EXTRA_LAZY")
 	 * @var Answer[]
 	 */

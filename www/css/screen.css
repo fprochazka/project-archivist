@@ -27,6 +27,19 @@ html.js .jshidden {
 	border-top: 0;
 }
 
+table tr td.text-middle,
+table tr th.text-middle {
+	vertical-align: middle;
+}
+
+.topics td.title {
+	font-size: 130%;
+}
+
+.topics table tr th {
+	border-top: 0;
+}
+
 .category table {
 	margin-bottom: 0;
 }

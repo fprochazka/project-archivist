@@ -3,6 +3,7 @@
 namespace Archivist\ForumModule;
 
 use Archivist\Forum\Category;
+use Archivist\Forum\Query\QuestionsQuery;
 use Archivist\Forum\Question;
 use Archivist\UI\BaseForm;
 use Archivist\VisualPaginator;
@@ -50,14 +51,31 @@ class TopicsPresenter extends BasePresenter
 
 
 
+	protected function beforeRender()
+	{
+		parent::beforeRender();
+		$this->template->category = $this->category;
+	}
+
+
+
 	public function renderDefault($categoryId)
 	{
-		/** @var TopicsPresenter|VisualPaginator[] $this */
+		$query = (new QuestionsQuery($this->category))
+			->withAnswersCount()
+			->withLastPost()
+			->sortByHasSolution();
 
-		$this->template->category = $this->category;
-		$this->template->topics = $this->reader->readTopics($this->category)
-			->applySorting('hasSolution ASC', 'q.createdAt DESC', TRUE)
+		/** @var TopicsPresenter|VisualPaginator[] $this */
+		$this->template->topics = $this->reader->fetch($query)
 			->applyPaginator($this['vp']->getPaginator());
+	}
+
+
+
+	protected function createComponentVp()
+	{
+		return new VisualPaginator(30);
 	}
 
 
@@ -89,13 +107,6 @@ class TopicsPresenter extends BasePresenter
 
 		$form->setupBootstrap3Rendering();
 		return $form;
-	}
-
-
-
-	protected function createComponentVp()
-	{
-		return new VisualPaginator(30);
 	}
 
 }

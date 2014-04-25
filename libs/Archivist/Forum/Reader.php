@@ -10,6 +10,8 @@
 
 namespace Archivist\Forum;
 
+use Archivist\Forum\Query\QuestionsQuery;
+use Archivist\ForumModule\TopicsPresenter;
 use Archivist\Security\Role;
 use Archivist\Security\UserContext;
 use Kdyby;
@@ -65,6 +67,21 @@ class Reader extends Nette\Object
 		$this->questions = $em->getDao(Question::class);
 		$this->answers = $em->getDao(Answer::class);
 		$this->user = $user;
+	}
+
+
+
+	/**
+	 * @param Kdyby\Doctrine\QueryObject $query
+	 * @return ResultSet
+	 */
+	public function fetch(Kdyby\Doctrine\QueryObject $query)
+	{
+		if ($query instanceof QuestionsQuery) {
+			return $this->questions->fetch($query);
+		}
+
+		return $this->posts->fetch($query);
 	}
 
 

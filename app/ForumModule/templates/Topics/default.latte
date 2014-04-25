@@ -12,17 +12,27 @@
 </div>
 
 <div class="row topics">
-	<div class="col-sm-10 col-sm-offset-1">
+	<div class="col-sm-12">
 		{if}
-		<table class="table">
+		<table class="table table-hover">
 			<col>
-			<col width="160">
-			<col width="120">
-			<tr n:foreach="$topics as $question" n:class="$question->solution? success">
-				<td><a n:href="Question:, questionId => $question->id">{$question->title}</a></td>
-				<td class="text-right">{$question->author->name}</td>
-				<td class="text-right">{$question->createdAt|date:'j.n.Y G:i'}</td>
+			<col width="200">
+			<col width="200">
+			<tr>
+				<th></th>
+				<th class="text-right">Last post</th>
+				<th class="text-right">Author</th>
 			</tr>
+			{foreach $topics as $item}
+				{?bd($item)}
+				{var $question = $item[0]}
+				<tr n:class="$question->solution? success">
+					<td class="title text-middle"><a n:href="Question:, questionId => $question->id">{$question->title}</a></td>
+					<td class="text-right" n:inner-if="$last = $question->lastPost">{$last->author->name}<br>at {$last->createdAt|date:'j.n.Y G:i'}</td>
+					<td class="text-right">{$question->author->name}<br>at {$question->createdAt|date:'j.n.Y G:i'}</td>
+					<td class="text-center text-middle"><span class="label label-info" title="Answers in thread" data-toggle="tooltip" data-placement="top">{$item['answers_count']}</span></td>
+				</tr>
+			{/foreach}
 		</table>
 		{/if $iterations}
 
