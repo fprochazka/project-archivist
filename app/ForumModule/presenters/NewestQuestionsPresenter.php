@@ -29,7 +29,7 @@ class NewestQuestionsPresenter extends BasePresenter
 			->withAnswersCount()
 			->withCategory();
 
-		/** @var TopicsPresenter|VisualPaginator[] $this */
+		/** @var NewestQuestionsPresenter|VisualPaginator[] $this */
 		$this->template->topics = $this->reader->fetch($query)
 			->setFetchJoinCollection(FALSE)
 			->applyPaginator($this['vp']->getPaginator());

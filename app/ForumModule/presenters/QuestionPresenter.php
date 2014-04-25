@@ -7,6 +7,7 @@ use Archivist\Forum\ModificationsNotAllowedException;
 use Archivist\Forum\PostIsNotReadableException;
 use Archivist\Forum\Question;
 use Archivist\UI\BaseForm;
+use Archivist\VisualPaginator;
 use Nette;
 use Nette\Forms\Controls\SubmitButton;
 
@@ -81,11 +82,21 @@ class QuestionPresenter extends BasePresenter
 
 	public function renderDefault($questionId)
 	{
-		$this->template->answers = $this->reader->readAnswers($this->question);
+		/** @var QuestionPresenter|VisualPaginator[] $this */
+		$this->template->answers = $this->reader->readAnswers($this->question)
+			->setFetchJoinCollection(FALSE)
+			->applyPaginator($this['vp']->getPaginator());
 
 		if ($this->postId && !$this->isSignalReceiver($this)) {
 			$this->redirect('this', ['postId' => NULL]);
 		}
+	}
+
+
+
+	protected function createComponentVp()
+	{
+		return new VisualPaginator(50);
 	}
 
 

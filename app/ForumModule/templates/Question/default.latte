@@ -5,8 +5,7 @@
 	<a n:href="Topics:, categoryId => $question->category->id">&laquo; {$question->category->name}</a>
 </div>
 
-{block post}
-{default $post = $question}
+{define post}
 {default $panelType = $post->isQuestion() ? 'panel-primary' : ($post === $question->solution ? 'panel-success' : ($post->isAuthor($question->author) ? 'panel-warning' : ''))}
 <div n:class="panel, panel-default, forum-post, $panelType">
 	<div class="panel-heading">
@@ -33,11 +32,17 @@
 		</div>
 	</div>
 </div>
-{/block}
+{/define}
+
+{if $presenter['vp']->paginator->isFirst()}
+{include post, post => $question}
+{/if}
 
 {foreach $answers as $answer}
 	{include post, post => $answer}
 {/foreach}
+
+{control vp}
 
 <hr>
 
