@@ -56,7 +56,7 @@ class TopicsPresenter extends BasePresenter
 
 		$this->template->category = $this->category;
 		$this->template->topics = $this->reader->readTopics($this->category)
-			->applySorting('hasSolution ASC')
+			->applySorting('hasSolution ASC', 'q.createdAt DESC', TRUE)
 			->applyPaginator($this['vp']->getPaginator());
 	}
 

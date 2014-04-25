@@ -584,12 +584,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/janmarek/WebLoader.git",
-                "reference": "e2127fc5d6de9426c4a9e8eaa0e9fbdaa9b01d31"
+                "reference": "0b84d6c57a998b8e8893a09f61469b3fa21d3608"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/janmarek/WebLoader/zipball/e2127fc5d6de9426c4a9e8eaa0e9fbdaa9b01d31",
-                "reference": "e2127fc5d6de9426c4a9e8eaa0e9fbdaa9b01d31",
+                "url": "https://api.github.com/repos/janmarek/WebLoader/zipball/0b84d6c57a998b8e8893a09f61469b3fa21d3608",
+                "reference": "0b84d6c57a998b8e8893a09f61469b3fa21d3608",
                 "shasum": ""
             },
             "require": {
@@ -629,7 +629,7 @@
                 "nette",
                 "webloader"
             ],
-            "time": "2014-04-21 14:33:57"
+            "time": "2014-04-23 12:20:10"
         },
         {
             "name": "jantvrdik/nette-doc-converter",
@@ -866,12 +866,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Doctrine.git",
-                "reference": "552c7b0f51c3b050fdcc54b27536fe99642cd1d7"
+                "reference": "fcf8b20c8b81db5846aa2c74cea8cb6dc57826c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Doctrine/zipball/552c7b0f51c3b050fdcc54b27536fe99642cd1d7",
-                "reference": "552c7b0f51c3b050fdcc54b27536fe99642cd1d7",
+                "url": "https://api.github.com/repos/Kdyby/Doctrine/zipball/fcf8b20c8b81db5846aa2c74cea8cb6dc57826c9",
+                "reference": "fcf8b20c8b81db5846aa2c74cea8cb6dc57826c9",
                 "shasum": ""
             },
             "require": {
@@ -924,7 +924,7 @@
                 "nette",
                 "orm"
             ],
-            "time": "2014-04-19 00:55:19"
+            "time": "2014-04-25 17:47:40"
         },
         {
             "name": "kdyby/doctrine-cache",
@@ -2579,12 +2579,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/tester.git",
-                "reference": "fa772a8b7d9a8e57dd3d3181dc6cc2937fb95950"
+                "reference": "2700482a71973a8bcfd5ae2ca7ccc25b4621e599"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/tester/zipball/fa772a8b7d9a8e57dd3d3181dc6cc2937fb95950",
-                "reference": "fa772a8b7d9a8e57dd3d3181dc6cc2937fb95950",
+                "url": "https://api.github.com/repos/nette/tester/zipball/2700482a71973a8bcfd5ae2ca7ccc25b4621e599",
+                "reference": "2700482a71973a8bcfd5ae2ca7ccc25b4621e599",
                 "shasum": ""
             },
             "require": {
@@ -2627,7 +2627,7 @@
                 "testing",
                 "unit"
             ],
-            "time": "2014-04-11 11:04:14"
+            "time": "2014-04-23 21:33:51"
         }
     ],
     "aliases": [
