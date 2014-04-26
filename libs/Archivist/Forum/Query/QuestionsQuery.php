@@ -13,6 +13,7 @@ namespace Archivist\Forum\Query;
 use Archivist\Forum\Category;
 use Doctrine\ORM\Query\Expr\Join;
 use Kdyby;
+use Kdyby\Doctrine\QueryBuilder;
 use Kdyby\Persistence\Queryable;
 use Nette;
 
@@ -31,18 +32,14 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 	private $category;
 
 	/**
-	 * @var array
+	 * @var array|\Closure[]
 	 */
-	private $with = [
-		'lastPost' => FALSE,
-		'answersCount' => FALSE,
-		'category' => FALSE,
-	];
+	private $filter = [];
 
 	/**
-	 * @var array
+	 * @var array|\Closure[]
 	 */
-	private $orderBy = [];
+	private $select = [];
 
 
 
@@ -55,7 +52,12 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 
 	public function withLastPost()
 	{
-		$this->with['lastPost'] = TRUE;
+		$this->select[] = function (QueryBuilder $qb) {
+			$qb->addSelect('partial lp.{id, createdAt}, partial lpa.{id}, partial lpau.{id, name}')
+				->leftJoin('q.lastPost', 'lp', Join::WITH, 'lp.spam = FALSE AND lp.deleted = FALSE')
+				->leftJoin('lp.author', 'lpa')
+				->leftJoin('lpa.user', 'lpau');
+		};
 		return $this;
 	}
 
@@ -63,7 +65,11 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 
 	public function withCategory()
 	{
-		$this->with['category'] = TRUE;
+		$this->select[] = function (QueryBuilder $qb) {
+			$qb->addSelect('c, pc')
+				->innerJoin('q.category', 'c')
+				->innerJoin('c.parent', 'pc');
+		};
 		return $this;
 	}
 
@@ -71,15 +77,22 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 
 	public function withAnswersCount()
 	{
-		$this->with['answersCount'] = TRUE;
+		$this->select[] = function (QueryBuilder $qb) {
+			$qb->addSelect('COUNT(a.id) as answers_count')
+				->leftJoin('q.answers', 'a')
+				->groupBy('q.id');
+		};
 		return $this;
 	}
 
 
 
-	public function sortByHasSolution($direction = 'ASC')
+	public function sortByHasSolution($order = 'ASC')
 	{
-		$this->orderBy[] = 'hasSolution ' . $direction;
+		$this->select[] = function (QueryBuilder $qb) use ($order) {
+			$qb->addSelect('FIELD(IsNull(q.solution), TRUE, FALSE) as HIDDEN hasSolution');
+			$qb->addOrderBy('hasSolution', $order);
+		};
 		return $this;
 	}
 
@@ -89,38 +102,13 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 	 * @param \Kdyby\Persistence\Queryable $repository
 	 * @return \Doctrine\ORM\Query|\Doctrine\ORM\QueryBuilder
 	 */
-	protected function doCreateQuery(Kdyby\Persistence\Queryable $repository)
+	protected function doCreateQuery(Queryable $repository)
 	{
 		$qb = $this->createBasicDql($repository)
 			->addSelect('partial i.{id}, partial u.{id, name}');
 
-		if ($this->with['category']) {
-			$qb->addSelect('c, pc')
-				->innerJoin('q.category', 'c')
-				->innerJoin('c.parent', 'pc');
-		}
-
-		if ($this->with['lastPost']) {
-			$qb->addSelect('partial lp.{id, createdAt}, partial lpa.{id}, partial lpau.{id, name}')
-				->leftJoin('q.lastPost', 'lp', Join::WITH, 'lp.spam = FALSE AND lp.deleted = FALSE')
-				->leftJoin('lp.author', 'lpa')
-				->leftJoin('lpa.user', 'lpau');
-		}
-
-		if ($this->with['answersCount']) {
-			$qb->addSelect('COUNT(a.id) as answers_count')
-				->leftJoin('q.answers', 'a')
-				->groupBy('q.id');
-		}
-
-		foreach ($this->orderBy as $by) {
-			list($sort, $order) = explode(' ', $by);
-
-			if ($sort === 'hasSolution') {
-				$qb->addSelect('FIELD(IsNull(q.solution), TRUE, FALSE) as HIDDEN hasSolution');
-			}
-
-			$qb->addOrderBy($sort, $order);
+		foreach ($this->select as $modifier) {
+			$modifier($qb);
 		}
 
 		return $qb->addOrderBy('q.createdAt', 'DESC');
@@ -144,6 +132,10 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 
 		if ($this->category !== NULL) {
 			$qb->andWhere('q.category = :category')->setParameter('category', $this->category->getId());
+		}
+
+		foreach ($this->filter as $modifier) {
+			$modifier($qb);
 		}
 
 		return $qb;
