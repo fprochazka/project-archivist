@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "619c2e2409d17100d48a962999c580fd",
+    "hash": "9a04ef25576710c813b11d7d9051cfc8",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -2249,6 +2249,58 @@
             "time": "2014-04-19 17:31:55"
         },
         {
+            "name": "nextras/secured-links",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nextras/secured-links.git",
+                "reference": "2e20034e57cc84bbac8953512a227ddab6d1a1f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nextras/secured-links/zipball/2e20034e57cc84bbac8953512a227ddab6d1a1f5",
+                "reference": "2e20034e57cc84bbac8953512a227ddab6d1a1f5",
+                "shasum": ""
+            },
+            "require": {
+                "nette/nette": "~2.0",
+                "php": ">=5.4.0"
+            },
+            "replace": {
+                "nextras/application": "self.version"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Nextras\\Application": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Skrasek",
+                    "email": "hrach.cz@gmail.com",
+                    "homepage": "http://jan.skrasek.com"
+                }
+            ],
+            "description": "Package secures Nette Framework signals against CSRF attack.",
+            "keywords": [
+                "application",
+                "nette",
+                "nextras",
+                "secured signals"
+            ],
+            "time": "2013-12-30 19:07:39"
+        },
+        {
             "name": "symfony/config",
             "version": "v2.4.3",
             "target-dir": "Symfony/Component/Config",
@@ -2668,6 +2720,7 @@
         "kdyby/autowired": 20,
         "majkl578/nette-identity-doctrine": 20,
         "beberlei/doctrineextensions": 20,
+        "nextras/secured-links": 20,
         "nette/tester": 20
     },
     "platform": {

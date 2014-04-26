@@ -45,8 +45,9 @@
 		"kdyby/autowired": "~1.0@dev",
 
 		"majkl578/nette-identity-doctrine": "@dev",
+		"beberlei/DoctrineExtensions": "@dev",
 
-		"beberlei/DoctrineExtensions": "@dev"
+		"nextras/secured-links": "~1.1@dev"
 	},
 	"minimum-stability": "rc",
 	"require-dev": {
