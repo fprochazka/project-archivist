@@ -5,6 +5,7 @@ namespace Archivist;
 use Kdyby\Autowired\AutowireComponentFactories;
 use Kdyby\Autowired\AutowireProperties;
 use Nette;
+use Nextras;
 
 
 
@@ -19,6 +20,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
 	use AutowireProperties;
 	use AutowireComponentFactories;
+	use Nextras\Application\UI\SecuredLinksPresenterTrait;
 
 	/**
 	 * @var \WebLoader\Nette\LoaderFactory

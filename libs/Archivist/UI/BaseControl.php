@@ -13,6 +13,7 @@ namespace Archivist\UI;
 use Kdyby;
 use Kdyby\Translation\Translator;
 use Nette;
+use Nextras;
 
 
 
@@ -31,6 +32,7 @@ class BaseControl extends Nette\Application\UI\Control
 {
 
 	use Kdyby\Autowired\AutowireComponentFactories;
+	use Nextras\Application\UI\SecuredLinksControlTrait;
 
 	/**
 	 * @var array of function (BaseControl $control, Nette\ComponentModel\Container $parent)

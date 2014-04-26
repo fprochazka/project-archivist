@@ -167,6 +167,9 @@ class QuestionPresenter extends BasePresenter
 
 
 
+	/**
+	 * @secured
+	 */
 	public function handleToggleResolved($postId)
 	{
 		try {
@@ -186,6 +189,9 @@ class QuestionPresenter extends BasePresenter
 
 
 
+	/**
+	 * @secured
+	 */
 	public function handleDelete($postId)
 	{
 		if (!$this->actionEdit($postId)) {
@@ -206,6 +212,9 @@ class QuestionPresenter extends BasePresenter
 
 
 
+	/**
+	 * @secured
+	 */
 	public function handleMarkAsSpam($postId)
 	{
 		if (!$this->actionEdit($postId)) {
