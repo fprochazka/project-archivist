@@ -15,21 +15,24 @@
 	<div class="panel-body">
 		{cache [(string)$post], if => $productionMode}{$post->content|noescape|texifyForumPost}{/cache}
 	</div>
-	<div class="panel-footer" n:if="$user->loggedIn && ($user->isInRole(moderator) || $post->isAuthor($user->identity))">
-		<div class="text-right">
-			{if !$post->isQuestion() && $question->isAuthor($user->identity)}
+	<div class="panel-footer" n:if="$user->isInRole(moderator) || (!$question->locked && $post->isAuthor($user->identity))">
+		<div class="text-right pull-right">
+			{if !$post->isQuestion() && !$question->locked && $question->isAuthor($user->identity)}
 				<a n:href="toggleResolved!, postId => $post->id"><span n:class="glyphicon, $question->solution !== $post? glyphicon-check : glyphicon-unchecked"></span>
-					{if $question->solution !== $post}
-						Solved
-					{else}
-						Not solved
-					{/if}
+					{if $question->solution !== $post}Solved{else}Not solved{/if}
 				</a>
 			{/if}
 			<a n:href="markAsSpam!, postId => $post->id" n:if="$user->isInRole(moderator)" onclick="return confirm('Really mark as spam?');"><span class="glyphicon glyphicon-trash"></span> Spam</a>
-			<a n:href="delete!, postId => $post->id" n:if="$user->isInRole(moderator) || $post->isAuthor($user->identity)" onclick="return confirm('Really delete?');"><span class="glyphicon glyphicon-remove"></span> Delete</a>
-			<a n:href="edit, postId => $post->id" n:if="$user->isInRole(moderator) || $post->isAuthor($user->identity)"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+			<a n:href="delete!, postId => $post->id" n:if="$user->isInRole(moderator) || (!$question->locked && $post->isAuthor($user->identity))" onclick="return confirm('Really delete?');"><span class="glyphicon glyphicon-remove"></span> Delete</a>
+			<a n:href="edit, postId => $post->id" n:if="$user->isInRole(moderator) || (!$question->locked && $post->isAuthor($user->identity))"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
 		</div>
+
+		<div class="text-left" n:if="$user->isInRole(moderator) && $post->isQuestion()">
+			<a n:href="togglePinThread!"><span n:class="glyphicon, $question->isPinned() ? glyphicon-star-empty : glyphicon-star"></span> {if $question->isPinned()}Unpin{else}Pin{/if}</a>
+			<a n:href="toggleLockThread!"><span class="glyphicon glyphicon-lock"></span> {if $question->isLocked()}Unlock{else}Lock{/if}</a>
+		</div>
+
+		<div class="clearfix"></div>
 	</div>
 </div>
 {/define}
@@ -47,13 +50,19 @@
 <hr>
 
 <div class="row">
-	{if $user->loggedIn}
+	{if $question->isLocked() && !$user->isInRole(moderator)}
+		<div class="col-sm-10 col-sm-offset-1 text-center">
+			<div class="alert alert-warning">Thread is locked</div>
+		</div>
+
+	{elseif $user->loggedIn}
 		<div class="col-sm-offset-3"><h2>Answer:</h2></div>
 		<div class="col-sm-11">
 			{control answerForm}
 		</div>
+
 	{else}
-		<div class="col-sm-10 col-sm-offset-1">
+		<div class="col-sm-10 col-sm-offset-1 text-center">
 			<div class="alert alert-warning">You must first <a n:href=":Sign:in">login</a> to participate in this discussion</div>
 		</div>
 	{/if}

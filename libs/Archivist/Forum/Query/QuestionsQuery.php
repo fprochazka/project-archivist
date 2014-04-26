@@ -87,6 +87,17 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 
 
 
+	public function sortByPinned($order = 'ASC')
+	{
+		$this->select[] = function (QueryBuilder $qb) use ($order) {
+			$qb->addSelect('FIELD(q.pinned, TRUE, FALSE) as HIDDEN isPinned');
+			$qb->addOrderBy('isPinned', $order);
+		};
+		return $this;
+	}
+
+
+
 	public function sortByHasSolution($order = 'ASC')
 	{
 		$this->select[] = function (QueryBuilder $qb) use ($order) {

@@ -64,6 +64,7 @@ class TopicsPresenter extends BasePresenter
 		$query = (new QuestionsQuery($this->category))
 			->withAnswersCount()
 			->withLastPost()
+			->sortByPinned()
 			->sortByHasSolution();
 
 		/** @var TopicsPresenter|VisualPaginator[] $this */

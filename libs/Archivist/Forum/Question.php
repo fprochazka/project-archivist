@@ -50,6 +50,18 @@ class Question extends Post
 	 */
 	protected $answers;
 
+	/**
+	 * @ORM\Column(type="boolean", nullable=FALSE, options={"default":"0"})
+	 * @var boolean
+	 */
+	protected $pinned = FALSE;
+
+	/**
+	 * @ORM\Column(type="boolean", nullable=FALSE, options={"default":"0"})
+	 * @var boolean
+	 */
+	protected $locked = FALSE;
+
 
 
 	public function __construct($title, $content)
@@ -74,6 +86,50 @@ class Question extends Post
 	public function getTitle()
 	{
 		return $this->title;
+	}
+
+
+
+	/**
+	 * @return boolean
+	 */
+	public function isPinned()
+	{
+		return $this->pinned;
+	}
+
+
+
+	/**
+	 * @param boolean $pinned
+	 * @return Question
+	 */
+	public function setPinned($pinned)
+	{
+		$this->pinned = (bool) $pinned;
+		return $this;
+	}
+
+
+
+	/**
+	 * @return boolean
+	 */
+	public function isLocked()
+	{
+		return $this->locked;
+	}
+
+
+
+	/**
+	 * @param boolean $locked
+	 * @return Question
+	 */
+	public function setLocked($locked)
+	{
+		$this->locked = (bool) $locked;
+		return $this;
 	}
 
 

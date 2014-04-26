@@ -6,6 +6,8 @@ use Archivist\Forum\Answer;
 use Archivist\Forum\ModificationsNotAllowedException;
 use Archivist\Forum\PostIsNotReadableException;
 use Archivist\Forum\Question;
+use Archivist\Forum\ThreadLockedException;
+use Archivist\Security\Role;
 use Archivist\UI\BaseForm;
 use Archivist\VisualPaginator;
 use Nette;
@@ -182,6 +184,9 @@ class QuestionPresenter extends BasePresenter
 
 		} catch (PostIsNotReadableException $e) {
 			$this->error($e->getMessage());
+
+		} catch (ThreadLockedException $e) {
+			$this->error($e->getMessage());
 		}
 
 		$this->redirect('this', ['postId' => NULL]);
@@ -198,8 +203,16 @@ class QuestionPresenter extends BasePresenter
 			$this->error();
 		}
 
-		$this->editingPost->setDeleted(TRUE);
-		$this->em->flush();
+		try {
+			$this->writer->markAsDeleted($this->question, $this->editingPost);
+			$this->em->flush();
+
+		} catch (ModificationsNotAllowedException $e) {
+			$this->error($e->getMessage());
+
+		} catch (ThreadLockedException $e) {
+			$this->error($e->getMessage());
+		}
 
 		if ($this->editingPost->isQuestion()) {
 			$this->flashMessage("Topic '" . $this->editingPost->getTitle() . "' was deleted.", 'danger');
@@ -221,8 +234,13 @@ class QuestionPresenter extends BasePresenter
 			$this->error();
 		}
 
-		$this->editingPost->setSpam(TRUE);
-		$this->em->flush();
+		try {
+			$this->writer->markAsSpam($this->question, $this->editingPost);
+			$this->em->flush();
+
+		} catch (ModificationsNotAllowedException $e) {
+			$this->error($e->getMessage());
+		}
 
 		if ($this->editingPost->isQuestion()) {
 			$this->flashMessage("Topic '" . $this->editingPost->getTitle() . "' was marked as spam.", 'danger');
@@ -231,6 +249,42 @@ class QuestionPresenter extends BasePresenter
 
 		$this->flashMessage("Post was marked as spam.", 'danger');
 		$this->redirect('this', ['postId' => NULL]);
+	}
+
+
+
+	/**
+	 * @secured
+	 */
+	public function handleTogglePinThread()
+	{
+		try {
+			$this->writer->togglePinned($this->question);
+			$this->em->flush();
+
+		} catch (ModificationsNotAllowedException $e) {
+			$this->error($e->getMessage());
+		}
+
+		$this->redirect('this');
+	}
+
+
+
+	/**
+	 * @secured
+	 */
+	public function handleToggleLockThread()
+	{
+		try {
+			$this->writer->toggleLocked($this->question);
+			$this->em->flush();
+
+		} catch (ModificationsNotAllowedException $e) {
+			$this->error($e->getMessage());
+		}
+
+		$this->redirect('this');
 	}
 
 

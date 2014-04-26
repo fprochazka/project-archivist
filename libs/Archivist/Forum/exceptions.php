@@ -31,3 +31,8 @@ class ModificationsNotAllowedException extends InsufficientPermissionsException
 {
 
 }
+
+class ThreadLockedException extends InsufficientPermissionsException
+{
+
+}

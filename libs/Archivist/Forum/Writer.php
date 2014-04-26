@@ -57,6 +57,10 @@ class Writer extends Nette\Object
 
 	public function answerQuestion(Answer $answer, Question $question)
 	{
+		if ($question->isLocked() && !$this->user->isInRole(Role::MODERATOR)) {
+			throw new ThreadLockedException;
+		}
+
 		$question->addAnswer($answer);
 		$answer->setAuthor($this->user->getIdentity());
 
@@ -67,15 +71,14 @@ class Writer extends Nette\Object
 
 
 
-	/**
-	 * @param Question $question
-	 * @param Answer $answer
-	 * @return Question
-	 */
 	public function toggleResolvedBy(Question $question, Answer $answer)
 	{
 		if (!$question->isAuthor($this->user->getIdentity()) && !$this->user->isInRole(Role::MODERATOR)) {
 			throw new ModificationsNotAllowedException();
+		}
+
+		if ($question->isLocked() && !$this->user->isInRole(Role::MODERATOR)) {
+			throw new ThreadLockedException;
 		}
 
 		if ($question->solution === $answer) {
@@ -84,6 +87,58 @@ class Writer extends Nette\Object
 		} else {
 			$question->setSolution($answer);
 		}
+
+		return $question;
+	}
+
+
+
+	public function markAsDeleted(Question $question, Post $post)
+	{
+		if (!$post->isAuthor($this->user->getIdentity()) && !$this->user->isInRole(Role::MODERATOR)) {
+			throw new ModificationsNotAllowedException;
+		}
+
+		if ($question->isLocked() && !$this->user->isInRole(Role::MODERATOR)) {
+			throw new ModificationsNotAllowedException();
+		}
+
+		$post->setSpam(TRUE);
+	}
+
+
+
+	public function markAsSpam(Question $question, Post $post)
+	{
+		if (!$this->user->isInRole(Role::MODERATOR)) {
+			throw new ModificationsNotAllowedException();
+		}
+
+		$post->setSpam(TRUE);
+	}
+
+
+
+	public function togglePinned(Question $question)
+	{
+		if (!$this->user->isInRole(Role::MODERATOR)) {
+			throw new ModificationsNotAllowedException();
+		}
+
+		$question->setPinned(!$question->isPinned());
+
+		return $question;
+	}
+
+
+
+	public function toggleLocked(Question $question)
+	{
+		if (!$this->user->isInRole(Role::MODERATOR)) {
+			throw new ModificationsNotAllowedException();
+		}
+
+		$question->setLocked(!$question->isLocked());
 
 		return $question;
 	}
