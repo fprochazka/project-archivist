@@ -41,7 +41,7 @@ use Nette;
  *    "answer" = "Answer"
  * })
  */
-abstract class Post extends Kdyby\Doctrine\Entities\IdentifiedEntity
+abstract class Post extends Identified
 {
 
 	/**

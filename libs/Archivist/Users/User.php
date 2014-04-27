@@ -10,6 +10,7 @@
 
 namespace Archivist\Users;
 
+use Archivist\Forum\Identified;
 use Archivist\Security\Role;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine;
@@ -25,7 +26,7 @@ use Nette;
  * @ORM\Entity()
  * @ORM\Table(name="users")
  */
-class User extends Kdyby\Doctrine\Entities\IdentifiedEntity
+class User extends Identified
 {
 
 	/**

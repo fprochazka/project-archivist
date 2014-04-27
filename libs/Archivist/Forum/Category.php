@@ -29,7 +29,7 @@ use Nette;
  * @property Question $lastQuestion
  * @property string $url
  */
-class Category extends Kdyby\Doctrine\Entities\IdentifiedEntity
+class Category extends Identified
 {
 
 	/**

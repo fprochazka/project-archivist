@@ -10,6 +10,7 @@
 
 namespace Archivist\Users;
 
+use Archivist\Forum\Identified;
 use Archivist\InvalidStateException;
 use Doctrine;
 use Doctrine\ORM\Mapping as ORM;
@@ -36,7 +37,7 @@ use Nette;
  *    "twitter" = "Archivist\Users\Identity\Twitter"
  * })
  */
-abstract class Identity extends Kdyby\Doctrine\Entities\IdentifiedEntity implements Nette\Security\IIdentity
+abstract class Identity extends Identified implements Nette\Security\IIdentity
 {
 
 	/**
