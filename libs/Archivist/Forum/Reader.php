@@ -155,8 +155,14 @@ class Reader extends Nette\Object
 			->innerJoin('i.user', 'u')->addSelect('u')
 			->innerJoin('a.category', 'c')->addSelect('c')
 			->andWhere('a.question = :question')->setParameter('question', $question->getId())
-			->andWhere('a.deleted = FALSE AND a.spam = FALSE')
-			->orderBy('a.createdAt', 'ASC');
+			->andWhere('a.deleted = FALSE AND a.spam = FALSE');
+
+		$qb
+			->leftJoin('a.question', 'q')
+			->addSelect('FIELD(q.solution, a) as HIDDEN hasSolution')
+			->addOrderBy('hasSolution', 'ASC');
+
+		$qb->addOrderBy('a.createdAt', 'ASC');
 
 		return new ResultSet($qb->getQuery());
 	}
