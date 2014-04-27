@@ -213,7 +213,7 @@ abstract class Post extends Kdyby\Doctrine\Entities\IdentifiedEntity
 		if (!$identity) {
 			return FALSE;
 		}
-		
+
 		if ($this->author === $identity) {
 			return TRUE;
 		}

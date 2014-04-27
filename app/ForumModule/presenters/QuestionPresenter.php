@@ -154,7 +154,7 @@ class QuestionPresenter extends BasePresenter
 			$this->error($e->getMessage());
 
 		} catch (ModificationsNotAllowedException $e) {
-			$this->error($e->getMessage());
+			$this->notAllowed($e->getMessage());
 		}
 
 		return $this->editingPost;
@@ -186,7 +186,7 @@ class QuestionPresenter extends BasePresenter
 			$this->error($e->getMessage());
 
 		} catch (ThreadLockedException $e) {
-			$this->error($e->getMessage());
+			$this->notAllowed($e->getMessage());
 		}
 
 		$this->redirect('this', ['postId' => NULL]);
@@ -208,10 +208,10 @@ class QuestionPresenter extends BasePresenter
 			$this->em->flush();
 
 		} catch (ModificationsNotAllowedException $e) {
-			$this->error($e->getMessage());
+			$this->notAllowed($e->getMessage());
 
 		} catch (ThreadLockedException $e) {
-			$this->error($e->getMessage());
+			$this->notAllowed($e->getMessage());
 		}
 
 		if ($this->editingPost->isQuestion()) {
@@ -239,7 +239,10 @@ class QuestionPresenter extends BasePresenter
 			$this->em->flush();
 
 		} catch (ModificationsNotAllowedException $e) {
-			$this->error($e->getMessage());
+			$this->notAllowed($e->getMessage());
+
+		} catch (ThreadLockedException $e) {
+			$this->notAllowed($e->getMessage());
 		}
 
 		if ($this->editingPost->isQuestion()) {
@@ -263,7 +266,7 @@ class QuestionPresenter extends BasePresenter
 			$this->em->flush();
 
 		} catch (ModificationsNotAllowedException $e) {
-			$this->error($e->getMessage());
+			$this->notAllowed($e->getMessage());
 		}
 
 		$this->redirect('this');
@@ -281,7 +284,7 @@ class QuestionPresenter extends BasePresenter
 			$this->em->flush();
 
 		} catch (ModificationsNotAllowedException $e) {
-			$this->error($e->getMessage());
+			$this->notAllowed($e->getMessage());
 		}
 
 		$this->redirect('this');
