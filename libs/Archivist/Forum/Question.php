@@ -149,7 +149,7 @@ class Question extends Post
 	 */
 	public function setSolution(Answer $solution = NULL)
 	{
-		if ($solution->isDeleted() || $solution->isSpam()) {
+		if ($solution && ($solution->isDeleted() || $solution->isSpam())) {
 			throw new PostIsNotReadableException;
 		}
 
