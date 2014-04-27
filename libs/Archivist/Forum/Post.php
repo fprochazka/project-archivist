@@ -210,6 +210,10 @@ abstract class Post extends Kdyby\Doctrine\Entities\IdentifiedEntity
 
 	public function isAuthor(Identity $identity = NULL)
 	{
+		if (!$identity) {
+			return FALSE;
+		}
+		
 		if ($this->author === $identity) {
 			return TRUE;
 		}
