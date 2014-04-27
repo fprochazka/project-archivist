@@ -1,7 +1,7 @@
 {block content}
 
 <div class="page-header">
-	<h1 n:block=title>{$question->title}</h1>
+	<h1 n:block=title><span n:if="$question->isLocked()" class="glyphicon glyphicon-lock pull-right"></span> {$question->title}</h1>
 	<a n:href="Topics:, categoryId => $question->category->id">&laquo; {$question->category->name}</a>
 </div>
 
@@ -17,7 +17,7 @@
 	</div>
 	<div class="panel-footer" n:if="$user->isInRole(moderator) || (!$question->locked && $post->isAuthor($user->identity))">
 		<div class="text-right pull-right">
-			{if !$post->isQuestion() && !$question->locked && $question->isAuthor($user->identity)}
+			{if !$post->isQuestion() && ((!$question->locked && $question->isAuthor($user->identity)) || $user->isInRole(moderator))}
 				<a n:href="toggleResolved!, postId => $post->id"><span n:class="glyphicon, $question->solution !== $post? glyphicon-check : glyphicon-unchecked"></span>
 					{if $question->solution !== $post}Solved{else}Not solved{/if}
 				</a>
