@@ -81,6 +81,7 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 		$this->select[] = function (QueryBuilder $qb) {
 			$subCount = $qb->getEntityManager()->createQueryBuilder()
 				->select('COUNT(a.id)')->from(Answer::class, 'a')
+				->andWhere('a.deleted = FALSE AND a.spam = FALSE')
 				->andWhere('a.question = q');
 
 			$qb->addSelect("($subCount) AS answers_count");
