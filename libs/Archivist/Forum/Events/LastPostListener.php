@@ -54,11 +54,13 @@ class LastPostListener extends Nette\Object
 		$lastPost = $question->getLastPost();
 
 		if ($post->isDeleted() || $post->isSpam()) {
-			if ($lastPost && $lastPost !== $post) {
-				return;
+			if (!$lastPost || $lastPost === $post) {
+				$question->setLastPost($this->findLastPost($question, $post));
 			}
 
-			$question->setLastPost($this->findLastPost($question, $post));
+			if ($question->solution === $post) {
+				$question->setSolution(NULL);
+			}
 
 		} elseif (!$lastPost || $post->getCreatedAt() > $lastPost->getCreatedAt()) {
 			$question->setLastPost($post);
