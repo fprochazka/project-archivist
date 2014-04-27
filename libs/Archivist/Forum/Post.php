@@ -24,8 +24,8 @@ use Nette;
  *
  * @ORM\Entity()
  * @ORM\Table(name="forum_posts", indexes={
- * 		@ORM\Index(columns={"spam", "deleted", "type", "created_at"}),
- * 		@ORM\Index(columns={"deleted", "spam", "type", "created_at"})
+ * 		@ORM\Index(columns={"spam", "deleted", "created_at", "type"}),
+ * 		@ORM\Index(columns={"spam", "deleted", "category_id", "type", "pinned", "locked"})
  * })
  *
  * @ORM\EntityListeners({

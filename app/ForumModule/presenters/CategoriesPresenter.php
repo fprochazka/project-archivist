@@ -30,8 +30,8 @@ class CategoriesPresenter extends BasePresenter
 		$unsolvedCountQb = $questions->createQueryBuilder('sp')
 			->select('COUNT(sp.id)')
 			->leftJoin('sp.solution', 'sps')->andWhere('sps.id IS NULL') // has no solution
-			->andWhere('sp.spam = FALSE AND sp.deleted = FALSE')
 			->andWhere('sp.pinned = FALSE AND sp.locked = FALSE')
+			->andWhere('sp.spam = FALSE AND sp.deleted = FALSE')
 			->andWhere('sp.category = c2.id');
 
 		$categories = $this->em->getDao(Category::class);

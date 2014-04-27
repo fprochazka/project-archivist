@@ -81,7 +81,7 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 		$this->select[] = function (QueryBuilder $qb) {
 			$subCount = $qb->getEntityManager()->createQueryBuilder()
 				->select('COUNT(a.id)')->from(Answer::class, 'a')
-				->andWhere('a.deleted = FALSE AND a.spam = FALSE')
+				->andWhere('a.spam = FALSE AND a.deleted = FALSE')
 				->andWhere('a.question = q');
 
 			$qb->addSelect("($subCount) AS answers_count");
@@ -141,7 +141,7 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 	private function createBasicDql(Queryable $repository)
 	{
 		$qb = $repository->createQueryBuilder('q')
-			->andWhere('q.deleted = FALSE AND q.spam = FALSE')
+			->andWhere('q.spam = FALSE AND q.deleted = FALSE')
 			->innerJoin('q.author', 'i')
 			->innerJoin('i.user', 'u');
 
