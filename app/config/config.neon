@@ -46,13 +46,14 @@ annotations:
 
 
 doctrine:
-	user: root
+	driver: pdo_pgsql
+	user: postgres
 	dbname: archivist
 	namingStrategy: Doctrine\ORM\Mapping\UnderscoreNamingStrategy
 	dql:
 		string:
 			isnull: Archivist\Doctrine\Dql\IsNull
-			field: DoctrineExtensions\Query\Mysql\Field
+			field: Archivist\Doctrine\Dql\Field
 
 
 includes:

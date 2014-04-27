@@ -50,37 +50,49 @@ class NewestQuestionListener extends Nette\Object
 			return;
 		}
 
-		$questions = $this->em->getDao(Question::class);
-		$UoW = $this->em->getUnitOfWork();
-
 		$category = $post->category;
 		$lastQuestion = $category->lastQuestion;
 
 		if ($post->isDeleted() || $post->isSpam()) {
-			if ($category->lastQuestion !== $post) {
+			if ($lastQuestion !== $post) {
 				return;
 			}
 
-			$lastQuestionQb = $questions->createQueryBuilder('q')
-				->innerJoin('q.category', 'qc')
-				->andWhere('qc.id = :category')->setParameter('category', $category->getId())
-				->andWhere('q.deleted = FALSE AND q.spam = FALSE')
-				->andWhere('q.id != :post')->setParameter('post', $post->getId())
-				->addOrderBy('q.createdAt', 'DESC')
-				->setMaxResults(1);
-
-			try {
-				$category->lastQuestion = $lastQuestionQb->getQuery()->getSingleResult();
-
-			} catch (NoResultException $e) {
-				$category->lastQuestion = NULL;
-			}
+			$category->setLastQuestion($this->findLastQuestion($category, $post));
 
 		} elseif (!$lastQuestion || $post->getCreatedAt() > $lastQuestion->getCreatedAt()) {
-			$category->lastQuestion = $post;
+			$category->setLastQuestion($post);
 		}
 
+		$UoW = $this->em->getUnitOfWork();
 		$UoW->computeChangeSet($this->em->getClassMetadata(Category::class), $category);
+	}
+
+
+
+	/**
+	 * @param Category $category
+	 * @param Post $except
+	 * @return Question
+	 */
+	private function findLastQuestion(Category $category, Post $except)
+	{
+		$answers = $this->em->getDao(Question::class);
+
+		$lastPostQb = $answers->createQueryBuilder('q')
+			->innerJoin('q.category', 'qc')
+			->andWhere('qc.id = :category')->setParameter('category', $category->getId())
+			->andWhere('q.deleted = FALSE AND q.spam = FALSE')
+			->andWhere('q.id != :post')->setParameter('post', $except->getId())
+			->addOrderBy('q.createdAt', 'DESC')
+			->setMaxResults(1);
+
+		try {
+			return $lastPostQb->getQuery()->getSingleResult();
+
+		} catch (NoResultException $e) {
+			return NULL;
+		}
 	}
 
 }

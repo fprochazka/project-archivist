@@ -50,37 +50,49 @@ class LastPostListener extends Nette\Object
 			return;
 		}
 
-		$answers = $this->em->getDao(Answer::class);
-		$UoW = $this->em->getUnitOfWork();
-
 		$question = $post->getQuestion();
 		$lastPost = $question->getLastPost();
 
-		if ($post->isDeleted() || $post->isSpam() || !$lastPost) {
+		if ($post->isDeleted() || $post->isSpam()) {
 			if ($lastPost && $lastPost !== $post) {
 				return;
 			}
 
-			$lastPostQb = $answers->createQueryBuilder('a')
-				->innerJoin('a.question', 'q')
-				->andWhere('q.id = :question')->setParameter('question', $question->getId())
-				->andWhere('a.deleted = FALSE AND a.spam = FALSE')
-				->andWhere('a.id != :post')->setParameter('post', $post->getId())
-				->addOrderBy('a.createdAt', 'DESC')
-				->setMaxResults(1);
-
-			try {
-				$question->setLastPost($lastPostQb->getQuery()->getSingleResult());
-
-			} catch (NoResultException $e) {
-				$question->setLastPost(NULL);
-			}
+			$question->setLastPost($this->findLastPost($question, $post));
 
 		} elseif (!$lastPost || $post->getCreatedAt() > $lastPost->getCreatedAt()) {
 			$question->setLastPost($post);
 		}
 
+		$UoW = $this->em->getUnitOfWork();
 		$UoW->computeChangeSet($this->em->getClassMetadata(Question::class), $question);
+	}
+
+
+
+	/**
+	 * @param Question $question
+	 * @param Post $except
+	 * @return Answer
+	 */
+	private function findLastPost(Question $question, Post $except)
+	{
+		$answers = $this->em->getDao(Answer::class);
+
+		$lastPostQb = $answers->createQueryBuilder('a')
+			->innerJoin('a.question', 'q')
+			->andWhere('q.id = :question')->setParameter('question', $question->getId())
+			->andWhere('a.deleted = FALSE AND a.spam = FALSE')
+			->andWhere('a.id != :post')->setParameter('post', $except->getId())
+			->addOrderBy('a.createdAt', 'DESC')
+			->setMaxResults(1);
+
+		try {
+			return $lastPostQb->getQuery()->getSingleResult();
+
+		} catch (NoResultException $e) {
+			return NULL;
+		}
 	}
 
 }

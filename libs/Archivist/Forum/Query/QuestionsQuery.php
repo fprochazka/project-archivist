@@ -10,6 +10,7 @@
 
 namespace Archivist\Forum\Query;
 
+use Archivist\Forum\Answer;
 use Archivist\Forum\Category;
 use Doctrine\ORM\Query\Expr\Join;
 use Kdyby;
@@ -78,9 +79,11 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 	public function withAnswersCount()
 	{
 		$this->select[] = function (QueryBuilder $qb) {
-			$qb->addSelect('COUNT(a.id) as answers_count')
-				->leftJoin('q.answers', 'a')
-				->groupBy('q.id');
+			$subCount = $qb->getEntityManager()->createQueryBuilder()
+				->select('COUNT(a.id)')->from(Answer::class, 'a')
+				->andWhere('a.question = q');
+
+			$qb->addSelect("($subCount) AS answers_count");
 		};
 		return $this;
 	}

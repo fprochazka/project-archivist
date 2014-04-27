@@ -42,8 +42,7 @@ class CategoriesPresenter extends BasePresenter
 			->leftJoin('c2.lastQuestion', 'lq')->addSelect('lq.id as l_id, lq.createdAt as l_createdAt, lq.title as l_title')
 			->leftJoin('lq.author', 'li')
 			->leftJoin('li.user', 'lu')->addSelect('lu.name as l_author_name')
-			->orderBy('c1.position', 'ASC')->addOrderBy('c2.position', 'ASC')
-			->groupBy('c1.id, c2.id');
+			->orderBy('c1.position', 'ASC')->addOrderBy('c2.position', 'ASC');
 
 		$result = array_map('Nette\ArrayHash::from', $categoriesQb->getQuery()->getScalarResult());
 		$this->template->categories = Nette\Utils\Arrays::associate($result, 'c1_id|c2_id->');

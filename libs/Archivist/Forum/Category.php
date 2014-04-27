@@ -10,6 +10,7 @@
 
 namespace Archivist\Forum;
 
+use Archivist\InvalidArgumentException;
 use Doctrine;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
@@ -25,6 +26,7 @@ use Nette;
  * @ORM\Entity()
  * @ORM\Table(name="forum_category")
  *
+ * @property Question $lastQuestion
  * @property string $url
  */
 class Category extends Kdyby\Doctrine\Entities\IdentifiedEntity
@@ -46,7 +48,7 @@ class Category extends Kdyby\Doctrine\Entities\IdentifiedEntity
 	 * @ORM\ManyToOne(targetEntity="Question", cascade={"persist"})
 	 * @var Question
 	 */
-	protected $lastQuestion;
+	private $lastQuestion;
 
 	/**
 	 * @ORM\Column(type="string", nullable=TRUE)
@@ -78,6 +80,36 @@ class Category extends Kdyby\Doctrine\Entities\IdentifiedEntity
 	{
 		$this->posts = new ArrayCollection();
 		$this->children = new ArrayCollection();
+	}
+
+
+
+	/**
+	 * @return Question|NULL
+	 */
+	public function getLastQuestion()
+	{
+		if ($this->lastQuestion && ($this->lastQuestion->isDeleted() || $this->lastQuestion->isSpam())) {
+			$this->lastQuestion = NULL;
+		}
+
+		return $this->lastQuestion;
+	}
+
+
+
+	/**
+	 * @param Question $question
+	 * @return Category
+	 */
+	public function setLastQuestion(Question $question)
+	{
+		if ($question && ($question->isSpam() || $question->isDeleted())) {
+			throw new InvalidArgumentException;
+		}
+
+		$this->lastQuestion = $question;
+		return $this;
 	}
 
 }
