@@ -22,6 +22,8 @@ use Nette;
  * @author Filip Procházka <filip@prochazka.su>
  *
  * @ORM\Entity()
+ *
+ * @property Answer $lastPost
  */
 class Question extends Post
 {

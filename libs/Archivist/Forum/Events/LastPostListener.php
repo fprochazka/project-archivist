@@ -51,10 +51,9 @@ class LastPostListener extends Nette\Object
 		}
 
 		$question = $post->getQuestion();
-		$lastPost = $question->getLastPost();
 
 		if ($post->isDeleted() || $post->isSpam()) {
-			if (!$lastPost || $lastPost === $post) {
+			if (!$question->lastPost || $question->lastPost === $post) {
 				$question->setLastPost($this->findLastPost($question, $post));
 			}
 
@@ -62,8 +61,15 @@ class LastPostListener extends Nette\Object
 				$question->setSolution(NULL);
 			}
 
-		} elseif (!$lastPost || $post->getCreatedAt() > $lastPost->getCreatedAt()) {
-			$question->setLastPost($post);
+		} else {
+			if (!$question->lastPost || $post->getCreatedAt() > $question->lastPost->getCreatedAt()) {
+				$question->setLastPost($post);
+			}
+
+			$lastPost = $this->findLastPost($question, $post);
+			if ($lastPost && $lastPost->getCreatedAt() > $question->lastPost->getCreatedAt()) {
+				$question->setLastPost($lastPost);
+			}
 		}
 
 		$UoW = $this->em->getUnitOfWork();
@@ -82,12 +88,14 @@ class LastPostListener extends Nette\Object
 		$answers = $this->em->getDao(Answer::class);
 
 		$lastPostQb = $answers->createQueryBuilder('a')
-			->innerJoin('a.question', 'q')
-			->andWhere('q.id = :question')->setParameter('question', $question->getId())
-			->andWhere('a.deleted = FALSE AND a.spam = FALSE')
-			->andWhere('a.id != :post')->setParameter('post', $except->getId())
+			->andWhere('a.question = :question')->setParameter('question', $question->getId())
+			->andWhere('a.spam = FALSE AND a.deleted = FALSE')
 			->addOrderBy('a.createdAt', 'DESC')
 			->setMaxResults(1);
+
+		if ($except->getId() !== NULL) { // persisted
+			$lastPostQb->andWhere('a.id != :post')->setParameter('post', $except->getId());
+		}
 
 		try {
 			return $lastPostQb->getQuery()->getSingleResult();
