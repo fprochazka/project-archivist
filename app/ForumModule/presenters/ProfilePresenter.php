@@ -54,9 +54,9 @@ class ProfilePresenter extends BasePresenter
 			->withAnswersCount()
 			->withCategory();
 
-		return $factory->create()
-			->setView('questions')
-			->setQuery($query);
+		$control = $factory->create()->setQuery($query);
+		$control->perPage = 10;
+		return $control->setView('questions');
 	}
 
 }
