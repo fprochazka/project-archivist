@@ -1,0 +1,31 @@
+<div class="row topics">
+	<div class="col-sm-12">
+		{if}
+		<table class="table table-hover">
+			<tr>
+				<th></th>
+				<th class="text-right">Last post</th>
+				<th class="text-right">Author</th>
+				<th></th>
+			</tr>
+			{foreach $topics as $item}
+				{var $question = $item[0]}
+				<tr n:class="$question->pinned ? warning : ($question->solution? success)">
+					<td class="title text-middle">
+						<div class="pull-right">
+							{if $question->locked}<span class="glyphicon glyphicon-lock" title="Thread is locked" data-toggle="tooltip" data-placement="left"></span>{/if}
+							{if $question->pinned} &nbsp; <span class="glyphicon glyphicon-star" title="Thread is pinned, you should propbably read it" data-toggle="tooltip" data-placement="right"></span>{/if}
+						</div>
+						<a href="{plink Question:, questionId => $question->id}">{$question->title}</a>
+					</td>
+					<td class="text-right" n:inner-if="$last = $question->lastPost">{$last->author->name}<br>at {$last->createdAt|date:'j.n.Y G:i'}</td>
+					<td class="text-right" n:if="$options[author]">{$question->author->name}<br>at {$question->createdAt|date:'j.n.Y G:i'}</td>
+					<td class="text-center text-middle"><span class="label label-info" title="Answers in thread" data-toggle="tooltip" data-placement="top">{$item['answers_count']}</span></td>
+				</tr>
+			{/foreach}
+		</table>
+		{/if $iterations}
+
+		<div n:if="!$iterations">No open discussions</div>
+	</div>
+</div>

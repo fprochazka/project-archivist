@@ -43,6 +43,11 @@ class Writer extends Nette\Object
 
 
 
+	/**
+	 * @param Question $question
+	 * @param Category $category
+	 * @return Question
+	 */
 	public function askQuestion(Question $question, Category $category)
 	{
 		$question->category = $category;

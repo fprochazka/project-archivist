@@ -89,12 +89,7 @@ class BaseControl extends Nette\Application\UI\Control
 		/** @var \Nette\Templating\FileTemplate|\stdClass $template */
 
 		$sl = $this->getServiceLocator();
-		$template->consts = $this->presenter->template->consts;
-		$template->productionMode = $sl->expand('%productionMode%');
-
-		foreach ($sl->findByTag('helperLoader') as $loader => $tags) {
-			$template->registerHelperLoader(callback($sl->getService($loader), 'loader'));
-		}
+		$template->productionMode = !$sl->expand('%debugMode%');
 
 		return $template;
 	}

@@ -17,3 +17,4 @@ services:
 
 	# componnets
 	- Archivist\ForumModule\IPostFormFactory
+	- Archivist\ForumModule\Questions\IThreadsControlFactory

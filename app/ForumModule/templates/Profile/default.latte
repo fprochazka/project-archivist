@@ -2,10 +2,11 @@
 
 <div class="page-header">
 	<h1 n:block=title>
-		Newest questions
+		{$user->name}
 	</h1>
-	<a n:href="Categories:">&laquo; All categories</a>
 </div>
 
-{control threads}
+
+<br><h2>Last questions:</h2>
+{control threads, author => FALSE}
 {control threads-vp}

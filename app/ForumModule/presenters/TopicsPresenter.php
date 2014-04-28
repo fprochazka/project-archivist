@@ -5,8 +5,8 @@ namespace Archivist\ForumModule;
 use Archivist\Forum\Category;
 use Archivist\Forum\Query\QuestionsQuery;
 use Archivist\Forum\Question;
+use Archivist\ForumModule\Questions\IThreadsControlFactory;
 use Archivist\UI\BaseForm;
-use Archivist\VisualPaginator;
 use Nette;
 use Nette\Forms\Controls\SubmitButton;
 
@@ -59,25 +59,16 @@ class TopicsPresenter extends BasePresenter
 
 
 
-	public function renderDefault($categoryId)
+	protected function createComponentThreads(IThreadsControlFactory $factory)
 	{
-		$query = (new QuestionsQuery($this->category))
+		$query = (new QuestionsQuery())
+			->inCategory($this->category)
 			->withAnswersCount()
 			->withLastPost()
 			->sortByPinned()
 			->sortByHasSolution();
 
-		/** @var TopicsPresenter|VisualPaginator[] $this */
-		$this->template->topics = $this->reader->fetch($query)
-			->setFetchJoinCollection(FALSE)
-			->applyPaginator($this['vp']->getPaginator());
-	}
-
-
-
-	protected function createComponentVp()
-	{
-		return new VisualPaginator(30);
+		return $factory->create()->setQuery($query);
 	}
 
 
@@ -104,7 +95,7 @@ class TopicsPresenter extends BasePresenter
 			}
 
 			$topic = $this->writer->askQuestion(new Question($values->title, $values->content), $this->category);
-			$this->redirect('Question:', array('questionId' => $topic->id));
+			$this->redirect('Question:', array('questionId' => $topic->getId()));
 		};
 
 		$form->setupBootstrap3Rendering();

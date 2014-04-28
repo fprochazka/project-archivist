@@ -23,6 +23,8 @@ use Nette;
  * @author Filip Procházka <filip@prochazka.su>
  *
  * @ORM\MappedSuperclass()
+ *
+ * @property-read int $id
  */
 abstract class Identified extends Kdyby\Doctrine\Entities\BaseEntity
 {

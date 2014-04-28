@@ -12,6 +12,9 @@ namespace Archivist\Forum\Query;
 
 use Archivist\Forum\Answer;
 use Archivist\Forum\Category;
+use Archivist\InvalidArgumentException;
+use Archivist\Users\Identity;
+use Archivist\Users\User;
 use Doctrine\ORM\Query\Expr\Join;
 use Kdyby;
 use Kdyby\Doctrine\QueryBuilder;
@@ -26,12 +29,6 @@ use Nette;
 class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 {
 
-
-	/**
-	 * @var \Archivist\Forum\Category
-	 */
-	private $category;
-
 	/**
 	 * @var array|\Closure[]
 	 */
@@ -44,9 +41,29 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 
 
 
-	public function __construct(Category $category = NULL)
+	public function inCategory(Category $category = NULL)
 	{
-		$this->category = $category;
+		$this->filter[] = function (QueryBuilder $qb) use ($category) {
+			$qb->andWhere('q.category = :category')->setParameter('category', $category->getId());
+		};
+		return $this;
+	}
+
+
+
+	public function byUser($user)
+	{
+		if ($user instanceof Identity) {
+			$user = $user->getUser();
+
+		} elseif (!$user instanceof User) {
+			throw new InvalidArgumentException;
+		}
+
+		$this->filter[] = function (QueryBuilder $qb) use ($user) {
+			$qb->andWhere('u.id = :user')->setParameter('user', $user->getId());
+		};
+		return $this;
 	}
 
 
@@ -144,10 +161,6 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 			->andWhere('q.spam = FALSE AND q.deleted = FALSE')
 			->innerJoin('q.author', 'i')
 			->innerJoin('i.user', 'u');
-
-		if ($this->category !== NULL) {
-			$qb->andWhere('q.category = :category')->setParameter('category', $this->category->getId());
-		}
 
 		foreach ($this->filter as $modifier) {
 			$modifier($qb);
