@@ -22,7 +22,7 @@
 					<a n:href="Topics:, categoryId => $child->c2_id">{$child->c2_name}</a>
 				</td>
 				<td n:inner-if="$child->l_id" class="text-right">
-					by {$child->l_author_name} at <a n:href="Question:, $child->l_id">{$child->l_createdAt|date:'j.n.Y G:i'}</a><br>
+					by <a href="{plink Profile:, $child->l_author_id}">{$child->l_author_name}</a> at <a n:href="Question:, $child->l_id">{$child->l_createdAt|date:'j.n.Y G:i'}</a><br>
 					<a n:href="Question:, $child->l_id">{$child->l_title|truncate:90}</a>
 				</td>
 				<td n:inner-if="!$child->c2_url" class="text-center">

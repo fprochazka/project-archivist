@@ -42,7 +42,7 @@ class CategoriesPresenter extends BasePresenter
 			->addSelect("($unsolvedCountQb) as unsolved_count")
 			->leftJoin('c2.lastQuestion', 'lq')->addSelect('lq.id as l_id, lq.createdAt as l_createdAt, lq.title as l_title')
 			->leftJoin('lq.author', 'li')
-			->leftJoin('li.user', 'lu')->addSelect('lu.name as l_author_name')
+			->leftJoin('li.user', 'lu')->addSelect('lu.name as l_author_name, lu.id as l_author_id')
 			->orderBy('c1.position', 'ASC')->addOrderBy('c2.position', 'ASC');
 
 		$result = array_map('Nette\ArrayHash::from', $categoriesQb->getQuery()->getScalarResult());
