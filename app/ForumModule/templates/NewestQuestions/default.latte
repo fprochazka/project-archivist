@@ -11,6 +11,10 @@
 	<div class="col-sm-12">
 		{if}
 		<table class="table table-hover">
+			<col width="170">
+			<col>
+			<col>
+			<col width="60">
 			{foreach $topics as $item}
 				{var $question = $item[0]}
 				<tr n:class="$question->solution? success">

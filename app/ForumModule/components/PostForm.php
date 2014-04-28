@@ -58,7 +58,6 @@ class PostForm extends BaseForm
 			$identity = $this->user->getIdentity();
 			$identity->getUser()->name = $values->username;
 		};
-
 	}
 
 
