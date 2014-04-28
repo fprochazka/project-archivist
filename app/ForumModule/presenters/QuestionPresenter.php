@@ -60,7 +60,17 @@ class QuestionPresenter extends BasePresenter
 
 	protected function startup()
 	{
+		/** @var QuestionPresenter|VisualPaginator[] $this */
 		parent::startup();
+
+		if ($this->action === 'default' && $permalinkId = $this->getParameter('permalinkId')) {
+			if ($position = $this->reader->calculatePostPosition($permalinkId, $this['vp']->getPaginator())) {
+				list($questionId, $page, $anchor) = $position;
+				$this->redirect('Question:' . $anchor, ['questionId' => $questionId, 'vp-page' => $page]);
+			}
+
+			$this->error();
+		}
 
 		try {
 			if (!$this->question = $this->reader->readQuestion($this->questionId)) {

@@ -14,8 +14,11 @@ use Archivist\Forum\Query\QuestionsQuery;
 use Archivist\ForumModule\TopicsPresenter;
 use Archivist\Security\Role;
 use Archivist\Security\UserContext;
+use Doctrine\DBAL\SQLParserUtils;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Kdyby;
 use Kdyby\Doctrine\EntityManager;
+use Kdyby\Doctrine\NativeQueryWrapper;
 use Kdyby\Doctrine\ResultSet;
 use Nette;
 
@@ -150,6 +153,13 @@ class Reader extends Nette\Object
 	 */
 	public function readAnswers(Question $question)
 	{
+		return new ResultSet($this->buildAnswersDql($question)->getQuery());
+	}
+
+
+
+	private function buildAnswersDql(Question $question)
+	{
 		$qb = $this->answers->createQueryBuilder('a')
 			->innerJoin('a.author', 'i')->addSelect('i')
 			->innerJoin('i.user', 'u')->addSelect('u')
@@ -162,9 +172,7 @@ class Reader extends Nette\Object
 			->addSelect('FIELD(q.solution, a) as HIDDEN hasSolution')
 			->addOrderBy('hasSolution', 'ASC');
 
-		$qb->addOrderBy('a.createdAt', 'ASC');
-
-		return new ResultSet($qb->getQuery());
+		return $qb->addOrderBy('a.createdAt', 'ASC');
 	}
 
 
@@ -215,6 +223,42 @@ class Reader extends Nette\Object
 		if (!($post->isAuthor($this->user->getIdentity()) || $this->user->isInRole(Role::MODERATOR))) {
 			throw new ModificationsNotAllowedException;
 		}
+	}
+
+
+
+	public function calculatePostPosition($permalinkId, Nette\Utils\Paginator $paginator)
+	{
+		/** @var Question|Answer $post */
+		if (!$post = $this->posts->find($permalinkId)) {
+			return NULL;
+		}
+
+		if ($post instanceof Question) {
+			return [$post->getId(), 1, ''];
+		}
+
+		$answersQb = $this->buildAnswersDql($post->getQuestion())
+			->select('a.id, a.createdAt, FIELD(q.solution, a) as HIDDEN hasSolution')
+			->addSelect('ROW_NUMBER(a.createdAt ASC) AS position');
+
+		$rsm = new ResultSetMapping();
+		$rsm->addScalarResult('id0', 'id', 'integer');
+		$rsm->addScalarResult('created_at1', 'createdAt', 'datetime');
+		$rsm->addScalarResult('sclr3', 'position', 'integer');
+
+		$answersSql = $answersQb->getQuery()->getSQL();
+		$positionQuery = $this->em->createNativeQuery("SELECT t.* FROM ($answersSql) t WHERE t.id0 = ?", $rsm)
+			->setParameters([$answersQb->getParameter('question')->getValue(), $post->getId()]);
+
+		$position = (new NativeQueryWrapper($positionQuery))
+			->setMaxResults(1)->getScalarResult();
+
+		return $position ? array(
+			$post->getQuestion()->getId(),
+			(int) ceil($position[0]['position'] / $paginator->itemsPerPage),
+			'#post' . $post->getId(),
+		) : NULL;
 	}
 
 }

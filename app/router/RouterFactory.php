@@ -36,6 +36,7 @@ class RouterFactory
 		$flags = $this->productionMode ? Route::SECURED : 0;
 
 		$router[] = new Route('login/<action=in>', ['presenter' => 'Sign'], $flags);
+		$router[] = new Route('p<permalinkId [0-9]+>', ['module' => 'Forum', 'presenter' => 'Question', 'action' => 'default'], $flags);
 		$router[] = new Route('<presenter=Categories>/<action=default>?page=<threads-vp-page>', ['module' => 'Forum'], $flags);
 
 		return $router;

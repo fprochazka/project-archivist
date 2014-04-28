@@ -54,6 +54,7 @@ doctrine:
 		string:
 			isnull: Archivist\Doctrine\Dql\IsNull
 			field: Archivist\Doctrine\Dql\Field
+			row_number: Archivist\Doctrine\Dql\RowNumber
 
 
 includes:

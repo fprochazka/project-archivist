@@ -18,7 +18,9 @@
 						</div>
 						<a href="{plink Question:, questionId => $question->id}">{$question->title}</a>
 					</td>
-					<td class="text-right" n:inner-if="$last = $question->lastPost"><a href="{plink Profile:, $last->author->user->id}">{$last->author->name}</a><br>at {$last->createdAt|date:'j.n.Y G:i'}</td>
+					<td class="text-right" n:inner-if="$last = $question->lastPost">
+						<a href="{plink Profile:, $last->author->user->id}">{$last->author->name}</a><br>at <a href="{plink Question:, permalinkId => $last->id}">{$last->createdAt|date:'j.n.Y G:i'}</a>
+					</td>
 					<td class="text-right" n:if="$options[author]"><a href="{plink Profile:, $question->author->user->id}">{$question->author->name}</a><br>at {$question->createdAt|date:'j.n.Y G:i'}</td>
 					<td class="text-center text-middle"><span class="label label-info" title="Answers in thread" data-toggle="tooltip" data-placement="top">{$item['answers_count']}</span></td>
 				</tr>
