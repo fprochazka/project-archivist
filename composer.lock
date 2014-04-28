@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "1e2e0c11690d5f3290874c183452b7b4",
+    "hash": "339c85b79522561b79b3f7f8a1c7aad1",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -579,6 +579,55 @@
             "time": "2014-02-08 16:35:09"
         },
         {
+            "name": "ipub/gravatar",
+            "version": "dev-feature/compatibility",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fprochazka/Gravatar.git",
+                "reference": "4605ad7610ffe17d52985d29d837c8fecdf05ca2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fprochazka/Gravatar/zipball/4605ad7610ffe17d52985d29d837c8fecdf05ca2",
+                "reference": "4605ad7610ffe17d52985d29d837c8fecdf05ca2",
+                "shasum": ""
+            },
+            "require": {
+                "nette/nette": "*",
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "IPub\\Gravatar\\": "src/"
+                }
+            },
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Adam Kadlec",
+                    "homepage": "http://www.ipublikuj.eu/"
+                }
+            ],
+            "description": "Gravatar creator for Nette Framework",
+            "homepage": "https://github.com/iPublikuj/gravatar.git",
+            "keywords": [
+                "gravatar",
+                "nette",
+                "tools"
+            ],
+            "support": {
+                "email": "support@ipublikuj.eu",
+                "issues": "https://github.com/iPublikuj/Gravatar/issues",
+                "source": "https://github.com/fprochazka/Gravatar/tree/feature/compatibility"
+            },
+            "time": "2014-04-28 18:19:38"
+        },
+        {
             "name": "janmarek/webloader",
             "version": "dev-master",
             "source": {
@@ -866,12 +915,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Doctrine.git",
-                "reference": "cee12337e1a0eb922601ced217318a95fa00795e"
+                "reference": "65a220355883ef0de65d66276c267859b2de1f97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Doctrine/zipball/cee12337e1a0eb922601ced217318a95fa00795e",
-                "reference": "cee12337e1a0eb922601ced217318a95fa00795e",
+                "url": "https://api.github.com/repos/Kdyby/Doctrine/zipball/65a220355883ef0de65d66276c267859b2de1f97",
+                "reference": "65a220355883ef0de65d66276c267859b2de1f97",
                 "shasum": ""
             },
             "require": {
@@ -924,7 +973,7 @@
                 "nette",
                 "orm"
             ],
-            "time": "2014-04-25 19:00:28"
+            "time": "2014-04-28 15:27:18"
         },
         {
             "name": "kdyby/doctrine-cache",
@@ -2456,17 +2505,17 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v2.4.3",
+            "version": "v2.4.4",
             "target-dir": "Symfony/Component/Translation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Translation.git",
-                "reference": "98697a79a0db83d6f9a3a609a0704f02571ab46c"
+                "reference": "d2c73ffa4a5ba1fa0c5d93f43b68331dffe898c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Translation/zipball/98697a79a0db83d6f9a3a609a0704f02571ab46c",
-                "reference": "98697a79a0db83d6f9a3a609a0704f02571ab46c",
+                "url": "https://api.github.com/repos/symfony/Translation/zipball/d2c73ffa4a5ba1fa0c5d93f43b68331dffe898c5",
+                "reference": "d2c73ffa4a5ba1fa0c5d93f43b68331dffe898c5",
                 "shasum": ""
             },
             "require": {
@@ -2509,7 +2558,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-03-26 11:35:33"
+            "time": "2014-04-18 21:02:05"
         },
         {
             "name": "texy/texy",
@@ -2721,6 +2770,7 @@
         "majkl578/nette-identity-doctrine": 20,
         "beberlei/doctrineextensions": 20,
         "nextras/secured-links": 20,
+        "ipub/gravatar": 20,
         "nette/tester": 20
     },
     "platform": {

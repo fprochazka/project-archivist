@@ -39,6 +39,7 @@ extensions:
 	translation: Kdyby\Translation\DI\TranslationExtension
 	archivist: Archivist\DI\ArchivistExtension
 	doctrine2Identity: Majkl578\NetteAddons\Doctrine2Identity\DI\IdentityExtension
+	gravatar: IPub\Gravatar\DI\GravatarExtension
 
 
 annotations:
@@ -55,6 +56,10 @@ doctrine:
 			isnull: Archivist\Doctrine\Dql\IsNull
 			field: Archivist\Doctrine\Dql\Field
 			row_number: Archivist\Doctrine\Dql\RowNumber
+
+
+gravatar:
+	defaultImage: identicon
 
 
 includes:

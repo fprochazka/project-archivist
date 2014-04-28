@@ -47,7 +47,9 @@
 		"majkl578/nette-identity-doctrine": "@dev",
 		"beberlei/DoctrineExtensions": "@dev",
 
-		"nextras/secured-links": "~1.1@dev"
+		"nextras/secured-links": "~1.1@dev",
+
+		"ipub/gravatar": "dev-feature/compatibility"
 	},
 	"minimum-stability": "rc",
 	"require-dev": {
@@ -58,6 +60,7 @@
 		"files": ["libs/shortcuts.php"]
 	},
 	"repositories": [
-		{ "type": "vcs", "url": "https://github.com/fprochazka/nette.git" }
+		{ "type": "vcs", "url": "https://github.com/fprochazka/nette.git" },
+		{ "type": "vcs", "url": "https://github.com/fprochazka/Gravatar.git" }
 	]
 }

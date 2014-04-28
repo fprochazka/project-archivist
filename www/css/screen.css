@@ -86,8 +86,28 @@ table tr th.text-middle {
 	top: -60px;
 }
 
+.forum-post .panel-title {
+	position: relative;
+}
+
+.forum-post .panel-title img.gravatar {
+	position: absolute;
+	left: -90px;
+	top: -10px;
+}
+
 .modal.login-modal .modal-content .modal-footer {
 	margin-top: 0;
+}
+
+.page-header.profile {
+	margin-top: 70px;
+	position: relative;
+}
+.page-header.profile .gravatar {
+	position: absolute;
+	right: 0;
+	bottom: 10px;
 }
 
 

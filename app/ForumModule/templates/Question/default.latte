@@ -11,7 +11,11 @@
 	<div id="post{$post->id}" class="id"></div>
 	<div class="panel-heading">
 		<strong class="pull-right text-right timestamp"><a n:href="Question:, questionId => NULL, permalinkId => $post->id"># {$post->createdAt|date:'j.n.Y G:i'}</a></strong>
-		<h3 class="panel-title"><a href="{plink Profile:, $post->author->user->id}">{$post->author->name}</a> {if $user->isInRole(moderator)}&lt;{$post->author->user->email}&gt;{/if}</h3>
+		<h3 class="panel-title">
+			<img n:gravatar="$post->author->user->email, 64" class="gravatar" />
+			<a href="{plink Profile:, $post->author->user->id}">{$post->author->name}</a>
+			{if $user->isInRole(moderator)}&lt;{$post->author->user->email}&gt;{/if}
+		</h3>
 	</div>
 	<div class="panel-body">
 		{cache [(string)$post], if => $productionMode}{$post->content|noescape|texifyForumPost}{/cache}
