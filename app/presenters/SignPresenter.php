@@ -2,8 +2,8 @@
 
 namespace Archivist;
 
-use Archivist\UI\BaseForm;
-use Archivist\Users\EmailAlreadyTakenException;
+use Archivist\SignDialog\ISingInControlFactory;
+use Archivist\SignDialog\SingInControl;
 use Nette;
 
 
@@ -13,80 +13,14 @@ use Nette;
 class SignPresenter extends BasePresenter
 {
 
-	/**
-	 * @var \Archivist\Users\Manager
-	 * @autowire
-	 */
-	protected $usersManager;
-
-
-
-	/**
-	 * Sign-in form factory.
-	 * @return Nette\Application\UI\Form
-	 */
-	protected function createComponentSignInForm()
+	protected function createComponentLogin(ISingInControlFactory $factory)
 	{
-		$form = new BaseForm();
-
-		$form->addText('email', 'Email:')
-			->setRequired('Please enter your email.')
-			->addRule($form::EMAIL);
-
-		$form->addPassword('password', 'Password:')
-			->setRequired('Please enter your password.');
-
-		$form->addCheckbox('remember', 'Keep me signed in');
-
-		$form->addSubmit('send', 'Sign in');
-
-		// call method signInFormSucceeded() on success
-		$form->onSuccess[] = function (Baseform $form, $values) {
-			if ($values->remember) {
-				$this->getUser()->setExpiration('14 days', FALSE);
-			} else {
-				$this->getUser()->setExpiration('2 hours', TRUE);
-			}
-
-			try {
-				$this->getUser()->login($values->email, $values->password);
-				$this->redirect(':Forum:Categories:');
-
-			} catch (Nette\Security\AuthenticationException $e) {
-				$form->addError($e->getMessage());
-			}
-		};
-
-		$form->setupBootstrap3Rendering();
-		return $form;
-	}
-
-
-
-	/**
-	 * @return BaseForm
-	 */
-	protected function createComponentRegisterForm()
-	{
-		$form = new BaseForm();
-		$form->addText('email', 'Email:')->addRule($form::EMAIL);
-		$form->addPassword('password', 'Password:');
-
-	    $form->addSubmit("send", "Register");
-		$form->onSuccess[] = function (BaseForm $form, $values) {
-			try {
-				$this->user->login($this->usersManager->registerWithPassword($values->email, $values->password));
-
-			} catch (EmailAlreadyTakenException $e) {
-				$form->addError("Account with this email already exists");
-				return;
-			}
-
+		$control = $factory->create();
+		$control->onSingIn[] = function (SingInControl $control) {
 			$this->redirect(':Forum:Categories:');
 		};
 
-		$form->setupBootstrap3Rendering();
-		return $form;
+		return $control;
 	}
 
 }

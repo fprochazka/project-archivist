@@ -2,6 +2,8 @@
 
 namespace Archivist;
 
+use Archivist\SignDialog\ISingInControlFactory;
+use Archivist\SignDialog\SingInControl;
 use Kdyby\Autowired\AutowireComponentFactories;
 use Kdyby\Autowired\AutowireProperties;
 use Nette;
@@ -54,6 +56,18 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	protected function createComponentWebloaderJs()
 	{
 		return $this->webloader->createJavaScriptLoader('default');
+	}
+
+
+
+	protected function createComponentLogin(ISingInControlFactory $factory)
+	{
+		$control = $factory->create()->setView('modal');
+		$control->onSingIn[] = function (SingInControl $control) {
+			$this->redirect('this');
+		};
+
+		return $control;
 	}
 
 

@@ -61,7 +61,11 @@
 
 			<ul class="nav navbar-nav navbar-right">
 				<li n:if="!$user->loggedIn">
-					<a n:href=":Sign:in">Log in</a>
+					{if $presenter->isLinkCurrent(':Sign:*')}
+						<a href="{plink :Sign:in}">Log in</a>
+					{else}
+						<a href="{plink login-showModal!}" class="ajax">Log in</a>
+					{/if}
 				</li>
 				<li class="dropdown" n:if="$user->loggedIn">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -96,6 +100,8 @@
 	<p class="text-muted"><a href="https://www.kdyby.org">www.kdyby.org</a></p>
   </div>
 </div>
+
+{control login}
 
 {block scripts}{/block}
 {control webloaderJs}
