@@ -77,7 +77,7 @@ table tr th.text-middle {
 }
 
 .forum-post .timestamp a {
-	color: #333;
+	color: inherit;
 }
 
 .forum-post .id {
