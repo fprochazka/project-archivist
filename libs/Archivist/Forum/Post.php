@@ -28,11 +28,6 @@ use Nette;
  * 		@ORM\Index(columns={"spam", "deleted", "category_id", "type", "pinned", "locked"})
  * })
  *
- * @ORM\EntityListeners({
- * 		"Archivist\Forum\Events\NewestQuestionListener",
- * 		"Archivist\Forum\Events\LastPostListener"
- * })
- *
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string", length=10)
  * @ORM\DiscriminatorMap({

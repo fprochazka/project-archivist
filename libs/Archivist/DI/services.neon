@@ -13,8 +13,7 @@ services:
 
 	- Archivist\Forum\Reader()
 	- Archivist\Forum\Writer()
-	- Archivist\Forum\Events\NewestQuestionListener()
-	- Archivist\Forum\Events\LastPostListener()
+	- {class: Archivist\Forum\Events\LastPostListener(), tags: [kdyby.subscriber]}
 
 	# componnets
 	- Archivist\ForumModule\IPostFormFactory
