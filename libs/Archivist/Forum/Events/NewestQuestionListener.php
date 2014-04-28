@@ -10,6 +10,7 @@
 
 namespace Archivist\Forum\Events;
 
+use Archivist\Forum\Answer;
 use Archivist\Forum\Category;
 use Archivist\Forum\Post;
 use Archivist\Forum\Question;
@@ -41,19 +42,23 @@ class NewestQuestionListener extends Nette\Object
 
 
 	/**
-	 * @param Post|Question $post
+	 * @param Post|Question|Answer $post
 	 * @param PreFlushEventArgs $args
 	 */
 	public function preFlush(Post $post, PreFlushEventArgs $args)
 	{
+		$category = $post->category;
+
 		if (!$post->isQuestion()) {
+			if (!$category->lastQuestion) {
+				$category->setLastQuestion($this->findLastQuestion($category, $post->getQuestion()));
+			}
+
 			return;
 		}
 
-		$category = $post->category;
-
 		if ($post->isDeleted() || $post->isSpam()) {
-			if ($category->lastQuestion !== $post) {
+			if ($category->lastQuestion && $category->lastQuestion !== $post) {
 				return;
 			}
 
