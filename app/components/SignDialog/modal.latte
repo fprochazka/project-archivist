@@ -1,36 +1,35 @@
-<div n:snippet n:inner-if="$renderModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true">
+<div n:snippet n:inner-if="$renderModal" class="modal fade login-modal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true">
 	<div class="modal-dialog">
-		<div class="modal-content">
+		<div class="modal-content ajax-overlay">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h4 class="modal-title" id="loginModalTitle">Login</h4>
 			</div>
 
-			{form signInForm}
-			<div class="modal-body">
+			<form n:name="signInForm" class="form-horizontal ajax">
+				<div class="modal-body">
 
-				{control signInForm errors}
+					{control signInForm errors}
 
-				<div class="form-group required">
-					<div class="col-sm-3 control-label">{label email /}</div>
-					<div class="col-sm-9">{input email}</div>
+					{*<p class="alert alert-info">If you're not registered, your account will be automatically created.</p>*}
+
+					<div class="form-group required">
+						<div class="col-sm-3 control-label">{label email /}</div>
+						<div class="col-sm-9">{input email}</div>
+					</div>
+
+					<div class="form-group required">
+						<div class="col-sm-3 control-label">{label password /}</div>
+						<div class="col-sm-9">{input password}</div>
+					</div>
 				</div>
-
-				<div class="form-group required">
-					<div class="col-sm-3 control-label">{label password /}</div>
-					<div class="col-sm-9">{input password}</div>
+				<div class="modal-footer">
+					<div class="pull-left">{input remember}</div>
+					<button n:name="register" class="btn btn-warning">Register</button>
+					<button n:name="signIn" class="btn btn-primary">Sign in</button>
 				</div>
+			</form>
 
-			</div>
-			<div class="modal-footer">
-				<div class="pull-left">
-					{input remember}
-				</div>
-
-				<button n:name="send" class="btn btn-primary">Sign in</button>
-			</div>
-
-			{/form}
 		</div>
 	</div>
 </div>

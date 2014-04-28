@@ -2,7 +2,7 @@
 
 <div class="page-header">
 	<h1 n:block=title>
-		{$userEntity->name} {if $user->isInRole(moderator)}&lt;{$userEntity->email}&gt;{/if}
+		{$userEntity->name ?: 'The chosen one'} {if $user->isInRole(moderator) || ($user->loggedIn && $userEntity === $user->identity->user)}&lt;{$userEntity->email}&gt;{/if}
 	</h1>
 </div>
 

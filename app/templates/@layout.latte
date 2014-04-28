@@ -46,8 +46,8 @@
 				<li class="dropdown">
 					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">Forum <b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a n:href=":Forum:Categories:"><span class="glyphicon glyphicon-folder-open pull-right"></span> Categories</a></li>
-						<li><a n:href=":Forum:NewestQuestions:"><span class="glyphicon glyphicon-sort-by-attributes-alt pull-right"></span> New questions</a></li>
+						<li><a n:href=":Forum:Categories:"><span class="glyphicon glyphicon-folder-open pull-right"></span>Categories</a></li>
+						<li><a n:href=":Forum:NewestQuestions:"><span class="glyphicon glyphicon-sort-by-attributes-alt pull-right"></span>New questions</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -73,7 +73,8 @@
 						{$user->name ?: $user->email} <b class="caret"></b>
 					</a>
 					<ul class="dropdown-menu">
-						<li><a n:href="signOut!">Sign out</a></li>
+						<li><a n:href=":Forum:Profile:, $user->identity->user->id"><span class="glyphicon glyphicon-user pull-right"></span>Profile</a></li>
+						<li><a n:href="signOut!"><span class="glyphicon glyphicon-log-out pull-right"></span>Sign out</a></li>
 					</ul>
 				</li>
 			</ul>

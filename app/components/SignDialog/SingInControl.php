@@ -71,11 +71,30 @@ class SingInControl extends BaseControl
 
 
 
+	/**
+	 * @param \Nette\ComponentModel\Container $obj
+	 */
+	protected function attached($obj)
+	{
+		parent::attached($obj);
+
+		if (!$obj instanceof \Nette\Application\UI\Presenter) {
+			return;
+		}
+
+		$this->template->renderModal = $this->presenter->isSignalReceiver($this)
+			|| $this->presenter->isSignalReceiver($this['signInForm'])
+			|| $this->presenter->isSignalReceiver($this['registerForm']);
+
+		$this->redrawControl();
+	}
+
+
+
 	public function handleShowModal()
 	{
 		$this->view = 'modal';
 		$this->template->renderModal = TRUE;
-		$this->redrawControl();
 	}
 
 
@@ -106,7 +125,8 @@ class SingInControl extends BaseControl
 		$form->addCheckbox('remember', 'Keep me signed in')
 			->setDefaultValue(TRUE);
 
-		$form->addSubmit('send', 'Sign in');
+		$form->addSubmit('signIn', 'Sign in');
+		$form->addSubmit('register', 'Register');
 
 		// call method signInFormSucceeded() on success
 		$form->onSuccess[] = function (Baseform $form, $values) {
@@ -114,6 +134,23 @@ class SingInControl extends BaseControl
 				$this->user->setExpiration('14 days', FALSE);
 			} else {
 				$this->user->setExpiration('2 hours', TRUE);
+			}
+
+			if ($form->isSubmitted() === $form['register']) {
+				try {
+					$this->user->login($this->manager->registerWithPassword($values->email, $values->password));
+					$this->onSingIn($this, $this->user->getIdentity());
+
+				} catch (EmailAlreadyTakenException $e) {
+					try {
+						$this->user->login($values->email, $values->password);
+						$this->onSingIn($this, $this->user->getIdentity());
+						return;
+					} catch (Nette\Security\AuthenticationException $e) { }
+
+					$form->addError("Account with this email already exists");
+					return;
+				}
 			}
 
 			try {

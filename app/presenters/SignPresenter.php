@@ -13,7 +13,7 @@ use Nette;
 class SignPresenter extends BasePresenter
 {
 
-	protected function createComponentLogin(ISingInControlFactory $factory)
+	protected function createComponentLoginOrRegister(ISingInControlFactory $factory)
 	{
 		$control = $factory->create();
 		$control->onSingIn[] = function (SingInControl $control) {
