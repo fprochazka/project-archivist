@@ -11,7 +11,7 @@ use Nette;
 
 
 
-class NewestQuestionsPresenter extends BasePresenter
+class LatestQuestionsPresenter extends BasePresenter
 {
 
 	public function actionDefault($categoryId)
