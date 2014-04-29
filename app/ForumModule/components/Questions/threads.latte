@@ -9,15 +9,15 @@
 		<div n:class="title, $options[author] ? col-md-7 : col-md-8">
 			<div class="pull-right">
 				{if $question->locked}<span class="glyphicon glyphicon-lock" title="Thread is locked" data-toggle="tooltip" data-placement="left"></span>{/if}
-				{if $question->pinned} &nbsp; <span class="glyphicon glyphicon-star" title="Thread is pinned, you should propbably read it" data-toggle="tooltip" data-placement="right"></span>{/if}
+				{if $question->pinned} &nbsp; <span class="glyphicon glyphicon-star" title="Thread is pinned, you should propbably read it" data-toggle="tooltip" data-placement="left"></span>{/if}
 			</div>
-			<span class="label label-info hidden-lg hidden-md" title="Answers in thread" data-toggle="tooltip" data-placement="top">{$item['answers_count']}</span>
+			<span class="label label-info hidden-lg hidden-md" title="Answers in thread">{$item['answers_count']}</span>
 			<a href="{plink Question:, questionId => $question->id}" class="row-target">{$question->title}</a>
 		</div>
-		<div class="col-md-2 col-sm-6 hidden-xs text-right" n:inner-if="$last = $question->lastPost">
+		<div class="col-md-2 col-md-offset-0 col-sm-offset-2 col-sm-5 hidden-xs text-right" n:inner-if="$last = $question->lastPost">
 			<a href="{plink Profile:, $last->author->user->id}">{$last->author->name}</a><br class="hidden-xs hidden-sm"> at <a href="{plink Question:, permalinkId => $last->id}">{$last->createdAt|date:'j.n.Y G:i'}</a>
 		</div>
-		<div n:if="$options[author]" class="col-md-2 col-sm-6 col-xs-12 text-right">
+		<div n:if="$options[author]" class="col-md-2 col-sm-5 col-xs-12 text-right">
 			<a href="{plink Profile:, $question->author->user->id}">{$question->author->name}</a><br class="hidden-xs hidden-sm"> at {$question->createdAt|date:'j.n.Y G:i'}
 		</div>
 		<div class="col-md-1 text-center text-middle visible-md visible-lg">
