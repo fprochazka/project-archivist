@@ -1,25 +1,32 @@
-<div class="row topics">
-	<div class="col-sm-12">
-		{if}
-		<table class="table table-hover">
-			<col width="170">
-			{foreach $topics as $item}
-				{var $question = $item[0]}
-				<tr n:class="$question->pinned ? warning : ($question->solution? success)">
-					<td class="text-right">
-						{if $parentCategory = $question->category->parent}{$parentCategory->name}<br>{/if}
-						<a href="{plink Topics:, $question->category->id}">{$question->category->name}</a>
-					</td>
-					<td class="title text-middle">
-						<a href="{plink Question:, questionId => $question->id}">{$question->title}</a>
-					</td>
-					<td class="text-right" n:if="$options[author]"><a href="{plink Profile:, $question->author->user->id}">{$question->author->name}</a><br>at {$question->createdAt|date:'j.n.Y G:i'}</td>
-					<td class="text-center text-middle"><span class="label label-info" title="Answers in thread" data-toggle="tooltip" data-placement="top">{$item['answers_count']}</span></td>
-				</tr>
-			{/foreach}
-		</table>
-		{/if $iterations}
 
-		<div n:if="!$iterations">No open discussions</div>
+<div class="topics">
+	{if}
+	<div class="row topic visible-md visible-lg" n:if="$options[author]">
+		<div class="col-md-2 text-right"><strong>Category</strong></div>
+		<div class="col-md-offset-7 col-md-2 text-right"><strong>Author</strong></div>
 	</div>
+	<div n:foreach="$topics as $item" n:class="row, topic, $item[0]->pinned ? bg-warning : ($item[0]->solution? bg-success)">
+		{var $question = $item[0]}
+		<div class="text-right col-md-2">
+			{if $parentCategory = $question->category->parent}{$parentCategory->name}<br class="hidden-xs hidden-sm"><span class="hidden-md hidden-lg"> / </span>{/if}
+			<a href="{plink Topics:, $question->category->id}">{$question->category->name}</a>
+		</div>
+		<div n:class="title, $options[author] ? col-md-7 : col-md-8">
+			<div class="pull-right">
+				{if $question->locked}<span class="glyphicon glyphicon-lock" title="Thread is locked" data-toggle="tooltip" data-placement="left"></span>{/if}
+				{if $question->pinned} &nbsp; <span class="glyphicon glyphicon-exclamation-sign" title="Thread is pinned, you should propbably read it" data-toggle="tooltip" data-placement="left"></span>{/if}
+			</div>
+			<span class="label label-info hidden-lg hidden-md" title="Answers in thread">{$item['answers_count']}</span>
+			<a href="{plink Question:, questionId => $question->id}" class="row-target">{$question->title}</a>
+		</div>
+		<div class="col-md-2 col-sm-12 text-right">
+			<a href="{plink Profile:, $question->author->user->id}">{$question->author->name}</a><br class="hidden-xs hidden-sm"> at {$question->createdAt|date:'j.n.Y G:i'}
+		</div>
+		<div class="col-md-1 text-center text-middle visible-md visible-lg">
+			<span class="label label-info" title="Answers in thread" data-toggle="tooltip" data-placement="top">{$item['answers_count']}</span>
+		</div>
+	</div>
+	{/if $iterations}
+
+	<div class="row" n:if="!$iterations"><div class="col-lg-12"><p>No open discussions</p></div></div>
 </div>
