@@ -22,8 +22,17 @@ html.js .jshidden {
 	display: none;
 }
 
-.category table tr:first-child td,
+/*.category table tr:first-child td,*/
 .topics table tr:first-child td {
+	border-top: 0;
+}
+
+.category .panel-body .row {
+	border-top: 1px solid #ddd;
+	padding: 8px 0;
+}
+
+.category .panel-body .row:first-child {
 	border-top: 0;
 }
 
