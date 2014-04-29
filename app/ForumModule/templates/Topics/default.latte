@@ -6,11 +6,8 @@
 
 <div class="page-header">
 	<h1 n:block=title>
+		<span class="hidden-xs" n:if="$category->parent">{$category->parent->name} -</span>
 		{$category->name}
-
-		<small class="pull-right visible-sm visible-md visible-lg" n:if="$category->parent">
-			<span class="hidden">-</span> {$category->parent->name}
-		</small>
 	</h1>
 	<a href="{plink //rss-feed!}" class="pull-right rss-feed hidden-xs hidden-sm">RSS</a>
 	<a n:href="Categories:" class="hidden-xs hidden-sm">&laquo; All categories</a>
