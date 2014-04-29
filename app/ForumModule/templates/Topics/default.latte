@@ -8,12 +8,12 @@
 	<h1 n:block=title>
 		{$category->name}
 
-		<small class="pull-right" n:if="$category->parent">
+		<small class="pull-right visible-sm visible-md visible-lg" n:if="$category->parent">
 			<span class="hidden">-</span> {$category->parent->name}
 		</small>
 	</h1>
-	<a href="{plink //rss-feed!}" class="pull-right rss-feed">RSS</a>
-	<a n:href="Categories:">&laquo; All categories</a>
+	<a href="{plink //rss-feed!}" class="pull-right rss-feed hidden-xs hidden-sm">RSS</a>
+	<a n:href="Categories:" class="hidden-xs hidden-sm">&laquo; All categories</a>
 </div>
 
 {control threads}

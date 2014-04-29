@@ -41,8 +41,24 @@ table tr th.text-middle {
 	vertical-align: middle;
 }
 
-.topics td.title {
+.topics .title,
+.topic .title {
 	font-size: 130%;
+}
+
+.topics .row {
+	border-top: 1px solid #ddd;
+	padding: 8px 0;
+}
+
+.topics .row.topic:first-child {
+	border-top: 0;
+}
+
+@media (max-width: 991px) {
+	.topics .row.topic:nth-child(2) {
+		border-top: 0;
+	}
 }
 
 .topics table tr th {
