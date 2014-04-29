@@ -21,19 +21,23 @@
 
 <hr>
 
-<div class="row">
-	{if $user->loggedIn}
 
-		<div class="col-sm-offset-3"><h2>Create topic:</h2></div>
+{if $user->loggedIn}
+
+	<div class="row">
+		<div class="col-sm-offset-3 col-sm-6"><h2>Create topic:</h2></div>
+	</div>
+	<div class="row">
 		<div class="col-sm-11">
 			{control createTopicForm}
 		</div>
+	</div>
 
-	{else}
-
+{else}
+	<div class="row">
 		<div class="col-sm-10 col-sm-offset-1">
 			<div class="alert alert-warning">You must first <a n:href=":Sign:in">login</a> to open a discussion</div>
 		</div>
+	</div>
+{/if}
 
-	{/if}
-</div>
