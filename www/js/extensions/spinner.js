@@ -1,6 +1,6 @@
 (function($, undefined) {
 
-$.nette.ext('spinner', {
+/*$.nette.ext('spinner', {
 	init: function () {
 		this.spinner = this.createSpinner();
 		this.spinner.appendTo('body');
@@ -29,6 +29,6 @@ $.nette.ext('spinner', {
 	spinner: null,
 	speed: undefined,
 	counter: 0
-});
+});*/
 
 })(jQuery);
