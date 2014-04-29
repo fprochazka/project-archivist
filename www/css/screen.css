@@ -36,6 +36,12 @@ html.js .jshidden {
 	border-top: 0;
 }
 
+.category .row h2 {
+	padding: 0;
+	margin: 0;
+	font-size: 25px;
+}
+
 table tr td.text-middle,
 table tr th.text-middle {
 	vertical-align: middle;
