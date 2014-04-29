@@ -10,7 +10,8 @@
 
 namespace Archivist\UI;
 
-use Archivist\Forum\PostContentRenderer;
+use Archivist\Forum\IRenderer;
+use Archivist\Forum\Post;
 use Kdyby;
 use Latte\Engine;
 use Nette;
@@ -24,26 +25,27 @@ class TemplateHelpers extends Nette\Object
 {
 
 	/**
-	 * @var \Archivist\Forum\PostContentRenderer
+	 * @var \Archivist\Forum\IRenderer
 	 */
 	private $postRenderer;
 
 
 
-	public function __construct(PostContentRenderer $postRenderer)
+	public function __construct(IRenderer $postRenderer)
 	{
 		$this->postRenderer = $postRenderer;
 	}
 
 
-	public function texifyForumPost($content)
+
+	public function texifyForumPost(Post $post)
 	{
-		$this->postRenderer->parse($content);
-		return $this->postRenderer->html;
+		return $this->postRenderer->toHtml($post->getContent(), (string) $post);
 	}
 
 
-	public static function register(Engine $engine, PostContentRenderer $postRenderer)
+
+	public static function register(Engine $engine, IRenderer $postRenderer)
 	{
 		$helpers = new static($postRenderer);
 

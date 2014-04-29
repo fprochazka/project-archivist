@@ -1,7 +1,12 @@
+{block head}
+	{control rss:link}
+{/block}
+
 {block content}
 
-<div class="page-header">
+<div class="page-header categories">
 	<h1 n:block=title>Support Forum</h1>
+	<a href="{plink //rss-feed!}" class="rss-feed">RSS</a>
 </div>
 
 {foreach $categories as $children}

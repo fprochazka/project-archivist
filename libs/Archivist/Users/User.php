@@ -25,6 +25,8 @@ use Nette;
  *
  * @ORM\Entity()
  * @ORM\Table(name="users")
+ *
+ * @property string $name
  */
 class User extends Identified
 {

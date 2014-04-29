@@ -3,7 +3,10 @@
 namespace Archivist\ForumModule;
 
 use Archivist\Forum\Category;
+use Archivist\Forum\Query\QuestionsQuery;
 use Archivist\Forum\Question;
+use Archivist\Rss\FeedControl;
+use Archivist\Rss\IFeedControlFactory;
 use Nette;
 
 
@@ -47,6 +50,20 @@ class CategoriesPresenter extends BasePresenter
 
 		$result = array_map('Nette\ArrayHash::from', $categoriesQb->getQuery()->getScalarResult());
 		$this->template->categories = Nette\Utils\Arrays::associate($result, 'c1_id|c2_id->');
+	}
+
+
+
+	protected function createComponentRss(IFeedControlFactory $factory)
+	{
+		$control = $factory->create();
+
+		$control->onAttached[] = function (FeedControl $control) {
+			$control->getChannel()->setTitle('Newest questions - help.kdyby.org');
+			$control->setQuery(new QuestionsQuery());
+		};
+
+		return $control;
 	}
 
 }

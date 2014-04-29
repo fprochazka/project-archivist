@@ -9,7 +9,7 @@ services:
 	nette.latte:
 		setup:
 			- addFilter(NULL, Archivist\UI\TemplateHelpers::register(@self))
-	- Archivist\Forum\PostContentRenderer("Help", "en", "")
+	- Archivist\Forum\Preprocessor\CachingRenderer(%productionMode%, Archivist\Forum\Preprocessor\TexyRenderer())
 
 	- Archivist\Forum\Reader()
 	- Archivist\Forum\Writer()
@@ -19,3 +19,4 @@ services:
 	- Archivist\ForumModule\IPostFormFactory
 	- Archivist\ForumModule\Questions\IThreadsControlFactory
 	- Archivist\SignDialog\ISingInControlFactory
+	- Archivist\Rss\IFeedControlFactory

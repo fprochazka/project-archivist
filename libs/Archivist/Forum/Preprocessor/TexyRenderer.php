@@ -8,8 +8,9 @@
  * For the full copyright and license information, please view the file license.txt that was distributed with this source code.
  */
 
-namespace Archivist\Forum;
+namespace Archivist\Forum\Preprocessor;
 
+use Archivist\Forum\IRenderer;
 use Kdyby;
 use Nette;
 use Text\Converter;
@@ -19,8 +20,23 @@ use Text\Converter;
 /**
  * @author Filip Procházka <filip@prochazka.su>
  */
-class PostContentRenderer extends Converter
+class TexyRenderer extends Converter implements IRenderer
 {
+
+	public function __construct()
+	{
+		parent::__construct("Help", "en", "");
+	}
+
+
+
+	public function toHtml($texy)
+	{
+		$this->parse($texy);
+		return $this->html;
+	}
+
+
 
 	public function createTexy()
 	{
@@ -45,6 +61,8 @@ class PostContentRenderer extends Converter
 
 			return $invocation->proceed();
 		});
+
+		$texy::$advertisingNotice = FALSE;
 
 		return $texy;
 	}

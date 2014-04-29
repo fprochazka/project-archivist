@@ -18,7 +18,7 @@
 		</h3>
 	</div>
 	<div class="panel-body">
-		{cache [(string)$post], if => $productionMode}{$post->content|noescape|texifyForumPost}{/cache}
+		{$post|texifyForumPost|noescape}
 	</div>
 	<div class="panel-footer" n:if="$user->isInRole(moderator) || (!$question->locked && $post->isAuthor($user->identity))">
 		<div class="text-right pull-right">

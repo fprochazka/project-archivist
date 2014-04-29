@@ -100,6 +100,10 @@ table tr th.text-middle {
 	margin-top: 0;
 }
 
+.page-header {
+	position: relative;
+}
+
 .page-header.profile {
 	margin-top: 70px;
 	position: relative;
@@ -107,6 +111,19 @@ table tr th.text-middle {
 .page-header.profile .gravatar {
 	position: absolute;
 	right: 0;
+	bottom: 10px;
+}
+
+.rss-feed {
+	background: url("../images/rss.png") no-repeat 0 2px;
+	background-size: 16px;
+	padding-left: 21px;
+	margin-right: 3px;
+}
+
+.page-header.categories .rss-feed {
+	position: absolute;
+	right: 3px;
 	bottom: 10px;
 }
 

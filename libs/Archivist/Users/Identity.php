@@ -36,6 +36,8 @@ use Nette;
  *    "google" = "Archivist\Users\Identity\Google",
  *    "twitter" = "Archivist\Users\Identity\Twitter"
  * })
+ *
+ * @property-read string $name
  */
 abstract class Identity extends Identified implements Nette\Security\IIdentity
 {

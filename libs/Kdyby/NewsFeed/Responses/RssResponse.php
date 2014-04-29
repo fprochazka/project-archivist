@@ -82,7 +82,7 @@ class RssResponse extends Nette\Object implements Nette\Application\IResponse
 	protected function feedItemToXml(Item $item)
 	{
 		$xml = XmlElement::createRssElement('item');
-		$xml->addChild('guid', $item->getGuid(), array('isPermaLink' => 'false'));
+		$xml->addChild('guid', $item->getGuid(), array('isPermaLink' => $item->isGuidPermalink() ? 'true' : 'false'));
 		$xml->addChild('title', $item->getTitle());
 		$xml->addChild('link', $item->getItemLink());
 

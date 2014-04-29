@@ -112,4 +112,14 @@ class Category extends Identified
 		return $this;
 	}
 
+
+
+	/**
+	 * @return Category
+	 */
+	public function getParent()
+	{
+		return $this->parent;
+	}
+
 }

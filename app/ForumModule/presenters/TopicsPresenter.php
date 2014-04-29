@@ -6,7 +6,12 @@ use Archivist\Forum\Category;
 use Archivist\Forum\Query\QuestionsQuery;
 use Archivist\Forum\Question;
 use Archivist\ForumModule\Questions\IThreadsControlFactory;
+use Archivist\Rss\FeedControl;
+use Archivist\Rss\IFeedControlFactory;
 use Archivist\UI\BaseForm;
+use Kdyby\NewsFeed\Channel;
+use Kdyby\NewsFeed\Item;
+use Kdyby\NewsFeed\Responses\RssResponse;
 use Nette;
 use Nette\Forms\Controls\SubmitButton;
 
@@ -37,6 +42,12 @@ class TopicsPresenter extends BasePresenter
 	 */
 	protected $reader;
 
+	/**
+	 * @var \Archivist\Forum\IRenderer
+	 * @autowire
+	 */
+	protected $postRenderer;
+
 
 
 	public function actionDefault($categoryId)
@@ -47,6 +58,23 @@ class TopicsPresenter extends BasePresenter
 		} elseif ($this->category->url) {
 			$this->redirectUrl($this->category->url);
 		}
+	}
+
+
+
+	protected function createComponentRss(IFeedControlFactory $factory)
+	{
+		$control = $factory->create();
+
+		$control->onAttached[] = function (FeedControl $control) {
+			$control->getChannel()
+				->setTitle($this->category->name . (($parent = $this->category->getParent()) ? ' - ' . $parent->name : '') . ' - help.kdyby.org');
+
+			$control->setQuery((new QuestionsQuery())
+				->inCategory($this->category));
+		};
+
+		return $control;
 	}
 
 

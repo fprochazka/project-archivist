@@ -120,10 +120,6 @@ class XmlElement extends \SimpleXMLElement
 			$value = $value->format('D, d M Y H:i:s O');
 		}
 
-		if ($value !== NULL) {
-			$value = str_replace('&', '&amp;', $value);
-		}
-
 		return $value;
 	}
 

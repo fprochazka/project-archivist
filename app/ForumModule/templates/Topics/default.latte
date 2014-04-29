@@ -1,3 +1,7 @@
+{block head}
+	{control rss:link}
+{/block}
+
 {block content}
 
 <div class="page-header">
@@ -8,6 +12,7 @@
 			<span class="hidden">-</span> {$category->parent->name}
 		</small>
 	</h1>
+	<a href="{plink //rss-feed!}" class="pull-right rss-feed">RSS</a>
 	<a n:href="Categories:">&laquo; All categories</a>
 </div>
 

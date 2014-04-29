@@ -53,6 +53,11 @@ class Item extends Nette\Object
 	private $guid;
 
 	/**
+	 * @var bool
+	 */
+	private $guidIsPermalink = FALSE;
+
+	/**
 	 * @var string
 	 */
 	private $description;
@@ -190,11 +195,13 @@ class Item extends Nette\Object
 
 	/**
 	 * @param string $guid
+	 * @param bool $isPermalink
 	 * @return Item
 	 */
-	public function setGuid($guid)
+	public function setGuid($guid, $isPermalink = TRUE)
 	{
 		$this->guid = $guid;
+		$this->guidIsPermalink = $isPermalink;
 		return $this;
 	}
 
@@ -206,6 +213,16 @@ class Item extends Nette\Object
 	public function getGuid()
 	{
 		return $this->guid;
+	}
+
+
+
+	/**
+	 * @return boolean
+	 */
+	public function isGuidPermalink()
+	{
+		return $this->guidIsPermalink;
 	}
 
 
