@@ -9,7 +9,7 @@
 		<div n:class="title, $options[author] ? col-md-7 : col-md-8">
 			<div class="pull-right">
 				{if $question->locked}<span class="glyphicon glyphicon-lock" title="Thread is locked" data-toggle="tooltip" data-placement="left"></span>{/if}
-				{if $question->pinned} &nbsp; <span class="glyphicon glyphicon-star" title="Thread is pinned, you should propbably read it" data-toggle="tooltip" data-placement="left"></span>{/if}
+				{if $question->pinned} &nbsp; <span class="glyphicon glyphicon-exclamation-sign" title="Thread is pinned, you should propbably read it" data-toggle="tooltip" data-placement="left"></span>{/if}
 			</div>
 			<span class="label label-info hidden-lg hidden-md" title="Answers in thread">{$item['answers_count']}</span>
 			<a href="{plink Question:, questionId => $question->id}" class="row-target">{$question->title}</a>
