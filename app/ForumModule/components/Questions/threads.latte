@@ -15,10 +15,10 @@
 			<a href="{plink Question:, questionId => $question->id}" class="row-target">{$question->title}</a>
 		</div>
 		<div class="col-md-2 col-sm-6 hidden-xs text-right" n:inner-if="$last = $question->lastPost">
-			<a href="{plink Profile:, $last->author->user->id}">{$last->author->name}</a><br>at <a href="{plink Question:, permalinkId => $last->id}">{$last->createdAt|date:'j.n.Y G:i'}</a>
+			<a href="{plink Profile:, $last->author->user->id}">{$last->author->name}</a><br class="hidden-xs hidden-sm"> at <a href="{plink Question:, permalinkId => $last->id}">{$last->createdAt|date:'j.n.Y G:i'}</a>
 		</div>
 		<div n:if="$options[author]" class="col-md-2 col-sm-6 col-xs-12 text-right">
-			<a href="{plink Profile:, $question->author->user->id}">{$question->author->name}</a><br class="hidden-xs"> at {$question->createdAt|date:'j.n.Y G:i'}
+			<a href="{plink Profile:, $question->author->user->id}">{$question->author->name}</a><br class="hidden-xs hidden-sm"> at {$question->createdAt|date:'j.n.Y G:i'}
 		</div>
 		<div class="col-md-1 text-center text-middle visible-md visible-lg">
 			<span class="label label-info" title="Answers in thread" data-toggle="tooltip" data-placement="top">{$item['answers_count']}</span>
