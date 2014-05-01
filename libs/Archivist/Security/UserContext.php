@@ -10,6 +10,8 @@
 
 namespace Archivist\Security;
 
+use Archivist\InvalidArgumentException;
+use Archivist\Users\User;
 use Kdyby;
 use Nette;
 use Nette\Security\IAuthenticator;
@@ -66,6 +68,37 @@ class UserContext extends Nette\Security\User
 		}
 
 		return parent::__get($name);
+	}
+
+
+
+	/**
+	 * @return User|null
+	 */
+	public function getUserEntity()
+	{
+		if (!$this->loggedIn) {
+			return NULL;
+		}
+
+		return $this->getIdentity()->getUser();
+	}
+
+
+
+	/**
+	 * @param int $userId
+	 * @return \Archivist\Users\Identity
+	 */
+	public function passwordLessLogin($userId)
+	{
+		/** @var User $user */
+		if (!$user = $this->em->getDao(User::class)->find($userId)) {
+			throw new InvalidArgumentException();
+		}
+
+		$this->login($user->getIdentity());
+		return $this->getIdentity();
 	}
 
 }

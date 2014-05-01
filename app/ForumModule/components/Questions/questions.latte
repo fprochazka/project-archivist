@@ -11,7 +11,7 @@
 			{if $parentCategory = $question->category->parent}{$parentCategory->name}<br class="hidden-xs hidden-sm"><span class="hidden-md hidden-lg"> / </span>{/if}
 			<a href="{plink Topics:, $question->category->id}">{$question->category->name}</a>
 		</div>
-		<div n:class="title, $options[author] ? col-md-7 : col-md-8">
+		<div n:class="title, $options[author] ? col-md-7 : col-md-9">
 			<div class="pull-right">
 				{if $question->locked}<span class="glyphicon glyphicon-lock" title="Thread is locked" data-toggle="tooltip" data-placement="left"></span>{/if}
 				{if $question->pinned} &nbsp; <span class="glyphicon glyphicon-exclamation-sign" title="Thread is pinned, you should probably read it" data-toggle="tooltip" data-placement="left"></span>{/if}
@@ -19,7 +19,7 @@
 			<span class="label label-info hidden-lg hidden-md" title="Answers in thread">{$item['answers_count']}</span>
 			<a href="{plink Question:, questionId => $question->id}" class="row-target">{$question->title}</a>
 		</div>
-		<div class="col-md-2 col-sm-12 text-right">
+		<div class="col-md-2 col-sm-12 text-right" n:if="$options[author]">
 			<a href="{plink Profile:, $question->author->user->id}">{$question->author->name}</a><br class="hidden-xs hidden-sm"> at {$question->createdAt|date:'j.n.Y G:i'}
 		</div>
 		<div class="col-md-1 text-center text-middle visible-md visible-lg">

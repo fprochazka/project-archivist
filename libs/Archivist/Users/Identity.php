@@ -16,6 +16,7 @@ use Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby;
 use Nette;
+use Nette\Utils\Strings;
 
 
 
@@ -24,7 +25,7 @@ use Nette;
  *
  * @ORM\Entity()
  * @ORM\Table(name="user_identities", uniqueConstraints={
- * 		@ORM\UniqueConstraint(columns={"email"})
+ * 		@ORM\UniqueConstraint(columns={"type", "email"})
  * })
  *
  * @ORM\InheritanceType("SINGLE_TABLE")
@@ -34,6 +35,7 @@ use Nette;
  *    "password" = "Archivist\Users\Identity\EmailPassword",
  *    "github" = "Archivist\Users\Identity\Github",
  *    "google" = "Archivist\Users\Identity\Google",
+ *    "facebook" = "Archivist\Users\Identity\Facebook",
  *    "twitter" = "Archivist\Users\Identity\Twitter"
  * })
  *
@@ -50,10 +52,28 @@ abstract class Identity extends Identified implements Nette\Security\IIdentity
 	private $user;
 
 	/**
+	 * @ORM\Column(type="string", nullable=TRUE)
+	 * @var string
+	 */
+	private $email;
+
+	/**
 	 * @ORM\OneToMany(targetEntity="\Archivist\Forum\Post", mappedBy="author", cascade={"persist"})
 	 * @var \Archivist\Forum\Post[]
 	 */
 	protected $posts;
+
+	/**
+	 * @ORM\Column(type="boolean", nullable=FALSE, options={"default":"0"})
+	 * @var boolean
+	 */
+	protected $invalid = FALSE;
+
+	/**
+	 * @ORM\Column(type="boolean", nullable=FALSE, options={"default":"0"})
+	 * @var boolean
+	 */
+	protected $verified = FALSE;
 
 
 
@@ -84,6 +104,28 @@ abstract class Identity extends Identified implements Nette\Security\IIdentity
 
 
 	/**
+	 * @return string
+	 */
+	public function getEmail()
+	{
+		return $this->email;
+	}
+
+
+
+	/**
+	 * @param string $email
+	 * @return Identity
+	 */
+	public function setEmail($email)
+	{
+		$this->email = Strings::lower($email);
+		return $this;
+	}
+
+
+
+	/**
 	 * Returns a list of roles that the user is a member of.
 	 * @return array|Nette\Security\IRole[]
 	 */
@@ -102,6 +144,16 @@ abstract class Identity extends Identified implements Nette\Security\IIdentity
 		}
 
 		return parent::__get($name);
+	}
+
+
+
+	/**
+	 * @return boolean
+	 */
+	public function isVerified()
+	{
+		return $this->verified;
 	}
 
 }

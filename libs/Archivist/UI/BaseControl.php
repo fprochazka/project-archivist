@@ -129,4 +129,23 @@ class BaseControl extends Nette\Application\UI\Control
 
 		return $this->translator;
 	}
+
+
+
+	protected function isSignalReceiver()
+	{
+		if ($this->presenter->isSignalReceiver($this)) {
+			return TRUE;
+		}
+
+		if (!$signal = $this->presenter->getSignal()) {
+			return FALSE;
+		}
+
+		try {
+			$component = $signal[0] === '' ? $this->getPresenter() : $this->getPresenter()->getComponent($signal[0], FALSE);
+		} catch (Nette\InvalidArgumentException $e) { }
+
+		return !empty($component) ? $component->getParent() === $this : FALSE;
+	}
 }

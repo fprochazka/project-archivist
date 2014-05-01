@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "339c85b79522561b79b3f7f8a1c7aad1",
+    "hash": "b029034fca5ac7add5825b6307791a3e",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -915,12 +915,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Doctrine.git",
-                "reference": "65a220355883ef0de65d66276c267859b2de1f97"
+                "reference": "22739bcd9ef01420f68adbca4a430093b7aaaa14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Doctrine/zipball/65a220355883ef0de65d66276c267859b2de1f97",
-                "reference": "65a220355883ef0de65d66276c267859b2de1f97",
+                "url": "https://api.github.com/repos/Kdyby/Doctrine/zipball/22739bcd9ef01420f68adbca4a430093b7aaaa14",
+                "reference": "22739bcd9ef01420f68adbca4a430093b7aaaa14",
                 "shasum": ""
             },
             "require": {
@@ -973,7 +973,7 @@
                 "nette",
                 "orm"
             ],
-            "time": "2014-04-28 15:27:18"
+            "time": "2014-04-30 15:39:07"
         },
         {
             "name": "kdyby/doctrine-cache",
@@ -1085,6 +1085,68 @@
                 "nette"
             ],
             "time": "2014-04-21 02:59:22"
+        },
+        {
+            "name": "kdyby/facebook",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Kdyby/Facebook.git",
+                "reference": "d26ecaa10ed9c74b1622644cfb577641f1244428"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Kdyby/Facebook/zipball/d26ecaa10ed9c74b1622644cfb577641f1244428",
+                "reference": "d26ecaa10ed9c74b1622644cfb577641f1244428",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "nette/nette": "~2.1@dev"
+            },
+            "require-dev": {
+                "nette/tester": "@dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Kdyby\\Facebook\\": "src/"
+                },
+                "classmap": [
+                    "src/Kdyby/Facebook/exceptions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Facebook",
+                    "homepage": "https://github.com/facebook/facebook-php-sdk/contributors"
+                },
+                {
+                    "name": "Filip Procházka",
+                    "email": "filip@prochazka.su",
+                    "homepage": "http://filip-prochazka.com"
+                }
+            ],
+            "description": "Facebook PHP SDK for Nette Framework",
+            "homepage": "http://kdyby.org",
+            "keywords": [
+                "facebook",
+                "nette",
+                "sdk"
+            ],
+            "time": "2014-04-10 01:36:33"
         },
         {
             "name": "kdyby/translation",
@@ -2767,6 +2829,7 @@
         "kdyby/console": 20,
         "kdyby/translation": 20,
         "kdyby/autowired": 20,
+        "kdyby/facebook": 20,
         "majkl578/nette-identity-doctrine": 20,
         "beberlei/doctrineextensions": 20,
         "nextras/secured-links": 20,

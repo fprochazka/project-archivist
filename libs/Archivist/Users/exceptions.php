@@ -11,10 +11,46 @@
 namespace Archivist\Users;
 
 use Archivist\InvalidArgumentException;
+use Archivist\InvalidStateException;
 
 
 
 class EmailAlreadyTakenException extends InvalidArgumentException
+{
+
+}
+
+
+
+class EmailIsNotValidException extends InvalidArgumentException
+{
+
+}
+
+
+
+class PermissionsNotProvidedExceptions extends InvalidStateException
+{
+
+}
+
+
+
+class AccountConflictException extends InvalidStateException
+{
+
+}
+
+
+
+class ManualMergeRequiredException extends InvalidStateException
+{
+
+}
+
+
+
+class MissingEmailException extends InvalidArgumentException
 {
 
 }

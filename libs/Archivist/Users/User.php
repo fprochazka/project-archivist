@@ -12,11 +12,14 @@ namespace Archivist\Users;
 
 use Archivist\Forum\Identified;
 use Archivist\Security\Role;
+use Archivist\Users\Identity\EmailPassword;
+use Archivist\Users\Identity\Facebook;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby;
 use Nette;
+use Nette\Utils\Strings;
 
 
 
@@ -41,11 +44,11 @@ class User extends Identified
 	 * @ORM\Column(type="string", nullable=TRUE)
 	 * @var string
 	 */
-	protected $email;
+	private $email;
 
 	/**
 	 * @ORM\OneToMany(targetEntity="\Archivist\Users\Identity", mappedBy="user", cascade={"persist"})
-	 * @var \Archivist\Users\Identity[]
+	 * @var \Archivist\Users\Identity[]|ArrayCollection
 	 */
 	protected $identities;
 
@@ -63,8 +66,7 @@ class User extends Identified
 
 	public function __construct($email)
 	{
-		$this->email = $email;
-
+		$this->setEmail($email);
 		$this->identities = new ArrayCollection();
 		$this->roles = new ArrayCollection();
 	}
@@ -79,9 +81,49 @@ class User extends Identified
 
 
 
+	/**
+	 * @param string $type
+	 * @return NULL|Identity|Facebook
+	 */
+	public function getIdentity($type = NULL)
+	{
+		if ($type === NULL) {
+			return $this->getIdentity(EmailPassword::class)
+				?: $this->identities->first();
+		}
+
+		return $this->identities->filter(function (Identity $identity) use ($type) {
+			return $identity instanceof $type;
+		})->first();
+	}
+
+
+
 	public function addRole(Role $role)
 	{
 		$this->roles[] = $role;
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	public function getEmail()
+	{
+		return $this->email;
+	}
+
+
+
+	/**
+	 * @param string $email
+	 * @return User
+	 */
+	public function setEmail($email)
+	{
+		$this->email = Strings::lower($email);
+		return $this;
 	}
 
 }

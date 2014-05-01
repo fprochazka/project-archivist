@@ -5,6 +5,7 @@ services:
 	user: {class: Archivist\Security\UserContext()}
 	- Archivist\Users\Manager()
 	authenticator: @Archivist\Users\Manager
+	- Archivist\Users\FacebookConnect()
 
 	nette.latte:
 		setup:

@@ -36,13 +36,14 @@
 		"tracy/tracy": "~2.2@rc",
 
 		"jantvrdik/nette-doc-converter": "~1.0",
-		"janmarek/webloader": "@dev",
+		"janmarek/webloader": "dev-master",
 
 		"kdyby/doctrine": "@dev",
 		"kdyby/events": "~2.0@dev",
 		"kdyby/console": "~2.0@dev",
 		"kdyby/translation": "~2.0@dev",
 		"kdyby/autowired": "~1.0@dev",
+		"kdyby/facebook": "~1.0@dev",
 
 		"majkl578/nette-identity-doctrine": "@dev",
 		"beberlei/DoctrineExtensions": "@dev",
