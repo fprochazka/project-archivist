@@ -67,15 +67,21 @@ class SingInControl extends BaseControl
 	 */
 	private $facebookConnect;
 
+	/**
+	 * @var \Nette\Http\IResponse
+	 */
+	private $httpResponse;
 
 
-	public function __construct(Manager $manager, UserContext $user,
+
+	public function __construct(Manager $manager, UserContext $user, Nette\Http\IResponse $httpResponse,
 		Facebook $facebook, FacebookConnect $facebookConnect)
 	{
 		$this->manager = $manager;
 		$this->user = $user;
 		$this->facebook = $facebook;
 		$this->facebookConnect = $facebookConnect;
+		$this->httpResponse = $httpResponse;
 	}
 
 
@@ -289,24 +295,40 @@ class SingInControl extends BaseControl
 			->addConditionOn($form['merge'], $form::EQUAL, TRUE)
 				->addRule($form::FILLED, "To be able to merge two accounts, you must fill in your current password");
 
-		$form->onAttached[] = function (BaseForm $form) {
+		$profile = NULL;
+		try {
+			$profile = $this->facebookConnect->readUserData();
+
+		} catch (PermissionsNotProvidedExceptions $e) {
+			$error = "The required facebook permissions were not provided, you have to allow us to access your profile before logging in.";
+
+			if (!$this->httpResponse->isSent()) {
+				$this->getPresenter()->flashMessage($error, 'warning');
+				$this->redirect('facebookConnect!');
+			}
+
+			$form->addError($error);
+		}
+
+		$form->onAttached[] = function (BaseForm $form) use ($profile) {
 			/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
 			$form['merge']->addCondition($form::EQUAL, TRUE)
 				->toggle('mergeWithFacebook-password')
 				->toggle('mergeWithFacebook-email');
-		};
 
-		if ($profile = $this->facebookConnect->readUserData()) {
-			$form->setDefaults([
-				'username' => $profile['name'],
-				'email' => $profile['email'],
-			]);
 
-			if ($this->manager->identityWithEmailExists($profile['email'])) { // todo: check profile uid
-				$form['merge']->setDefaultValue(TRUE)
-					->addRule($form::EQUAL, "There is already an account with that email, sorry but you'll have to merge them.", TRUE);
+			if ($profile = $this->facebookConnect->readUserData()) {
+				$form->setDefaults([
+					'username' => $profile['name'],
+					'email' => $profile['email'],
+				]);
+
+				if ($this->manager->identityWithEmailExists($profile['email'])) { // todo: check profile uid
+					$form['merge']->setDefaultValue(TRUE)
+						->addRule($form::EQUAL, "There is already an account with that email, sorry but you'll have to merge them.", TRUE);
+				}
 			}
-		}
+		};
 
 		$form->addSubmit("connect");
 		$form->onSuccess[] = function (BaseForm $form) use ($profile) {
