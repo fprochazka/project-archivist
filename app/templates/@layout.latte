@@ -90,7 +90,7 @@
 
 	{block flashes}
 		{snippet flashes}
-			<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type ?: 'info'}">{$flash->message}</div>
+			<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type ?: 'info'}">{$flash->message|translate:$flash->count:$flash->parameters}</div>
 		{/snippet}
 	{/block}
 

@@ -100,9 +100,11 @@ class BaseForm extends \Nette\Application\UI\Form
 			return;
 		}
 
-		/** @var Kdyby\Translation\Translator $translator */
-		$translator = $this->presenter->context->getByType('Nette\Localization\ITranslator');
-		$this->setTranslator($translator);
+		if (!$this->getTranslator()) {
+			/** @var Kdyby\Translation\Translator $translator */
+			$translator = $this->presenter->context->getByType('Nette\Localization\ITranslator');
+			$this->setTranslator($translator);
+		}
 
 		$this->onAttached($this, $parent);
 

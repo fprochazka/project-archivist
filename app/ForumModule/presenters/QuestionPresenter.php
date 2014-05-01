@@ -120,10 +120,6 @@ class QuestionPresenter extends BasePresenter
 	{
 		$form = new BaseForm();
 
-		$form->addText('username', 'Your name')
-			->setDefaultValue($this->user->getIdentity()->name)
-			->setRequired();
-
 		$form->addTextArea('content', 'Answer')
 			->setAttribute('rows', 10)
 			->setRequired();
@@ -138,9 +134,6 @@ class QuestionPresenter extends BasePresenter
 				$form->addError("Please login first before posting");
 				return;
 			}
-
-			$identity = $this->getUser()->getIdentity();
-			$identity->getUser()->name = $values->username;
 
 			$this->writer->answerQuestion(new Answer($values->content), $this->question);
 

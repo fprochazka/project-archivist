@@ -1,0 +1,54 @@
+login:
+	facebook:
+		success: "You've been logged in using your facebook account"
+		failed: "Facebook get's moody sometimes... the authentication failed but hey, try it again in few minutes, it will definitely work!"
+
+		permission:
+			missingEmail: "We'd really like to log you in but if you don't give us the permission to se your facebook email this won't work :("
+
+	success:
+
+signInForm:
+	email:
+		title: "Email:"
+		required: "Please fill in your email."
+		invalid: "That's not a valid email. Please read it again, correct any typos you may have done and then try it again."
+	password:
+		title: "Password:"
+		required: "Please enter your password."
+	remember:
+		title: "Keep me signed in"
+	signIn:
+		title: "Sign in"
+	validation:
+		loginFailed: "The email or password is invalid, think twice and try again."
+
+registerForm:
+	username:
+		title: "Your name"
+		required: "Please fill in your desired display name, everyone will see it at the posts you'll write"
+	register:
+		title: "Register"
+	validation:
+		email:
+			taken: "Account with this email already exists"
+		username:
+			taken: "You've picked up a great name, but someone else has been here before you and picked it earlier. You'll have to choose another one if you wanna continue."
+
+mergeWithFacebook:
+	username:
+		title: "Your name"
+		required: "Please fill in your email."
+	merge:
+		title: "I have an existing account that I'd like to connect"
+		forced: "There is already an account with that email, sorry but you'll have to merge them."
+	email:
+		title: "Email"
+		required: "To be able to merge two accounts, you must fill in your current email"
+		invalid: "That's not a valid email. Please read it again, correct any typos you may have done and then try it again."
+	password:
+		required: "To be able to merge two accounts, you must fill in your current password"
+	validation:
+		missingFacebookPermissions: "The required facebook permissions were not provided, you have to allow us to access your profile before logging in."
+		loginFailed: "The email or password is invalid, think twice and try again."
+	success: "Your account has been successfully connected to your Facebook account!"

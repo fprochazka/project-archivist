@@ -27,7 +27,9 @@ use Nette\Utils\Strings;
  * @author Filip Procházka <filip@prochazka.su>
  *
  * @ORM\Entity()
- * @ORM\Table(name="users")
+ * @ORM\Table(name="users", uniqueConstraints={
+ *		@ORM\UniqueConstraint(columns={"name"})
+ * })
  *
  * @property string $name
  */
@@ -35,7 +37,7 @@ class User extends Identified
 {
 
 	/**
-	 * @ORM\Column(type="string", nullable=TRUE)
+	 * @ORM\Column(type="string", nullable=FALSE)
 	 * @var string
 	 */
 	protected $name;

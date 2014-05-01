@@ -22,6 +22,8 @@ use Archivist\Users\Manager;
 use Archivist\Users\ManualMergeRequiredException;
 use Archivist\Users\MissingEmailException;
 use Archivist\Users\PermissionsNotProvidedException;
+use Archivist\Users\UsernameAlreadyTakenException;
+use Archivist\Users\UserNotFoundException;
 use Kdyby;
 use Kdyby\Facebook\Dialog\LoginDialog;
 use Kdyby\Facebook\Facebook;
@@ -72,9 +74,14 @@ class SingInControl extends BaseControl
 	 */
 	private $httpResponse;
 
+	/**
+	 * @var \Nette\Http\SessionSection|\stdClass
+	 */
+	private $session;
 
 
-	public function __construct(Manager $manager, UserContext $user, Nette\Http\IResponse $httpResponse,
+
+	public function __construct(Manager $manager, UserContext $user, Nette\Http\IResponse $httpResponse, Nette\Http\Session $session,
 		Facebook $facebook, FacebookConnect $facebookConnect)
 	{
 		$this->manager = $manager;
@@ -82,6 +89,7 @@ class SingInControl extends BaseControl
 		$this->facebook = $facebook;
 		$this->facebookConnect = $facebookConnect;
 		$this->httpResponse = $httpResponse;
+		$this->session = $session->getSection(get_class($this));
 	}
 
 
@@ -137,47 +145,36 @@ class SingInControl extends BaseControl
 	protected function createComponentSignInForm()
 	{
 		$form = new BaseForm();
+		$form->setTranslator($this->getTranslator()->domain('front.signInForm'));
 
-		$form->addText('email', 'Email:')
-			->setRequired('Please enter your email.')
-			->addRule($form::EMAIL);
+		$form->addText('email', 'email.title')
+			->setRequired('email.required')
+			->addRule($form::EMAIL, 'email.invalid');
 
-		$form->addPassword('password', 'Password:')
-			->setRequired('Please enter your password.');
+		$form->addPassword('password', 'password.title')
+			->setRequired('password.required');
 
-		$form->addCheckbox('remember', 'Keep me signed in')
+		$form->addCheckbox('remember', 'remember.title')
 			->setDefaultValue(TRUE);
 
-		$form->addSubmit('signIn', 'Sign in');
-		$form->addSubmit('register', 'Register');
+		$form->addSubmit('signIn', 'signIn.title');
 
 		// call method signInFormSucceeded() on success
 		$form->onSuccess[] = function (Baseform $form, $values) {
 			$this->user->setExpiration($values->remember ? '14 days' : '2 hours', FALSE);
 
-			if ($form->isSubmitted() === $form['register']) {
-				try {
-					$this->user->login($this->manager->registerWithPassword($values->email, $values->password));
-					$this->onSingIn($this, $this->user->getIdentity());
-
-				} catch (EmailAlreadyTakenException $e) {
-					try {
-						$this->user->login($values->email, $values->password);
-						$this->onSingIn($this, $this->user->getIdentity());
-						return;
-					} catch (Nette\Security\AuthenticationException $e) { }
-
-					$form->addError("Account with this email already exists");
-					return;
-				}
-			}
-
 			try {
 				$this->user->login($values->email, $values->password);
 				$this->onSingIn($this, $this->user->getIdentity());
 
+			} catch (UserNotFoundException $e) {
+				$this->session->loginValues = $values;
+				$this->session->setExpiration('+10 minutes');
+
+				$this->view = 'password/completeRegistration';
+
 			} catch (Nette\Security\AuthenticationException $e) {
-				$form->addError($e->getMessage());
+				$form->addError('validation.loginFailed');
 			}
 		};
 
@@ -193,18 +190,30 @@ class SingInControl extends BaseControl
 	protected function createComponentRegisterForm()
 	{
 		$form = new BaseForm();
-		$form->addText('email', 'Email:')->addRule($form::EMAIL);
-		$form->addPassword('password', 'Password:');
+		$form->setTranslator($this->getTranslator()->domain('front.registerForm'));
 
-		$form->addSubmit("send", "Register");
+		$form->addText('username', 'username.title')
+			->setRequired('username.required');
+
+		$form->addSubmit('register', 'register.title');
+
 		$form->onSuccess[] = function (BaseForm $form, $values) {
+			if (!$login = $this->session->loginValues) {
+				$this->redirect('showModal!');
+			}
+
 			try {
-				$this->user->login($this->manager->registerWithPassword($values->email, $values->password));
+				$this->user->login($this->manager->registerWithPassword($login->email, $login->password, $values->username));
+				$this->session->remove();
 				$this->onSingIn($this, $this->user->getIdentity());
 
 			} catch (EmailAlreadyTakenException $e) {
-				$form->addError("Account with this email already exists");
-				return;
+				$form->addError('validation.email.taken');
+				$this->view = 'password/completeRegistration';
+
+			} catch (UsernameAlreadyTakenException $e) {
+				$form->addError('validation.username.taken');
+				$this->view = 'password/completeRegistration';
 			}
 		};
 
@@ -280,34 +289,33 @@ class SingInControl extends BaseControl
 	{
 		/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
 		$form = new BaseForm();
+		$form->setTranslator($this->getTranslator()->domain('front.mergeWithFacebook'));
 
-		$form->addText('username', 'Your name')
-			->setRequired();
+		$form->addText('username', 'username.title')
+			->setRequired('username.required');
 
-		$form->addCheckbox('merge', "I have an existing account that I'd like to connect");
+		$form->addCheckbox('merge', 'merge.title');
 
-		$form->addText('email', 'Email')
+		$form->addText('email', 'email.title')
 			->addConditionOn($form['merge'], $form::EQUAL, TRUE)
-				->addRule($form::FILLED, "To be able to merge two accounts, you must fill in your current email")
-				->addRule($form::EMAIL);
+				->addRule($form::FILLED, 'email.required')
+				->addRule($form::EMAIL, 'email.invalid');
 
 		$form->addPassword('password', 'Password')
 			->addConditionOn($form['merge'], $form::EQUAL, TRUE)
-				->addRule($form::FILLED, "To be able to merge two accounts, you must fill in your current password");
+				->addRule($form::FILLED, 'password.required');
 
 		$profile = NULL;
 		try {
 			$profile = $this->facebookConnect->readUserData();
 
 		} catch (PermissionsNotProvidedException $e) {
-			$error = "The required facebook permissions were not provided, you have to allow us to access your profile before logging in.";
-
 			if (!$this->httpResponse->isSent()) {
-				$this->getPresenter()->flashMessage($error, 'warning');
+				$this->getPresenter()->flashMessage('front.mergeWithFacebook.missingFacebookPermissions', 'warning');
 				$this->redirect('facebookConnect!');
 			}
 
-			$form->addError($error);
+			$form->addError('front.mergeWithFacebook.missingFacebookPermissions');
 		}
 
 		$form->onAttached[] = function (BaseForm $form) use ($profile) {
@@ -317,7 +325,7 @@ class SingInControl extends BaseControl
 				->toggle('mergeWithFacebook-email');
 
 
-			if ($profile = $this->facebookConnect->readUserData()) {
+			if ($profile) {
 				$form->setDefaults([
 					'username' => $profile['name'],
 					'email' => $profile['email'],
@@ -325,12 +333,12 @@ class SingInControl extends BaseControl
 
 				if ($this->manager->identityWithEmailExists($profile['email'])) { // todo: check profile uid
 					$form['merge']->setDefaultValue(TRUE)
-						->addRule($form::EQUAL, "There is already an account with that email, sorry but you'll have to merge them.", TRUE);
+						->addRule($form::EQUAL, 'merge.forced', TRUE);
 				}
 			}
 		};
 
-		$form->addSubmit("connect");
+		$form->addSubmit('connect');
 		$form->onSuccess[] = function (BaseForm $form) use ($profile) {
 			/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
 
@@ -344,25 +352,14 @@ class SingInControl extends BaseControl
 					$this->facebookConnect->registerWithProvidedEmail($profile['email'], $vals->username);
 
 				} else {
-					if (empty($vals->email)) {
-						$form['email']->addError('front.userForm.emailRequired');
-
-					} elseif (!Nette\Utils\Validators::isEmail($vals->email)) {
-						$form['email']->addError('front.userForm.emailValid');
-
-					} elseif (empty($vals->password)) {
-						$form['password']->addError('front.userForm.passwordRequired');
-
-					} else {
-						$this->facebookConnect->mergeAndLogin($vals->email, $vals->password);
-					}
+					$this->facebookConnect->mergeAndLogin($vals->email, $vals->password);
 				}
 
-				$this->getPresenter()->flashMessage('front.login.youAreNowLoggedIn', 'success');
+				$this->getPresenter()->flashMessage('front.mergeWithFacebook.success', 'success');
 				$this->onSingIn($this, $this->user->getIdentity());
 
 			} catch (Nette\Security\AuthenticationException $e) {
-				$form->addError($e->getMessage());
+				$form->addError('validation.loginFailed');
 				$this->view = 'facebook/connect';
 
 			} catch (PermissionsNotProvidedException $e) {

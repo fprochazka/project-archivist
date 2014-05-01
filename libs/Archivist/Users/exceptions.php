@@ -10,12 +10,28 @@
 
 namespace Archivist\Users;
 
+use Archivist\Exception;
 use Archivist\InvalidArgumentException;
 use Archivist\InvalidStateException;
+use Nette\Security\AuthenticationException;
 
 
 
 class EmailAlreadyTakenException extends InvalidArgumentException
+{
+
+}
+
+
+
+class UsernameAlreadyTakenException extends InvalidArgumentException
+{
+
+}
+
+
+
+class UserNotFoundException extends AuthenticationException implements Exception
 {
 
 }

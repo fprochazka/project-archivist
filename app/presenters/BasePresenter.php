@@ -91,6 +91,22 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 
 	/**
+	 * Saves the message to template, that can be displayed after redirect.
+	 * @param  string
+	 * @param  string
+	 * @return \stdClass
+	 */
+	public function flashMessage($message, $type = 'info')
+	{
+		$flash = parent::flashMessage($message, $type);
+		$flash->count = NULL;
+		$flash->parameters = [];
+		return $flash;
+	}
+
+
+
+	/**
 	 * @param string $message
 	 * @throws \Nette\Application\ForbiddenRequestException
 	 */

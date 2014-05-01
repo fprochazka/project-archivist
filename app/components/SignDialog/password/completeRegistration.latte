@@ -1,0 +1,30 @@
+<div n:snippet n:inner-if="$renderModal" class="modal fade login-modal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content ajax-overlay">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="loginModalTitle">Complete registration</h4>
+			</div>
+
+			<form n:name="registerForm" class="form-horizontal ajax">
+				<div class="modal-body">
+
+					{control $_form errors}
+
+					<div class="form-group required">
+						<div class="col-sm-3 control-label">{label username /}</div>
+						<div class="col-sm-9">
+							{input username}
+							<p class="help-block">You can use whatever you like, <br>preferably your name, but nickname will do it too.</p>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button n:name="register" class="btn btn-primary">Complete registration</button>
+				</div>
+			</form>
+
+		</div>
+	</div>
+</div>

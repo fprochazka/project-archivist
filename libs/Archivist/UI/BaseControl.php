@@ -132,6 +132,22 @@ class BaseControl extends Nette\Application\UI\Control
 
 
 
+	/**
+	 * Saves the message to template, that can be displayed after redirect.
+	 * @param  string
+	 * @param  string
+	 * @return \stdClass
+	 */
+	public function flashMessage($message, $type = 'info')
+	{
+		$flash = parent::flashMessage($message, $type);
+		$flash->count = NULL;
+		$flash->parameters = [];
+		return $flash;
+	}
+
+
+
 	protected function isSignalReceiver()
 	{
 		if ($this->presenter->isSignalReceiver($this)) {
@@ -148,4 +164,5 @@ class BaseControl extends Nette\Application\UI\Control
 
 		return !empty($component) ? $component->getParent() === $this : FALSE;
 	}
+
 }

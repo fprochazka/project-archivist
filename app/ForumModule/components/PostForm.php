@@ -26,7 +26,7 @@ class PostForm extends BaseForm
 {
 
 	/**
-	 * @var Security\UserContext
+	 * @var UserContext
 	 */
 	private $user;
 
@@ -36,10 +36,6 @@ class PostForm extends BaseForm
 	{
 		parent::__construct();
 		$this->user = $user;
-
-		$this->addText('username', 'Your name')
-			->setDefaultValue($this->user->loggedIn ? $this->user->getIdentity()->name : '')
-			->setRequired();
 
 		$this->addTextArea('content', 'Question')
 			->setAttribute('rows', 10)
@@ -52,11 +48,6 @@ class PostForm extends BaseForm
 				$form->addError("Please login first before posting");
 				return;
 			}
-		};
-
-		$this->onSuccess[] = function (PostForm $form, $values) {
-			$identity = $this->user->getIdentity();
-			$identity->getUser()->name = $values->username;
 		};
 	}
 

@@ -66,15 +66,19 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 	/**
 	 * @param string $email
 	 * @param string $password
+	 * @param string $username
+	 * @throws UsernameAlreadyTakenException
 	 * @return \Archivist\Users\Identity\EmailPassword
 	 */
-	public function registerWithPassword($email, $password)
+	public function registerWithPassword($email, $password, $username)
 	{
 		if ($this->users->findOneBy(['email' => $email]) || $this->passwordIdentities->findOneBy(['email' => $email])) {
 			throw new EmailAlreadyTakenException();
 		}
 
 		$user = new User($email);
+		$this->updateUsername($user, $username);
+
 		$user->addIdentity($identity = new EmailPassword($email, $password));
 		$user->addRole($this->roles->find(Role::USER));
 
@@ -113,6 +117,31 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 
 
 	/**
+	 * @param User $user
+	 * @param string $username
+	 * @throws UsernameAlreadyTakenException
+	 * @return User
+	 */
+	public function updateUsername(User $user, $username)
+	{
+		$usernameQuery = $this->users->createQueryBuilder('u')
+			->andWhere('LOWER(u.name) = :username')->setParameter('username', Nette\Utils\Strings::lower($username))
+			->getQuery()
+			->setMaxResults(1);
+
+		try {
+			if ($isTaken = $usernameQuery->getSingleResult()) {
+				throw new UsernameAlreadyTakenException();
+			}
+		} catch (NoResultException $e) {
+		}
+
+		$user->name = $username;
+	}
+
+
+
+	/**
 	 * @param array $credentials
 	 * @return EmailPassword|Nette\Security\IIdentity
 	 * @throws \Nette\Security\AuthenticationException
@@ -121,11 +150,11 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 	{
 		/** @var EmailPassword $identity */
 		if (!$identity = $this->passwordIdentities->findOneBy(['email' => $credentials[self::USERNAME]])) {
-			throw new Nette\Security\AuthenticationException("User not found", self::IDENTITY_NOT_FOUND);
+			throw new UserNotFoundException('User not found', self::IDENTITY_NOT_FOUND);
 		}
 
 		if (!$identity->verifyPassword($credentials[self::PASSWORD])) {
-			throw new Nette\Security\AuthenticationException("User not found", self::INVALID_CREDENTIAL);
+			throw new Nette\Security\AuthenticationException('Invalid password', self::INVALID_CREDENTIAL);
 		}
 
 		$this->em->flush(); // save new password if it was regenerated
