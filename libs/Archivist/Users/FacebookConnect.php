@@ -60,19 +60,19 @@ class FacebookConnect extends Nette\Object
 
 	/**
 	 * @return bool|\Nette\Utils\ArrayHash|NULL
-	 * @throws PermissionsNotProvidedExceptions
+	 * @throws PermissionsNotProvidedException
 	 */
 	public function readUserData()
 	{
 		if (!$fbUid = $this->facebook->getUser()) {
-			throw new PermissionsNotProvidedExceptions();
+			throw new PermissionsNotProvidedException();
 		}
 
 		try {
 			$fbUser = $this->facebook->api('/me');
 
 		} catch (Fb\FacebookApiException $e) {
-			throw new PermissionsNotProvidedExceptions($e->getMessage(), 0, $e);
+			throw new PermissionsNotProvidedException($e->getMessage(), 0, $e);
 		}
 
 		return $fbUser;
@@ -81,7 +81,7 @@ class FacebookConnect extends Nette\Object
 
 
 	/**
-	 * @throws PermissionsNotProvidedExceptions
+	 * @throws PermissionsNotProvidedException
 	 * @throws ManualMergeRequiredException
 	 * @throws AccountConflictException
 	 * @return bool
@@ -111,7 +111,7 @@ class FacebookConnect extends Nette\Object
 	/**
 	 * @param string $email
 	 * @param string $password
-	 * @throws PermissionsNotProvidedExceptions
+	 * @throws PermissionsNotProvidedException
 	 * @throws \Nette\Security\AuthenticationException
 	 * @return bool
 	 */
@@ -126,7 +126,7 @@ class FacebookConnect extends Nette\Object
 
 	/**
 	 * @param string $email
-	 * @throws PermissionsNotProvidedExceptions
+	 * @throws PermissionsNotProvidedException
 	 * @throws MissingEmailException
 	 * @return bool
 	 */

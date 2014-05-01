@@ -29,7 +29,7 @@ class EmailIsNotValidException extends InvalidArgumentException
 
 
 
-class PermissionsNotProvidedExceptions extends InvalidStateException
+class PermissionsNotProvidedException extends InvalidStateException
 {
 
 }

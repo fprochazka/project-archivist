@@ -21,7 +21,7 @@ use Archivist\Users\Identity;
 use Archivist\Users\Manager;
 use Archivist\Users\ManualMergeRequiredException;
 use Archivist\Users\MissingEmailException;
-use Archivist\Users\PermissionsNotProvidedExceptions;
+use Archivist\Users\PermissionsNotProvidedException;
 use Kdyby;
 use Kdyby\Facebook\Dialog\LoginDialog;
 use Kdyby\Facebook\Facebook;
@@ -227,7 +227,7 @@ class SingInControl extends BaseControl
 				$this->onSingIn($this, $this->user->getIdentity());
 			}
 
-		} catch (PermissionsNotProvidedExceptions $e) {
+		} catch (PermissionsNotProvidedException $e) {
 			$dialog->open();
 
 		} catch (AccountConflictException $e) {
@@ -256,7 +256,7 @@ class SingInControl extends BaseControl
 
 				$this->onSingIn($this, $this->user->getIdentity());
 
-			} catch (PermissionsNotProvidedExceptions $e) {
+			} catch (PermissionsNotProvidedException $e) {
 				$this->getPresenter()->flashMessage('front.login.facebook.permission.missingEmail', 'info');
 				return;
 
@@ -299,7 +299,7 @@ class SingInControl extends BaseControl
 		try {
 			$profile = $this->facebookConnect->readUserData();
 
-		} catch (PermissionsNotProvidedExceptions $e) {
+		} catch (PermissionsNotProvidedException $e) {
 			$error = "The required facebook permissions were not provided, you have to allow us to access your profile before logging in.";
 
 			if (!$this->httpResponse->isSent()) {
@@ -365,7 +365,7 @@ class SingInControl extends BaseControl
 				$form->addError($e->getMessage());
 				$this->view = 'facebook/connect';
 
-			} catch (PermissionsNotProvidedExceptions $e) {
+			} catch (PermissionsNotProvidedException $e) {
 				$dialog->open();
 
 			} catch (MissingEmailException $e) {
