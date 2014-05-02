@@ -6,6 +6,7 @@ services:
 	- Archivist\Users\Manager()
 	authenticator: @Archivist\Users\Manager
 	- Archivist\Users\FacebookConnect()
+	- Archivist\Users\GithubConnect()
 
 	nette.latte:
 		setup:

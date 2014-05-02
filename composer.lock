@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "b029034fca5ac7add5825b6307791a3e",
+    "hash": "a0c4fd5f2c7ae9e62c649651bdbca90c",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -579,6 +579,98 @@
             "time": "2014-02-08 16:35:09"
         },
         {
+            "name": "guzzle/guzzle",
+            "version": "v3.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/guzzle3.git",
+                "reference": "e4d12d7d6acccf75a5e504114e2df9195e494108"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/guzzle3/zipball/e4d12d7d6acccf75a5e504114e2df9195e494108",
+                "reference": "e4d12d7d6acccf75a5e504114e2df9195e494108",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3.3",
+                "symfony/event-dispatcher": "~2.1"
+            },
+            "replace": {
+                "guzzle/batch": "self.version",
+                "guzzle/cache": "self.version",
+                "guzzle/common": "self.version",
+                "guzzle/http": "self.version",
+                "guzzle/inflection": "self.version",
+                "guzzle/iterator": "self.version",
+                "guzzle/log": "self.version",
+                "guzzle/parser": "self.version",
+                "guzzle/plugin": "self.version",
+                "guzzle/plugin-async": "self.version",
+                "guzzle/plugin-backoff": "self.version",
+                "guzzle/plugin-cache": "self.version",
+                "guzzle/plugin-cookie": "self.version",
+                "guzzle/plugin-curlauth": "self.version",
+                "guzzle/plugin-error-response": "self.version",
+                "guzzle/plugin-history": "self.version",
+                "guzzle/plugin-log": "self.version",
+                "guzzle/plugin-md5": "self.version",
+                "guzzle/plugin-mock": "self.version",
+                "guzzle/plugin-oauth": "self.version",
+                "guzzle/service": "self.version",
+                "guzzle/stream": "self.version"
+            },
+            "require-dev": {
+                "doctrine/cache": "~1.3",
+                "monolog/monolog": "~1.0",
+                "phpunit/phpunit": "3.7.*",
+                "psr/log": "~1.0",
+                "symfony/class-loader": "~2.1",
+                "zendframework/zend-cache": "2.*,<2.3",
+                "zendframework/zend-log": "2.*,<2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Guzzle": "src/",
+                    "Guzzle\\Tests": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                },
+                {
+                    "name": "Guzzle Community",
+                    "homepage": "https://github.com/guzzle/guzzle/contributors"
+                }
+            ],
+            "description": "Guzzle is a PHP HTTP client library and framework for building RESTful web service clients",
+            "homepage": "http://guzzlephp.org/",
+            "keywords": [
+                "client",
+                "curl",
+                "framework",
+                "http",
+                "http client",
+                "rest",
+                "web service"
+            ],
+            "time": "2014-04-23 21:43:40"
+        },
+        {
             "name": "ipub/gravatar",
             "version": "dev-feature/compatibility",
             "source": {
@@ -915,12 +1007,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Doctrine.git",
-                "reference": "22739bcd9ef01420f68adbca4a430093b7aaaa14"
+                "reference": "52ae50d47965d76f51c590e72ff5f3c4992297ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Doctrine/zipball/22739bcd9ef01420f68adbca4a430093b7aaaa14",
-                "reference": "22739bcd9ef01420f68adbca4a430093b7aaaa14",
+                "url": "https://api.github.com/repos/Kdyby/Doctrine/zipball/52ae50d47965d76f51c590e72ff5f3c4992297ad",
+                "reference": "52ae50d47965d76f51c590e72ff5f3c4992297ad",
                 "shasum": ""
             },
             "require": {
@@ -973,7 +1065,7 @@
                 "nette",
                 "orm"
             ],
-            "time": "2014-04-30 15:39:07"
+            "time": "2014-05-02 14:04:10"
         },
         {
             "name": "kdyby/doctrine-cache",
@@ -1092,12 +1184,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Facebook.git",
-                "reference": "d26ecaa10ed9c74b1622644cfb577641f1244428"
+                "reference": "90d65ddb7a3392f75acf149a8efa06133ef0c597"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Facebook/zipball/d26ecaa10ed9c74b1622644cfb577641f1244428",
-                "reference": "d26ecaa10ed9c74b1622644cfb577641f1244428",
+                "url": "https://api.github.com/repos/Kdyby/Facebook/zipball/90d65ddb7a3392f75acf149a8efa06133ef0c597",
+                "reference": "90d65ddb7a3392f75acf149a8efa06133ef0c597",
                 "shasum": ""
             },
             "require": {
@@ -1146,7 +1238,67 @@
                 "nette",
                 "sdk"
             ],
-            "time": "2014-04-10 01:36:33"
+            "time": "2014-05-02 16:46:04"
+        },
+        {
+            "name": "kdyby/github",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Kdyby/Github.git",
+                "reference": "94213bafdae69f75268d1f47e4240459631cc7f2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Kdyby/Github/zipball/94213bafdae69f75268d1f47e4240459631cc7f2",
+                "reference": "94213bafdae69f75268d1f47e4240459631cc7f2",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "knplabs/github-api": "~1.2",
+                "nette/nette": "~2.1@dev"
+            },
+            "require-dev": {
+                "nette/tester": "@dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Kdyby\\Github\\": "src/"
+                },
+                "classmap": [
+                    "src/Kdyby/Github/exceptions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Filip Procházka",
+                    "email": "filip@prochazka.su",
+                    "homepage": "http://filip-prochazka.com"
+                }
+            ],
+            "description": "Extended Github PHP SDK from KnpLabs with authorization for Nette Framework",
+            "homepage": "http://kdyby.org",
+            "keywords": [
+                "authorization",
+                "github",
+                "nette",
+                "sdk"
+            ],
+            "time": "2014-05-02 19:11:25"
         },
         {
             "name": "kdyby/translation",
@@ -1221,6 +1373,67 @@
                 "translation"
             ],
             "time": "2014-04-10 17:01:38"
+        },
+        {
+            "name": "knplabs/github-api",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/php-github-api.git",
+                "reference": "1a1817b6f5fad2af4ff9a1bcc7f7bf29699fe15b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/1a1817b6f5fad2af4ff9a1bcc7f7bf29699fe15b",
+                "reference": "1a1817b6f5fad2af4ff9a1bcc7f7bf29699fe15b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "guzzle/guzzle": ">=3.7",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=3.6.0"
+            },
+            "suggest": {
+                "knplabs/gaufrette": "Needed for optional Gaufrette cache"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Github\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Thibault Duplessis",
+                    "email": "thibault.duplessis@gmail.com",
+                    "homepage": "http://ornicar.github.com"
+                },
+                {
+                    "name": "KnpLabs Team",
+                    "homepage": "http://knplabs.com"
+                }
+            ],
+            "description": "GitHub API v3 client",
+            "homepage": "https://github.com/KnpLabs/php-github-api",
+            "keywords": [
+                "api",
+                "gh",
+                "gist",
+                "github"
+            ],
+            "time": "2014-01-05 04:09:12"
         },
         {
             "name": "kukulich/fshl",
@@ -2517,6 +2730,62 @@
             "time": "2014-04-27 13:34:57"
         },
         {
+            "name": "symfony/event-dispatcher",
+            "version": "v2.4.4",
+            "target-dir": "Symfony/Component/EventDispatcher",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/EventDispatcher.git",
+                "reference": "e539602e5455aa086c0e81e604745af7789e4d8a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/e539602e5455aa086c0e81e604745af7789e4d8a",
+                "reference": "e539602e5455aa086c0e81e604745af7789e4d8a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "symfony/dependency-injection": "~2.0"
+            },
+            "suggest": {
+                "symfony/dependency-injection": "",
+                "symfony/http-kernel": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\EventDispatcher\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony EventDispatcher Component",
+            "homepage": "http://symfony.com",
+            "time": "2014-04-16 10:34:31"
+        },
+        {
             "name": "symfony/filesystem",
             "version": "v2.4.4",
             "target-dir": "Symfony/Component/Filesystem",
@@ -2830,6 +3099,7 @@
         "kdyby/translation": 20,
         "kdyby/autowired": 20,
         "kdyby/facebook": 20,
+        "kdyby/github": 20,
         "majkl578/nette-identity-doctrine": 20,
         "beberlei/doctrineextensions": 20,
         "nextras/secured-links": 20,

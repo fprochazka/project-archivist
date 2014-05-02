@@ -10,6 +10,7 @@
 
 namespace Archivist\Users\Identity;
 
+use Archivist\InvalidArgumentException;
 use Archivist\Users\Identity;
 use Doctrine;
 use Doctrine\ORM\Mapping as ORM;
@@ -37,5 +38,46 @@ class Github extends Identity
 	 * @var string
 	 */
 	protected $token;
+
+
+
+	public function __construct(Kdyby\Github\Profile $profile)
+	{
+		$this->uid = $profile->getId();
+		$this->setEmail($profile->getDetails('email'));
+
+		if (!$this->getEmail() || !$this->uid) {
+			throw new InvalidArgumentException();
+		}
+
+		$this->verified = TRUE;
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	public function getUid()
+	{
+		return $this->uid;
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	public function getToken()
+	{
+		return $this->token;
+	}
+
+
+
+	public function updateToken(Kdyby\Github\Client $github)
+	{
+		$this->token = $github->getAccessToken();
+	}
 
 }

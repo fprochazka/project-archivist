@@ -44,6 +44,7 @@
 		"kdyby/translation": "~2.0@dev",
 		"kdyby/autowired": "~1.0@dev",
 		"kdyby/facebook": "~1.0@dev",
+		"kdyby/github": "@dev",
 
 		"majkl578/nette-identity-doctrine": "@dev",
 		"beberlei/DoctrineExtensions": "@dev",

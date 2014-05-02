@@ -44,9 +44,9 @@ class Facebook extends Identity
 	public function __construct(Kdyby\Facebook\Profile $profile)
 	{
 		$this->uid = $profile->getId();
-		$this->email = $profile->getDetails('email');
+		$this->setEmail($profile->getDetails('email'));
 
-		if (!$this->email || !$this->uid) {
+		if (!$this->getEmail() || !$this->uid) {
 			throw new InvalidArgumentException();
 		}
 

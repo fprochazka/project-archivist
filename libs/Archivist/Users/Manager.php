@@ -13,6 +13,7 @@ namespace Archivist\Users;
 use Archivist\Security\Role;
 use Archivist\Users\Identity\EmailPassword;
 use Archivist\Users\Identity\Facebook;
+use Archivist\Users\Identity\Github;
 use Doctrine\ORM\NoResultException;
 use Kdyby;
 use Nette;
@@ -48,6 +49,11 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 	/**
 	 * @var \Kdyby\Doctrine\EntityDao
 	 */
+	private $githubIdentities;
+
+	/**
+	 * @var \Kdyby\Doctrine\EntityDao
+	 */
 	private $roles;
 
 
@@ -58,6 +64,7 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 		$this->users = $em->getDao(User::class);
 		$this->passwordIdentities = $em->getDao(EmailPassword::class);
 		$this->facebookIdentities = $em->getDao(Facebook::class);
+		$this->githubIdentities = $em->getDao(Github::class);
 		$this->roles = $em->getDao(Role::class);
 	}
 
@@ -106,6 +113,33 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 		if (empty($identity)) {
 			$user = new User($email);
 			$user->addIdentity($identity = new Facebook($profile));
+			$user->addRole($this->roles->find(Role::USER));
+
+			$this->em->persist($user)->flush();
+		}
+
+		return $identity;
+	}
+
+
+
+	/**
+	 * @param Kdyby\Github\Profile $profile
+	 * @return Identity|Github|NULL
+	 */
+	public function registerFromGithub(Kdyby\Github\Profile $profile)
+	{
+		$email = $profile->getDetails('email');
+
+		if ($this->users->findOneBy(['email' => $email]) || ($identity = $this->identityWithEmailExists($email))) {
+			if (!empty($identity) && (!$identity instanceof Github || $identity->getUid() != $profile->getId())) {
+				throw new EmailAlreadyTakenException();
+			}
+		}
+
+		if (empty($identity)) {
+			$user = new User($email);
+			$user->addIdentity($identity = new Github($profile));
 			$user->addRole($this->roles->find(Role::USER));
 
 			$this->em->persist($user)->flush();
@@ -182,6 +216,17 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 	public function findOneByFacebook($id)
 	{
 		return $this->facebookIdentities->findOneBy(['uid' => $id]);
+	}
+
+
+
+	/**
+	 * @param int $id
+	 * @return Github|NULL
+	 */
+	public function findOneByGithub($id)
+	{
+		return $this->githubIdentities->findOneBy(['uid' => $id]);
 	}
 
 

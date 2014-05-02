@@ -41,6 +41,7 @@ extensions:
 	doctrine2Identity: Majkl578\NetteAddons\Doctrine2Identity\DI\IdentityExtension
 	gravatar: IPub\Gravatar\DI\GravatarExtension
 	facebook: Kdyby\Facebook\DI\FacebookExtension
+	github: Kdyby\Github\DI\GithubExtension
 
 
 annotations:
@@ -61,6 +62,10 @@ doctrine:
 
 facebook:
 	permissions: [basic_info, email]
+
+
+github:
+	permissions: [user:email]
 
 
 gravatar:

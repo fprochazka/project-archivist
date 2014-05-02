@@ -17,6 +17,7 @@ use Archivist\UI\BaseForm;
 use Archivist\Users\AccountConflictException;
 use Archivist\Users\EmailAlreadyTakenException;
 use Archivist\Users\FacebookConnect;
+use Archivist\Users\GithubConnect;
 use Archivist\Users\Identity;
 use Archivist\Users\Manager;
 use Archivist\Users\ManualMergeRequiredException;
@@ -79,17 +80,31 @@ class SingInControl extends BaseControl
 	 */
 	private $session;
 
+	/**
+	 * @var \Archivist\Users\GithubConnect
+	 */
+	private $githubConnect;
+
+	/**
+	 * @var \Kdyby\Github\Client
+	 */
+	private $github;
+
 
 
 	public function __construct(Manager $manager, UserContext $user, Nette\Http\IResponse $httpResponse, Nette\Http\Session $session,
-		Facebook $facebook, FacebookConnect $facebookConnect)
+		Facebook $facebook, FacebookConnect $facebookConnect, Kdyby\Github\Client $github, GithubConnect $githubConnect)
 	{
 		$this->manager = $manager;
 		$this->user = $user;
-		$this->facebook = $facebook;
-		$this->facebookConnect = $facebookConnect;
 		$this->httpResponse = $httpResponse;
 		$this->session = $session->getSection(get_class($this));
+
+		$this->facebook = $facebook;
+		$this->facebookConnect = $facebookConnect;
+
+		$this->github = $github;
+		$this->githubConnect = $githubConnect;
 	}
 
 
@@ -301,7 +316,7 @@ class SingInControl extends BaseControl
 				->addRule($form::FILLED, 'email.required')
 				->addRule($form::EMAIL, 'email.invalid');
 
-		$form->addPassword('password', 'Password')
+		$form->addPassword('password', 'password.title')
 			->addConditionOn($form['merge'], $form::EQUAL, TRUE)
 				->addRule($form::FILLED, 'password.required');
 
@@ -374,6 +389,158 @@ class SingInControl extends BaseControl
 		return $form;
 	}
 
+
+
+	public function handleGithubConnect()
+	{
+		/** @var Kdyby\Github\UI\LoginDialog $dialog */
+		$dialog = $this['github'];
+
+		try {
+			$this->githubConnect->tryLogin();
+
+			if ($this->user->isLoggedIn() && $this->github->getUser()) {
+				$this->getPresenter()->flashMessage('front.login.github.success', 'success');
+				$this->onSingIn($this, $this->user->getIdentity());
+			}
+
+		} catch (PermissionsNotProvidedException $e) {
+			$dialog->open();
+
+		} catch (AccountConflictException $e) {
+			$this->view = 'github/connect';
+
+		} catch (ManualMergeRequiredException $e) {
+			$this->view = 'github/connect';
+		}
+	}
+
+
+
+	protected function createComponentGithub()
+	{
+		$dialog = new Kdyby\Github\UI\LoginDialog($this->github);
+		$dialog->onResponse[] = function (Kdyby\Github\UI\LoginDialog $dialog) {
+			try {
+				$this->githubConnect->tryLogin();
+
+				if (!$this->user->isLoggedIn()) {
+					$this->getPresenter()->flashMessage('front.login.github.failed', 'danger');
+
+				} else {
+					$this->getPresenter()->flashMessage('front.login.github.success', 'success');
+				}
+
+				$this->onSingIn($this, $this->user->getIdentity());
+
+			} catch (PermissionsNotProvidedException $e) {
+				$this->getPresenter()->flashMessage('front.login.github.permission.missingEmail', 'info');
+				return;
+
+			} catch (AccountConflictException $e) {
+				$this->redirect('githubConnect!');
+
+			} catch (ManualMergeRequiredException $e) {
+				$this->redirect('githubConnect!');
+			}
+		};
+
+		return $dialog;
+	}
+
+
+
+	/**
+	 * @return BaseForm
+	 */
+	protected function createComponentMergeWithGithub()
+	{
+		/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
+		$form = new BaseForm();
+		$form->setTranslator($this->getTranslator()->domain('front.mergeWithGithub'));
+
+		$form->addText('username', 'username.title')
+			->setRequired('username.required');
+
+		$form->addCheckbox('merge', 'merge.title');
+
+		$form->addText('email', 'email.title')
+			->addConditionOn($form['merge'], $form::EQUAL, TRUE)
+			->addRule($form::FILLED, 'email.required')
+			->addRule($form::EMAIL, 'email.invalid');
+
+		$form->addPassword('password', 'password.title')
+			->addConditionOn($form['merge'], $form::EQUAL, TRUE)
+			->addRule($form::FILLED, 'password.required');
+
+		$profile = NULL;
+		try {
+			$profile = $this->githubConnect->readUserData();
+
+		} catch (PermissionsNotProvidedException $e) {
+			if (!$this->httpResponse->isSent()) {
+				$this->getPresenter()->flashMessage('front.mergeWithGithub.missingGithubPermissions', 'warning');
+				$this->redirect('facebookConnect!');
+			}
+
+			$form->addError('front.mergeWithGithub.missingGithubPermissions');
+		}
+
+		$form->onAttached[] = function (BaseForm $form) use ($profile) {
+			/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
+			$form['merge']->addCondition($form::EQUAL, TRUE)
+				->toggle('mergeWithGithub-password')
+				->toggle('mergeWithGithub-email');
+
+
+			if ($profile) {
+				$form->setDefaults([
+					'username' => $profile['name'],
+					'email' => $profile['email'],
+				]);
+
+				if ($this->manager->identityWithEmailExists($profile['email'])) { // todo: check profile uid
+					$form['merge']->setDefaultValue(TRUE)
+						->addRule($form::EQUAL, 'merge.forced', TRUE);
+				}
+			}
+		};
+
+		$form->addSubmit('connect');
+		$form->onSuccess[] = function (BaseForm $form) use ($profile) {
+			/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
+
+			/** @var Kdyby\Github\UI\LoginDialog $dialog */
+			$dialog = $this['github'];
+
+			try {
+				$vals = $form->values;
+
+				if (!$vals->merge && $profile) {
+					$this->githubConnect->registerWithProvidedEmail($profile['email'], $vals->username);
+
+				} else {
+					$this->githubConnect->mergeAndLogin($vals->email, $vals->password);
+				}
+
+				$this->getPresenter()->flashMessage('front.mergeWithGithub.success', 'success');
+				$this->onSingIn($this, $this->user->getIdentity());
+
+			} catch (Nette\Security\AuthenticationException $e) {
+				$form->addError('validation.loginFailed');
+				$this->view = 'github/connect';
+
+			} catch (PermissionsNotProvidedException $e) {
+				$dialog->open();
+
+			} catch (MissingEmailException $e) {
+				$this->view = 'github/connect';
+			}
+		};
+
+		$form->setupBootstrap3Rendering();
+		return $form;
+	}
 
 }
 

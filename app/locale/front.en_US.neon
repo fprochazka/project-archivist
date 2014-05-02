@@ -6,6 +6,13 @@ login:
 		permission:
 			missingEmail: "We'd really like to log you in but if you don't give us the permission to se your facebook email this won't work :("
 
+	github:
+		success: "You've been logged in using your github account"
+		failed: "Github get's moody sometimes... the authentication failed but hey, try it again in few minutes, it will definitely work!"
+
+		permission:
+			missingEmail: "We'd really like to log you in but if you don't give us the permission to se your github email this won't work :("
+
 	success:
 
 signInForm:
@@ -47,8 +54,28 @@ mergeWithFacebook:
 		required: "To be able to merge two accounts, you must fill in your current email"
 		invalid: "That's not a valid email. Please read it again, correct any typos you may have done and then try it again."
 	password:
+		title: Password
 		required: "To be able to merge two accounts, you must fill in your current password"
 	validation:
 		missingFacebookPermissions: "The required facebook permissions were not provided, you have to allow us to access your profile before logging in."
 		loginFailed: "The email or password is invalid, think twice and try again."
 	success: "Your account has been successfully connected to your Facebook account!"
+
+mergeWithGithub:
+	username:
+		title: "Your name"
+		required: "Please fill in your email."
+	merge:
+		title: "I have an existing account that I'd like to connect"
+		forced: "There is already an account with that email, sorry but you'll have to merge them."
+	email:
+		title: "Email"
+		required: "To be able to merge two accounts, you must fill in your current email"
+		invalid: "That's not a valid email. Please read it again, correct any typos you may have done and then try it again."
+	password:
+		title: Password
+		required: "To be able to merge two accounts, you must fill in your current password"
+	validation:
+		missingGithubPermissions: "The required github permissions were not provided, you have to allow us to access your profile before logging in."
+		loginFailed: "The email or password is invalid, think twice and try again."
+	success: "Your account has been successfully connected to your Github account!"

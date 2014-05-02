@@ -10,11 +10,10 @@
 
 namespace Archivist\Users;
 
-use Archivist\NotImplementedException;
 use Archivist\Security\UserContext;
-use Archivist\Users\Identity\Facebook;
+use Archivist\UnexpectedValueException;
+use Archivist\Users\Identity\Github;
 use Kdyby;
-use Kdyby\Facebook as Fb;
 use Nette;
 use Nette\Utils\Validators;
 
@@ -23,13 +22,13 @@ use Nette\Utils\Validators;
 /**
  * @author Filip Procházka <filip@prochazka.su>
  */
-class FacebookConnect extends Nette\Object
+class GithubConnect extends Nette\Object
 {
 
 	/**
-	 * @var Fb\Facebook
+	 * @var \Kdyby\Github\Client
 	 */
-	private $facebook;
+	private $github;
 
 	/**
 	 * @var Manager
@@ -48,12 +47,12 @@ class FacebookConnect extends Nette\Object
 
 
 
-	public function __construct(Kdyby\Doctrine\EntityManager $em, Fb\Facebook $facebook, Manager $manager, UserContext $user)
+	public function __construct(Kdyby\Doctrine\EntityManager $em, Kdyby\Github\Client $github, Manager $manager, UserContext $user)
 	{
-		$this->facebook = $facebook;
+		$this->em = $em;
+		$this->github = $github;
 		$this->manager = $manager;
 		$this->user = $user;
-		$this->em = $em;
 	}
 
 
@@ -64,39 +63,35 @@ class FacebookConnect extends Nette\Object
 	 */
 	public function readUserData()
 	{
-		if (!$fbUid = $this->facebook->getUser()) {
+		if (!$uid = $this->github->getUser()) {
 			throw new PermissionsNotProvidedException();
 		}
 
 		try {
-			$fbUser = $this->facebook->api('/me');
+			if (!$user = $this->github->getProfile()->getDetails()) {
+				throw new UnexpectedValueException();
+			}
 
-		} catch (Fb\FacebookApiException $e) {
+		} catch (\Exception $e) {
 			throw new PermissionsNotProvidedException($e->getMessage(), 0, $e);
 		}
 
-		return $fbUser;
+		return $user;
 	}
 
 
 
-	/**
-	 * @throws PermissionsNotProvidedException
-	 * @throws ManualMergeRequiredException
-	 * @throws AccountConflictException
-	 * @return bool
-	 */
 	public function tryLogin()
 	{
-		$fbUser = $this->readUserData();
+		$user = $this->readUserData();
 
-		if ($identity = $this->manager->findOneByFacebook($fbUser['id'])) {
+		if ($identity = $this->manager->findOneByGithub($user['id'])) {
 			return $this->completeLogin($identity->getUser());
 
 		} elseif ($this->user->isLoggedIn()) {
 			$user = $this->user->getUserEntity();
 
-			if (!($identity = $user->getIdentity(Facebook::class)) || $identity->getUid() == $fbUser['id']) {
+			if (!($identity = $user->getIdentity(Github::class)) || $identity->getUid() == $user['id']) {
 				return $this->completeLogin($user);
 			}
 
@@ -118,7 +113,7 @@ class FacebookConnect extends Nette\Object
 	public function mergeAndLogin($email, $password)
 	{
 		$this->user->login($email, $password);
-		$this->readUserData(); // ensure the user is loggedin on facebook
+		$this->readUserData(); // ensure the user is loggedin on github
 		return $this->completeLogin($this->user->getUserEntity());
 	}
 
@@ -143,7 +138,7 @@ class FacebookConnect extends Nette\Object
 			$fbUser['email'] = $email;
 		}
 
-		$identity = $this->manager->registerFromFacebook($this->facebook->getProfile());
+		$identity = $this->manager->registerFromGithub($this->github->getProfile());
 		$user = $identity->getUser();
 		$user->name = $username;
 
@@ -152,22 +147,18 @@ class FacebookConnect extends Nette\Object
 
 
 
-	/**
-	 * @param User $user
-	 * @return bool
-	 */
 	private function completeLogin(User $user)
 	{
-		if (!$identity = $user->getIdentity(Facebook::class)) {
-			$identity = new Facebook($this->facebook->getProfile());
+		if (!$identity = $user->getIdentity(Github::class)) {
+			$identity = new Github($this->github->getProfile());
 			$user->addIdentity($identity);
 		}
 
-		$identity->updateToken($this->facebook);
+		$identity->updateToken($this->github);
 		$this->em->flush();
 
 		$this->user->login($identity);
-		$this->facebook->setAccessToken($identity->getToken()); // it must be fixed after login
+		$this->github->setAccessToken($identity->getToken()); // it must be fixed after login
 
 		return TRUE;
 	}
