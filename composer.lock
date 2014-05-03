@@ -1154,12 +1154,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Github.git",
-                "reference": "61407afc5225dd95a5ae52c795bd2dcc987aa4e8"
+                "reference": "b1beb4e1ce899505694d6e0812a09c99e47c9519"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Github/zipball/61407afc5225dd95a5ae52c795bd2dcc987aa4e8",
-                "reference": "61407afc5225dd95a5ae52c795bd2dcc987aa4e8",
+                "url": "https://api.github.com/repos/Kdyby/Github/zipball/b1beb4e1ce899505694d6e0812a09c99e47c9519",
+                "reference": "b1beb4e1ce899505694d6e0812a09c99e47c9519",
                 "shasum": ""
             },
             "require": {
@@ -1205,7 +1205,7 @@
                 "nette",
                 "sdk"
             ],
-            "time": "2014-05-03 03:07:18"
+            "time": "2014-05-03 03:21:57"
         },
         {
             "name": "kdyby/translation",
