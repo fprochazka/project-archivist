@@ -16,6 +16,7 @@ use Archivist\Users\Identity\Github;
 use Kdyby;
 use Nette;
 use Nette\Utils\Validators;
+use Tracy\Debugger;
 
 
 
@@ -68,11 +69,14 @@ class GithubConnect extends Nette\Object
 		}
 
 		try {
-			if (!$user = $this->github->getProfile()->getDetails()) {
-				throw new UnexpectedValueException();
+			$user = $this->github->api('/user');
+
+			if (empty($user['email']) || empty($user['name'])) {
+				throw new UnexpectedValueException("Missing important information");
 			}
 
 		} catch (\Exception $e) {
+			Debugger::log($e, 'github-auth');
 			throw new PermissionsNotProvidedException($e->getMessage(), 0, $e);
 		}
 

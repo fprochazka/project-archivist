@@ -12,11 +12,13 @@ namespace Archivist\Users;
 
 use Archivist\NotImplementedException;
 use Archivist\Security\UserContext;
+use Archivist\UnexpectedValueException;
 use Archivist\Users\Identity\Facebook;
 use Kdyby;
 use Kdyby\Facebook as Fb;
 use Nette;
 use Nette\Utils\Validators;
+use Tracy\Debugger;
 
 
 
@@ -69,13 +71,18 @@ class FacebookConnect extends Nette\Object
 		}
 
 		try {
-			$fbUser = $this->facebook->api('/me');
+			$user = $this->facebook->api('/me');
+
+			if (empty($user['email']) || empty($user['name'])) {
+				throw new UnexpectedValueException("Missing important information");
+			}
 
 		} catch (Fb\FacebookApiException $e) {
+			Debugger::log($e, 'facebook-auth');
 			throw new PermissionsNotProvidedException($e->getMessage(), 0, $e);
 		}
 
-		return $fbUser;
+		return $user;
 	}
 
 

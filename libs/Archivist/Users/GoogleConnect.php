@@ -17,6 +17,7 @@ use Archivist\Users\Identity\Google;
 use Kdyby;
 use Nette;
 use Nette\Utils\Validators;
+use Tracy\Debugger;
 
 
 
@@ -73,7 +74,12 @@ class GoogleConnect extends Nette\Object
 				throw new UnexpectedValueException();
 			}
 
+			if (empty($user->email) || empty($user->name)) {
+				throw new UnexpectedValueException("Missing important information");
+			}
+
 		} catch (\Exception $e) {
+			Debugger::log($e, 'google-auth');
 			throw new PermissionsNotProvidedException($e->getMessage(), 0, $e);
 		}
 
