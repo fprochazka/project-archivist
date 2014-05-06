@@ -13,6 +13,13 @@ login:
 		permission:
 			missingEmail: "We'd really like to log you in but if you don't give us the permission to se your github email this won't work :("
 
+	google:
+		success: "You've been logged in using your Google account"
+		failed: "Google get's moody sometimes... the authentication failed but hey, try it again in few minutes, it will definitely work!"
+
+		permission:
+			missingEmail: "We'd really like to log you in but if you don't give us the permission to se your Google email this won't work :("
+
 	success:
 
 signInForm:
@@ -79,3 +86,22 @@ mergeWithGithub:
 		missingGithubPermissions: "The required github permissions were not provided, you have to allow us to access your profile before logging in."
 		loginFailed: "The email or password is invalid, think twice and try again."
 	success: "Your account has been successfully connected to your Github account!"
+
+mergeWithGoogle:
+	username:
+		title: "Your name"
+		required: "Please fill in your email."
+	merge:
+		title: "I have an existing account that I'd like to connect"
+		forced: "There is already an account with that email, sorry but you'll have to merge them."
+	email:
+		title: "Email"
+		required: "To be able to merge two accounts, you must fill in your current email"
+		invalid: "That's not a valid email. Please read it again, correct any typos you may have done and then try it again."
+	password:
+		title: Password
+		required: "To be able to merge two accounts, you must fill in your current password"
+	validation:
+		missingGooglePermissions: "The required Google permissions were not provided, you have to allow us to access your profile before logging in."
+		loginFailed: "The email or password is invalid, think twice and try again."
+	success: "Your account has been successfully connected to your Google account!"

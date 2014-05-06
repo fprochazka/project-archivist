@@ -10,6 +10,7 @@
 
 namespace Archivist\Users\Identity;
 
+use Archivist\InvalidArgumentException;
 use Archivist\Users\Identity;
 use Doctrine;
 use Doctrine\ORM\Mapping as ORM;
@@ -37,5 +38,46 @@ class Google extends Identity
 	 * @var string
 	 */
 	protected $token;
+
+
+
+	public function __construct(\Google_Service_Oauth2_Userinfoplus $profile)
+	{
+		$this->uid = $profile->getId();
+		$this->setEmail($profile->getEmail());
+
+		if (!$this->getEmail() || !$this->uid) {
+			throw new InvalidArgumentException();
+		}
+
+		$this->verified = TRUE;
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	public function getUid()
+	{
+		return $this->uid;
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	public function getToken()
+	{
+		return $this->token;
+	}
+
+
+
+	public function updateToken(Kdyby\Google\Google $google)
+	{
+		$this->token = json_encode($google->getAccessToken());
+	}
 
 }

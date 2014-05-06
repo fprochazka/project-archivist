@@ -46,6 +46,9 @@
 		"kdyby/facebook": "~1.0@dev",
 		"kdyby/github": "@dev",
 
+		"kdyby/google": "@dev",
+		"google/apiclient": "~1.0@beta",
+
 		"majkl578/nette-identity-doctrine": "@dev",
 		"beberlei/DoctrineExtensions": "@dev",
 

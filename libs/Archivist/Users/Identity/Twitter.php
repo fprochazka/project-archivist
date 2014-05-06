@@ -33,7 +33,7 @@ class Twitter extends Identity
 	protected $uid;
 
 	/**
-	 * @ORM\Column(type="string", nullable=TRUE)
+	 * @ORM\Column(type="text", nullable=TRUE)
 	 * @var string
 	 */
 	protected $token;

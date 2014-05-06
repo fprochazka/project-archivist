@@ -14,6 +14,7 @@ use Archivist\Security\Role;
 use Archivist\Users\Identity\EmailPassword;
 use Archivist\Users\Identity\Facebook;
 use Archivist\Users\Identity\Github;
+use Archivist\Users\Identity\Google;
 use Doctrine\ORM\NoResultException;
 use Kdyby;
 use Nette;
@@ -54,6 +55,11 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 	/**
 	 * @var \Kdyby\Doctrine\EntityDao
 	 */
+	private $googleIdentities;
+
+	/**
+	 * @var \Kdyby\Doctrine\EntityDao
+	 */
 	private $roles;
 
 
@@ -65,6 +71,7 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 		$this->passwordIdentities = $em->getDao(EmailPassword::class);
 		$this->facebookIdentities = $em->getDao(Facebook::class);
 		$this->githubIdentities = $em->getDao(Github::class);
+		$this->googleIdentities = $em->getDao(Google::class);
 		$this->roles = $em->getDao(Role::class);
 	}
 
@@ -140,6 +147,33 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 		if (empty($identity)) {
 			$user = new User($email);
 			$user->addIdentity($identity = new Github($profile));
+			$user->addRole($this->roles->find(Role::USER));
+
+			$this->em->persist($user)->flush();
+		}
+
+		return $identity;
+	}
+
+
+
+	/**
+	 * @param \Google_Service_Oauth2_Userinfoplus $profile
+	 * @return Identity|Google|NULL
+	 */
+	public function registerFromGoogle(\Google_Service_Oauth2_Userinfoplus $profile)
+	{
+		$email = $profile->getEmail();
+
+		if ($this->users->findOneBy(['email' => $email]) || ($identity = $this->identityWithEmailExists($email))) {
+			if (!empty($identity) && (!$identity instanceof Google || $identity->getUid() != $profile->getId())) {
+				throw new EmailAlreadyTakenException();
+			}
+		}
+
+		if (empty($identity)) {
+			$user = new User($email);
+			$user->addIdentity($identity = new Google($profile));
 			$user->addRole($this->roles->find(Role::USER));
 
 			$this->em->persist($user)->flush();
@@ -227,6 +261,17 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 	public function findOneByGithub($id)
 	{
 		return $this->githubIdentities->findOneBy(['uid' => $id]);
+	}
+
+
+
+	/**
+	 * @param int $id
+	 * @return Google|NULL
+	 */
+	public function findOneByGoogle($id)
+	{
+		return $this->googleIdentities->findOneBy(['uid' => $id]);
 	}
 
 

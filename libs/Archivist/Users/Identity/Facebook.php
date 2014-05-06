@@ -34,7 +34,7 @@ class Facebook extends Identity
 	private $uid;
 
 	/**
-	 * @ORM\Column(type="string", nullable=TRUE)
+	 * @ORM\Column(type="text", nullable=TRUE)
 	 * @var string
 	 */
 	private $token;

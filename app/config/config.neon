@@ -42,6 +42,7 @@ extensions:
 	gravatar: IPub\Gravatar\DI\GravatarExtension
 	facebook: Kdyby\Facebook\DI\FacebookExtension
 	github: Kdyby\Github\DI\GithubExtension
+	google: Kdyby\Google\DI\GoogleExtension
 
 
 annotations:

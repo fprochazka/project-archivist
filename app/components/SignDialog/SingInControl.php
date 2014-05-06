@@ -18,6 +18,7 @@ use Archivist\Users\AccountConflictException;
 use Archivist\Users\EmailAlreadyTakenException;
 use Archivist\Users\FacebookConnect;
 use Archivist\Users\GithubConnect;
+use Archivist\Users\GoogleConnect;
 use Archivist\Users\Identity;
 use Archivist\Users\Manager;
 use Archivist\Users\ManualMergeRequiredException;
@@ -26,7 +27,6 @@ use Archivist\Users\PermissionsNotProvidedException;
 use Archivist\Users\UsernameAlreadyTakenException;
 use Archivist\Users\UserNotFoundException;
 use Kdyby;
-use Kdyby\Facebook\Dialog\LoginDialog;
 use Kdyby\Facebook\Facebook;
 use Nette;
 
@@ -90,10 +90,23 @@ class SingInControl extends BaseControl
 	 */
 	private $github;
 
+	/**
+	 * @var \Kdyby\Google\Google
+	 */
+	private $google;
+
+	/**
+	 * @var \Archivist\Users\GoogleConnect
+	 */
+	private $googleConnect;
 
 
-	public function __construct(Manager $manager, UserContext $user, Nette\Http\IResponse $httpResponse, Nette\Http\Session $session,
-		Facebook $facebook, FacebookConnect $facebookConnect, Kdyby\Github\Client $github, GithubConnect $githubConnect)
+
+	public function __construct(
+		Manager $manager, UserContext $user, Nette\Http\IResponse $httpResponse, Nette\Http\Session $session,
+		Facebook $facebook, FacebookConnect $facebookConnect,
+		Kdyby\Github\Client $github, GithubConnect $githubConnect,
+		Kdyby\Google\Google $google, GoogleConnect $googleConnect)
 	{
 		$this->manager = $manager;
 		$this->user = $user;
@@ -105,6 +118,9 @@ class SingInControl extends BaseControl
 
 		$this->github = $github;
 		$this->githubConnect = $githubConnect;
+
+		$this->google = $google;
+		$this->googleConnect = $googleConnect;
 	}
 
 
@@ -240,7 +256,7 @@ class SingInControl extends BaseControl
 
 	public function handleFacebookConnect()
 	{
-		/** @var LoginDialog $dialog */
+		/** @var SecuredFacebookLoginDialog $dialog */
 		$dialog = $this['facebook'];
 
 		try {
@@ -267,7 +283,7 @@ class SingInControl extends BaseControl
 	protected function createComponentFacebook()
 	{
 		$dialog = new SecuredFacebookLoginDialog($this->facebook);
-		$dialog->onResponse[] = function (LoginDialog $dialog) {
+		$dialog->onResponse[] = function (SecuredFacebookLoginDialog $dialog) {
 			try {
 				$this->facebookConnect->tryLogin();
 
@@ -357,7 +373,7 @@ class SingInControl extends BaseControl
 		$form->onSuccess[] = function (BaseForm $form) use ($profile) {
 			/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
 
-			/** @var LoginDialog $dialog */
+			/** @var SecuredFacebookLoginDialog $dialog */
 			$dialog = $this['facebook'];
 
 			try {
@@ -535,6 +551,159 @@ class SingInControl extends BaseControl
 
 			} catch (MissingEmailException $e) {
 				$this->view = 'github/connect';
+			}
+		};
+
+		$form->setupBootstrap3Rendering();
+		return $form;
+	}
+
+
+
+	public function handleGoogleConnect()
+	{
+		/** @var Kdyby\Google\Dialog\LoginDialog $dialog */
+		$dialog = $this['google'];
+
+		try {
+			$this->googleConnect->tryLogin();
+
+			if ($this->user->isLoggedIn() && $this->google->getUser()) {
+				$this->getPresenter()->flashMessage('front.login.google.success', 'success');
+				$this->onSingIn($this, $this->user->getIdentity());
+			}
+
+		} catch (PermissionsNotProvidedException $e) {
+			$dialog->open();
+
+		} catch (AccountConflictException $e) {
+			$this->view = 'google/connect';
+
+		} catch (ManualMergeRequiredException $e) {
+			$this->view = 'google/connect';
+		}
+	}
+
+
+
+	protected function createComponentGoogle()
+	{
+		$dialog = new Kdyby\Google\Dialog\LoginDialog($this->google);
+		$dialog->onResponse[] = function (Kdyby\Google\Dialog\LoginDialog $dialog) {
+			try {
+				$this->googleConnect->tryLogin();
+
+				if (!$this->user->isLoggedIn()) {
+					$this->getPresenter()->flashMessage('front.login.google.failed', 'danger');
+
+				} else {
+					$this->getPresenter()->flashMessage('front.login.google.success', 'success');
+				}
+
+				$this->onSingIn($this, $this->user->getIdentity());
+
+			} catch (PermissionsNotProvidedException $e) {
+				$this->getPresenter()->flashMessage('front.login.google.permission.missingEmail', 'info');
+				return;
+
+			} catch (AccountConflictException $e) {
+				$this->redirect('googleConnect!');
+
+			} catch (ManualMergeRequiredException $e) {
+				$this->redirect('googleConnect!');
+			}
+		};
+
+		return $dialog;
+	}
+
+
+
+	/**
+	 * @return BaseForm
+	 */
+	protected function createComponentMergeWithGoogle()
+	{
+		/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
+		$form = new BaseForm();
+		$form->setTranslator($this->getTranslator()->domain('front.mergeWithGoogle'));
+
+		$form->addText('username', 'username.title')
+			->setRequired('username.required');
+
+		$form->addCheckbox('merge', 'merge.title');
+
+		$form->addText('email', 'email.title')
+			->addConditionOn($form['merge'], $form::EQUAL, TRUE)
+			->addRule($form::FILLED, 'email.required')
+			->addRule($form::EMAIL, 'email.invalid');
+
+		$form->addPassword('password', 'password.title')
+			->addConditionOn($form['merge'], $form::EQUAL, TRUE)
+			->addRule($form::FILLED, 'password.required');
+
+		$profile = NULL;
+		try {
+			$profile = $this->googleConnect->readUserData();
+
+		} catch (PermissionsNotProvidedException $e) {
+			if (!$this->httpResponse->isSent()) {
+				$this->getPresenter()->flashMessage('front.mergeWithGoogle.missingGooglePermissions', 'warning');
+				$this->redirect('facebookConnect!');
+			}
+
+			$form->addError('front.mergeWithGoogle.missingGooglePermissions');
+		}
+
+		$form->onAttached[] = function (BaseForm $form) use ($profile) {
+			/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
+			$form['merge']->addCondition($form::EQUAL, TRUE)
+				->toggle('mergeWithGoogle-password')
+				->toggle('mergeWithGoogle-email');
+
+
+			if ($profile) {
+				$form->setDefaults([
+					'username' => $profile['name'],
+					'email' => $profile['email'],
+				]);
+
+				if ($this->manager->identityWithEmailExists($profile['email'])) { // todo: check profile uid
+					$form['merge']->setDefaultValue(TRUE)
+						->addRule($form::EQUAL, 'merge.forced', TRUE);
+				}
+			}
+		};
+
+		$form->addSubmit('connect');
+		$form->onSuccess[] = function (BaseForm $form) use ($profile) {
+			/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
+
+			/** @var Kdyby\Google\Dialog\LoginDialog $dialog */
+			$dialog = $this['google'];
+
+			try {
+				$vals = $form->values;
+
+				if (!$vals->merge && $profile) {
+					$this->googleConnect->registerWithProvidedEmail($profile['email'], $vals->username);
+
+				} else {
+					$this->googleConnect->mergeAndLogin($vals->email, $vals->password);
+				}
+
+				$this->getPresenter()->flashMessage('front.mergeWithGoogle.success', 'success');
+				$this->onSingIn($this, $this->user->getIdentity());
+
+			} catch (Nette\Security\AuthenticationException $e) {
+				$form->addError('validation.loginFailed');
+				$this->view = 'google/connect';
+
+			} catch (PermissionsNotProvidedException $e) {
+				$dialog->open();
+
+			} catch (MissingEmailException $e) {
+				$this->view = 'google/connect';
 			}
 		};
 

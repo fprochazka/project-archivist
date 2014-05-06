@@ -28,7 +28,7 @@ class EmailPassword extends Identity
 {
 
 	/**
-	 * @ORM\Column(type="string", name="token", nullable=TRUE)
+	 * @ORM\Column(type="text", name="token", nullable=TRUE)
 	 * @var string
 	 */
 	protected $password;

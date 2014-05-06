@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "a0c4fd5f2c7ae9e62c649651bdbca90c",
+    "hash": "dc100b13e81f3ee0d4083ad41c311499",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -579,6 +579,43 @@
             "time": "2014-02-08 16:35:09"
         },
         {
+            "name": "google/apiclient",
+            "version": "1.0.4-beta",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/google/google-api-php-client.git",
+                "reference": "eb5934d58761f1a8575e6df6de02fdce89dd89d2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/google/google-api-php-client/zipball/eb5934d58761f1a8575e6df6de02fdce89dd89d2",
+                "reference": "eb5934d58761f1a8575e6df6de02fdce89dd89d2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "src/"
+            ],
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Client library for Google APIs",
+            "homepage": "http://developers.google.com/api-client-library/php",
+            "keywords": [
+                "google"
+            ],
+            "time": "2014-03-07 17:54:19"
+        },
+        {
             "name": "ipub/gravatar",
             "version": "dev-feature/compatibility",
             "source": {
@@ -797,12 +834,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Autowired.git",
-                "reference": "6f8885835985ef37d9613ee20092f49f8318d4ec"
+                "reference": "740457f92c1f98ed6bffe1837611ce2bb34e5b02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Autowired/zipball/6f8885835985ef37d9613ee20092f49f8318d4ec",
-                "reference": "6f8885835985ef37d9613ee20092f49f8318d4ec",
+                "url": "https://api.github.com/repos/Kdyby/Autowired/zipball/740457f92c1f98ed6bffe1837611ce2bb34e5b02",
+                "reference": "740457f92c1f98ed6bffe1837611ce2bb34e5b02",
                 "shasum": ""
             },
             "require": {
@@ -846,7 +883,7 @@
                 "kdyby",
                 "nette"
             ],
-            "time": "2014-04-10 01:38:21"
+            "time": "2014-05-06 14:55:34"
         },
         {
             "name": "kdyby/console",
@@ -854,12 +891,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Console.git",
-                "reference": "25684a90d9d754f863b170926e3e52cc966e9bc9"
+                "reference": "ec61a537fa669ac3f8613611a5687e7012ac5eef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Console/zipball/25684a90d9d754f863b170926e3e52cc966e9bc9",
-                "reference": "25684a90d9d754f863b170926e3e52cc966e9bc9",
+                "url": "https://api.github.com/repos/Kdyby/Console/zipball/ec61a537fa669ac3f8613611a5687e7012ac5eef",
+                "reference": "ec61a537fa669ac3f8613611a5687e7012ac5eef",
                 "shasum": ""
             },
             "require": {
@@ -907,7 +944,7 @@
                 "kdyby",
                 "nette"
             ],
-            "time": "2014-04-19 02:13:12"
+            "time": "2014-05-06 00:21:36"
         },
         {
             "name": "kdyby/doctrine",
@@ -915,12 +952,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Doctrine.git",
-                "reference": "52ae50d47965d76f51c590e72ff5f3c4992297ad"
+                "reference": "58661a07379e646664fe71bf0c523dd80276fc28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Doctrine/zipball/52ae50d47965d76f51c590e72ff5f3c4992297ad",
-                "reference": "52ae50d47965d76f51c590e72ff5f3c4992297ad",
+                "url": "https://api.github.com/repos/Kdyby/Doctrine/zipball/58661a07379e646664fe71bf0c523dd80276fc28",
+                "reference": "58661a07379e646664fe71bf0c523dd80276fc28",
                 "shasum": ""
             },
             "require": {
@@ -973,7 +1010,7 @@
                 "nette",
                 "orm"
             ],
-            "time": "2014-05-02 14:04:10"
+            "time": "2014-05-06 00:41:59"
         },
         {
             "name": "kdyby/doctrine-cache",
@@ -1033,12 +1070,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Events.git",
-                "reference": "f15879bd2c65aa8882bcddc965a7b2b79c7e42af"
+                "reference": "ae03898bfb4cf5c3fed6e4ee5f072b115a8d12cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Events/zipball/f15879bd2c65aa8882bcddc965a7b2b79c7e42af",
-                "reference": "f15879bd2c65aa8882bcddc965a7b2b79c7e42af",
+                "url": "https://api.github.com/repos/Kdyby/Events/zipball/ae03898bfb4cf5c3fed6e4ee5f072b115a8d12cd",
+                "reference": "ae03898bfb4cf5c3fed6e4ee5f072b115a8d12cd",
                 "shasum": ""
             },
             "require": {
@@ -1084,7 +1121,7 @@
                 "kdyby",
                 "nette"
             ],
-            "time": "2014-04-21 02:59:22"
+            "time": "2014-05-06 00:58:23"
         },
         {
             "name": "kdyby/facebook",
@@ -1092,12 +1129,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Facebook.git",
-                "reference": "90d65ddb7a3392f75acf149a8efa06133ef0c597"
+                "reference": "a66e8771d1a06d0031529c0adbb5c9d9d32c93d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Facebook/zipball/90d65ddb7a3392f75acf149a8efa06133ef0c597",
-                "reference": "90d65ddb7a3392f75acf149a8efa06133ef0c597",
+                "url": "https://api.github.com/repos/Kdyby/Facebook/zipball/a66e8771d1a06d0031529c0adbb5c9d9d32c93d2",
+                "reference": "a66e8771d1a06d0031529c0adbb5c9d9d32c93d2",
                 "shasum": ""
             },
             "require": {
@@ -1146,7 +1183,7 @@
                 "nette",
                 "sdk"
             ],
-            "time": "2014-05-02 16:46:04"
+            "time": "2014-05-06 20:12:52"
         },
         {
             "name": "kdyby/github",
@@ -1154,12 +1191,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Github.git",
-                "reference": "b1beb4e1ce899505694d6e0812a09c99e47c9519"
+                "reference": "a5dc0cf095bccc7bd69b484c3bc60523bf24ff85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Github/zipball/b1beb4e1ce899505694d6e0812a09c99e47c9519",
-                "reference": "b1beb4e1ce899505694d6e0812a09c99e47c9519",
+                "url": "https://api.github.com/repos/Kdyby/Github/zipball/a5dc0cf095bccc7bd69b484c3bc60523bf24ff85",
+                "reference": "a5dc0cf095bccc7bd69b484c3bc60523bf24ff85",
                 "shasum": ""
             },
             "require": {
@@ -1197,15 +1234,80 @@
                     "homepage": "http://filip-prochazka.com"
                 }
             ],
-            "description": "Extended Github PHP SDK from KnpLabs with authorization for Nette Framework",
+            "description": "Github API client with authorization for Nette Framework",
             "homepage": "http://kdyby.org",
             "keywords": [
                 "authorization",
                 "github",
+                "kdyby",
                 "nette",
                 "sdk"
             ],
-            "time": "2014-05-03 03:21:57"
+            "time": "2014-05-06 14:26:11"
+        },
+        {
+            "name": "kdyby/google",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Kdyby/Google.git",
+                "reference": "d69c91e6e23044d530c9b9c401313deec5fc39eb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Kdyby/Google/zipball/d69c91e6e23044d530c9b9c401313deec5fc39eb",
+                "reference": "d69c91e6e23044d530c9b9c401313deec5fc39eb",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "google/apiclient": "~1.0.4@beta",
+                "nette/nette": "~2.1@dev"
+            },
+            "require-dev": {
+                "nette/tester": "@dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Kdyby\\Google\\": "src/"
+                },
+                "classmap": [
+                    "src/Kdyby/Google/exceptions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Filip Procházka",
+                    "email": "filip@prochazka.su",
+                    "homepage": "http://filip-prochazka.com"
+                },
+                {
+                    "name": "Mikuláš Dítě",
+                    "email": "mikulas@dite.pro"
+                },
+                {
+                    "name": "Google",
+                    "homepage": "https://github.com/google/google-api-php-client/graphs/contributors"
+                }
+            ],
+            "description": "Google API wrapper and authentication for Nette Framework",
+            "homepage": "http://kdyby.org",
+            "keywords": [
+                "Authentication",
+                "auth",
+                "google",
+                "login",
+                "nette"
+            ],
+            "time": "2014-05-06 15:01:09"
         },
         {
             "name": "kdyby/translation",
@@ -1213,29 +1315,29 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Translation.git",
-                "reference": "289476937f2522f647a954ea645b4d42ab371feb"
+                "reference": "764ddb7320853eb820c9a547ea1a165dca752c8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Translation/zipball/289476937f2522f647a954ea645b4d42ab371feb",
-                "reference": "289476937f2522f647a954ea645b4d42ab371feb",
+                "url": "https://api.github.com/repos/Kdyby/Translation/zipball/764ddb7320853eb820c9a547ea1a165dca752c8f",
+                "reference": "764ddb7320853eb820c9a547ea1a165dca752c8f",
                 "shasum": ""
             },
             "require": {
-                "latte/latte": "~2.2@dev",
-                "nette/caching": "~2.2@dev",
-                "nette/di": "~2.2@dev",
-                "nette/finder": "~2.2@dev",
-                "nette/http": "~2.2@dev",
-                "nette/neon": "~2.2@dev",
-                "nette/php-generator": "~2.2@dev",
-                "nette/reflection": "~2.2@dev",
-                "nette/utils": "~2.2@dev",
+                "latte/latte": "~2.2@rc",
+                "nette/caching": "~2.2@rc",
+                "nette/di": "~2.2@rc",
+                "nette/finder": "~2.2@rc",
+                "nette/http": "~2.2@rc",
+                "nette/neon": "~2.2@rc",
+                "nette/php-generator": "~2.2@rc",
+                "nette/reflection": "~2.2@rc",
+                "nette/utils": "~2.2@rc",
                 "symfony/config": "~2.4@stable",
                 "symfony/translation": "~2.4@stable"
             },
             "require-dev": {
-                "nette/nette": "~2.2@dev",
+                "nette/nette": "~2.2@rc",
                 "nette/tester": "@dev",
                 "symfony/console": "~2.4"
             },
@@ -1279,7 +1381,7 @@
                 "nette",
                 "translation"
             ],
-            "time": "2014-04-10 17:01:38"
+            "time": "2014-05-06 20:34:22"
         },
         {
             "name": "kukulich/fshl",
@@ -2801,12 +2903,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/tester.git",
-                "reference": "2700482a71973a8bcfd5ae2ca7ccc25b4621e599"
+                "reference": "a0d2bbada1e60d18fccc78631c1a4578180e57f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/tester/zipball/2700482a71973a8bcfd5ae2ca7ccc25b4621e599",
-                "reference": "2700482a71973a8bcfd5ae2ca7ccc25b4621e599",
+                "url": "https://api.github.com/repos/nette/tester/zipball/a0d2bbada1e60d18fccc78631c1a4578180e57f4",
+                "reference": "a0d2bbada1e60d18fccc78631c1a4578180e57f4",
                 "shasum": ""
             },
             "require": {
@@ -2849,7 +2951,7 @@
                 "testing",
                 "unit"
             ],
-            "time": "2014-04-23 21:33:51"
+            "time": "2014-05-06 19:48:17"
         }
     ],
     "aliases": [
@@ -2890,6 +2992,8 @@
         "kdyby/autowired": 20,
         "kdyby/facebook": 20,
         "kdyby/github": 20,
+        "kdyby/google": 20,
+        "google/apiclient": 10,
         "majkl578/nette-identity-doctrine": 20,
         "beberlei/doctrineextensions": 20,
         "nextras/secured-links": 20,
@@ -2899,7 +3003,5 @@
     "platform": {
         "php": ">= 5.5"
     },
-    "platform-dev": [
-
-    ]
+    "platform-dev": []
 }

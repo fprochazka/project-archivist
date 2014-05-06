@@ -9,6 +9,18 @@
 			<form n:name="signInForm" class="form-horizontal ajax">
 				<div class="modal-body">
 
+					<h5>Social networks</h5>
+
+					<div class="text-center">
+						<a n:href="facebookConnect!" class="btn btn-info ajax">Facebook</a>
+						<a n:href="githubConnect!" class="btn btn-info ajax">Github</a>
+						<a n:href="googleConnect!" class="btn btn-info ajax">Google</a>
+					</div>
+
+					<hr>
+
+					<h5>Password and email</h5>
+
 					{control signInForm errors}
 
 					{*<p class="alert alert-info">If you're not registered, your account will be automatically created.</p>*}
@@ -21,12 +33,6 @@
 					<div class="form-group required">
 						<div class="col-sm-3 control-label">{label password /}</div>
 						<div class="col-sm-9">{input password}</div>
-					</div>
-
-					<br>
-					<div class="text-center">
-						<a n:href="facebookConnect!" class="btn btn-info ajax">Facebook</a>
-						<a n:href="githubConnect!" class="btn btn-info ajax">Github</a>
 					</div>
 
 				</div>

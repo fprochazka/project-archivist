@@ -85,7 +85,7 @@ class User extends Identified
 
 	/**
 	 * @param string $type
-	 * @return NULL|Identity|Facebook|Identity\Github
+	 * @return NULL|Identity|Facebook|Identity\Github|Identity\Google
 	 */
 	public function getIdentity($type = NULL)
 	{
