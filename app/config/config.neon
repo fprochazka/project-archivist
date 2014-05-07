@@ -69,6 +69,10 @@ github:
 	permissions: [user:email]
 
 
+google:
+	returnUri: ':Forum:Categories:'(do=login-google-response)
+
+
 gravatar:
 	defaultImage: identicon
 
