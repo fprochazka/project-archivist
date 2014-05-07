@@ -600,7 +600,12 @@ class SingInControl extends BaseControl
 					$this->getPresenter()->flashMessage('front.login.google.success', 'success');
 				}
 
-				$this->onSingIn($this, $this->user->getIdentity());
+				try {
+					$this->onSingIn($this, $this->user->getIdentity());
+
+				} catch (Nette\Application\AbortException $e) {
+					// nope
+				}
 
 			} catch (PermissionsNotProvidedException $e) {
 				$this->getPresenter()->flashMessage('front.login.google.permission.missingEmail', 'info');
