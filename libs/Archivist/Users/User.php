@@ -37,7 +37,7 @@ class User extends Identified
 {
 
 	/**
-	 * @ORM\Column(type="string", nullable=FALSE)
+	 * @ORM\Column(type="string", nullable=TRUE)
 	 * @var string
 	 */
 	protected $name;
@@ -57,7 +57,7 @@ class User extends Identified
 	/**
 	 * @ORM\ManyToMany(targetEntity="\Archivist\Security\Role", cascade={"persist"})
 	 * @ORM\JoinTable(name="user_roles",
-	 *        joinColumns={@ORM\JoinColumn(name="user_id")},
+	 *        joinColumns={@ORM\JoinColumn(name="user_id", onDelete="cascade")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="role")}
 	 *    )
 	 * @var \Archivist\Security\Role[]|ArrayCollection

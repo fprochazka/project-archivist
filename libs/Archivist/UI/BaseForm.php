@@ -39,7 +39,7 @@ class BaseForm extends \Nette\Application\UI\Form
 		$this->getElementPrototype()->novalidate = "novalidate";
 
 		$this->onAttached[] = function () {
-			$this->addProtection();
+			$this->addProtection('csrfProtection');
 		};
 	}
 

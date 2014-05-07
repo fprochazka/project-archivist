@@ -136,29 +136,42 @@ class GithubConnect extends Nette\Object
 
 
 	/**
-	 * @param string $email
 	 * @param string $username
 	 * @throws PermissionsNotProvidedException
 	 * @throws MissingEmailException
 	 * @return bool
 	 */
-	public function registerWithProvidedEmail($email, $username)
+	public function register($username)
 	{
-		$fbUser = $this->readUserData();
+		$this->readUserData(); // check permissions
 
-		if (empty($fbUser['email'])) {
-			if ((empty($email) || !Validators::isEmail($email))) {
-				throw new MissingEmailException();
+		/** @var \Exception|User $result */
+		$result = $this->em->transactional(function () use ($username) {
+			try {
+				$identity = $this->manager->registerFromGithub($this->github->getProfile());
+				$user = $identity->getUser();
+				$this->manager->updateUsername($user, $username);
+
+				return $user;
+
+			} catch (\Exception $e) {
+				if (!empty($identity)) {
+					$this->em->remove($identity);
+				}
+
+				if (!empty($user)) {
+					$this->em->remove($user);
+				}
+
+				return $e;
 			}
+		});
 
-			$fbUser['email'] = $email;
+		if ($result instanceof \Exception) {
+			throw $result;
 		}
 
-		$identity = $this->manager->registerFromGithub($this->github->getProfile());
-		$user = $identity->getUser();
-		$user->name = $username;
-
-		return $this->completeLogin($user);
+		return $this->completeLogin($result);
 	}
 
 

@@ -380,7 +380,7 @@ class SingInControl extends BaseControl
 				$vals = $form->values;
 
 				if (!$vals->merge && $profile) {
-					$this->facebookConnect->registerWithProvidedEmail($profile['email'], $vals->username);
+					$this->facebookConnect->register($vals->username);
 
 				} else {
 					$this->facebookConnect->mergeAndLogin($vals->email, $vals->password);
@@ -391,6 +391,10 @@ class SingInControl extends BaseControl
 
 			} catch (Nette\Security\AuthenticationException $e) {
 				$form->addError('validation.loginFailed');
+				$this->view = 'facebook/connect';
+
+			} catch (UsernameAlreadyTakenException $e) {
+				$form->addError('validation.username.taken');
 				$this->view = 'facebook/connect';
 
 			} catch (PermissionsNotProvidedException $e) {
@@ -533,7 +537,7 @@ class SingInControl extends BaseControl
 				$vals = $form->values;
 
 				if (!$vals->merge && $profile) {
-					$this->githubConnect->registerWithProvidedEmail($profile['email'], $vals->username);
+					$this->githubConnect->register($vals->username);
 
 				} else {
 					$this->githubConnect->mergeAndLogin($vals->email, $vals->password);
@@ -544,6 +548,10 @@ class SingInControl extends BaseControl
 
 			} catch (Nette\Security\AuthenticationException $e) {
 				$form->addError('validation.loginFailed');
+				$this->view = 'github/connect';
+
+			} catch (UsernameAlreadyTakenException $e) {
+				$form->addError('validation.username.taken');
 				$this->view = 'github/connect';
 
 			} catch (PermissionsNotProvidedException $e) {
@@ -666,7 +674,6 @@ class SingInControl extends BaseControl
 				->toggle('mergeWithGoogle-password')
 				->toggle('mergeWithGoogle-email');
 
-
 			if ($profile) {
 				$form->setDefaults([
 					'username' => $profile['name'],
@@ -691,7 +698,7 @@ class SingInControl extends BaseControl
 				$vals = $form->values;
 
 				if (!$vals->merge && $profile) {
-					$this->googleConnect->registerWithProvidedEmail($profile['email'], $vals->username);
+					$this->googleConnect->register($vals->username);
 
 				} else {
 					$this->googleConnect->mergeAndLogin($vals->email, $vals->password);
@@ -702,6 +709,10 @@ class SingInControl extends BaseControl
 
 			} catch (Nette\Security\AuthenticationException $e) {
 				$form->addError('validation.loginFailed');
+				$this->view = 'google/connect';
+
+			} catch (UsernameAlreadyTakenException $e) {
+				$form->addError('validation.username.taken');
 				$this->view = 'google/connect';
 
 			} catch (PermissionsNotProvidedException $e) {
