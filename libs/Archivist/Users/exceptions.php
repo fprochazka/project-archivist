@@ -31,6 +31,13 @@ class UsernameAlreadyTakenException extends InvalidArgumentException
 
 
 
+class UnknownUsernameException extends InvalidArgumentException
+{
+
+}
+
+
+
 class UserNotFoundException extends AuthenticationException implements Exception
 {
 
