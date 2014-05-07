@@ -39,6 +39,9 @@
 		"janmarek/webloader": "dev-master",
 
 		"kdyby/doctrine": "@dev",
+		"majkl578/nette-identity-doctrine": "@dev",
+		"beberlei/DoctrineExtensions": "@dev",
+
 		"kdyby/events": "~2.0@dev",
 		"kdyby/console": "~2.0@dev",
 		"kdyby/translation": "~2.0@dev",
@@ -49,10 +52,7 @@
 		"kdyby/google": "@dev",
 		"google/apiclient": "~1.0@beta",
 
-		"majkl578/nette-identity-doctrine": "@dev",
-		"beberlei/DoctrineExtensions": "@dev",
-
-		"nextras/secured-links": "~1.1@dev",
+		"nextras/secured-links": "dev-bug/manual-signal-links",
 
 		"ipub/gravatar": "dev-feature/compatibility"
 	},
@@ -66,6 +66,7 @@
 	},
 	"repositories": [
 		{ "type": "vcs", "url": "https://github.com/fprochazka/nette.git" },
-		{ "type": "vcs", "url": "https://github.com/fprochazka/Gravatar.git" }
+		{ "type": "vcs", "url": "https://github.com/fprochazka/Gravatar.git" },
+		{ "type": "vcs", "url": "https://github.com/fprochazka/secured-links.git" }
 	]
 }

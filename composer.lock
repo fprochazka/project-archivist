@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "dc100b13e81f3ee0d4083ad41c311499",
+    "hash": "4a8343f82b5fded7de85c34de9ec0069",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -2522,16 +2522,16 @@
         },
         {
             "name": "nextras/secured-links",
-            "version": "dev-master",
+            "version": "dev-bug/manual-signal-links",
             "source": {
                 "type": "git",
-                "url": "https://github.com/nextras/secured-links.git",
-                "reference": "2e20034e57cc84bbac8953512a227ddab6d1a1f5"
+                "url": "https://github.com/fprochazka/secured-links.git",
+                "reference": "6e1885df20afe234196e4d4ef2972d192c4f5cf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nextras/secured-links/zipball/2e20034e57cc84bbac8953512a227ddab6d1a1f5",
-                "reference": "2e20034e57cc84bbac8953512a227ddab6d1a1f5",
+                "url": "https://api.github.com/repos/fprochazka/secured-links/zipball/6e1885df20afe234196e4d4ef2972d192c4f5cf9",
+                "reference": "6e1885df20afe234196e4d4ef2972d192c4f5cf9",
                 "shasum": ""
             },
             "require": {
@@ -2552,7 +2552,6 @@
                     "Nextras\\Application": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2570,7 +2569,10 @@
                 "nextras",
                 "secured signals"
             ],
-            "time": "2013-12-30 19:07:39"
+            "support": {
+                "source": "https://github.com/fprochazka/secured-links/tree/bug/manual-signal-links"
+            },
+            "time": "2014-05-07 15:05:53"
         },
         {
             "name": "symfony/config",
@@ -2986,6 +2988,8 @@
         "tracy/tracy": 5,
         "janmarek/webloader": 20,
         "kdyby/doctrine": 20,
+        "majkl578/nette-identity-doctrine": 20,
+        "beberlei/doctrineextensions": 20,
         "kdyby/events": 20,
         "kdyby/console": 20,
         "kdyby/translation": 20,
@@ -2994,8 +2998,6 @@
         "kdyby/github": 20,
         "kdyby/google": 20,
         "google/apiclient": 10,
-        "majkl578/nette-identity-doctrine": 20,
-        "beberlei/doctrineextensions": 20,
         "nextras/secured-links": 20,
         "ipub/gravatar": 20,
         "nette/tester": 20
