@@ -1070,12 +1070,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Events.git",
-                "reference": "ae03898bfb4cf5c3fed6e4ee5f072b115a8d12cd"
+                "reference": "19e761b04c99f6d35a0426fc1600b4c564ae9c74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Events/zipball/ae03898bfb4cf5c3fed6e4ee5f072b115a8d12cd",
-                "reference": "ae03898bfb4cf5c3fed6e4ee5f072b115a8d12cd",
+                "url": "https://api.github.com/repos/Kdyby/Events/zipball/19e761b04c99f6d35a0426fc1600b4c564ae9c74",
+                "reference": "19e761b04c99f6d35a0426fc1600b4c564ae9c74",
                 "shasum": ""
             },
             "require": {
@@ -1121,7 +1121,7 @@
                 "kdyby",
                 "nette"
             ],
-            "time": "2014-05-06 00:58:23"
+            "time": "2014-05-07 15:50:22"
         },
         {
             "name": "kdyby/facebook",
@@ -1191,12 +1191,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Github.git",
-                "reference": "9017b1435747dc2fa65dbe651fdeeda3384313b1"
+                "reference": "00977fe325d0a35d475b34ea88a5492fe9e10995"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Github/zipball/9017b1435747dc2fa65dbe651fdeeda3384313b1",
-                "reference": "9017b1435747dc2fa65dbe651fdeeda3384313b1",
+                "url": "https://api.github.com/repos/Kdyby/Github/zipball/00977fe325d0a35d475b34ea88a5492fe9e10995",
+                "reference": "00977fe325d0a35d475b34ea88a5492fe9e10995",
                 "shasum": ""
             },
             "require": {
@@ -1243,7 +1243,7 @@
                 "nette",
                 "sdk"
             ],
-            "time": "2014-05-07 14:38:21"
+            "time": "2014-05-07 15:45:14"
         },
         {
             "name": "kdyby/google",
