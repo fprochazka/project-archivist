@@ -1191,12 +1191,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Github.git",
-                "reference": "fa8421b2d0d0e3674fc27056a9c452e928790802"
+                "reference": "9017b1435747dc2fa65dbe651fdeeda3384313b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Github/zipball/fa8421b2d0d0e3674fc27056a9c452e928790802",
-                "reference": "fa8421b2d0d0e3674fc27056a9c452e928790802",
+                "url": "https://api.github.com/repos/Kdyby/Github/zipball/9017b1435747dc2fa65dbe651fdeeda3384313b1",
+                "reference": "9017b1435747dc2fa65dbe651fdeeda3384313b1",
                 "shasum": ""
             },
             "require": {

@@ -79,18 +79,13 @@ class GithubConnect extends Nette\Object
 				$user['name'] = $user['login'];
 			}
 
-			$emails = (array) $this->github->api('/user/emails');
+			if (empty($user['email'])) {
+				$user['email'] = $this->github->getProfile()->getPrimaryEmail();
 
-			usort($emails, function ($a, $b) {
-				$primary = $b->primary - $a->primary;
-				return $primary !== 0 ? $primary : ($b->verified - $a->verified);
-			});
-
-			if (!count($emails)) {
-				throw new MissingEmailException("User email cannot be resolved.");
+				if (empty($user['email'])) {
+					throw new MissingEmailException("User email cannot be resolved.");
+				}
 			}
-
-			$user['email'] = reset($emails)->email;
 
 		} catch (\Exception $e) {
 			Debugger::log($e, 'github-auth');
