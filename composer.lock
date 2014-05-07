@@ -1129,12 +1129,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Facebook.git",
-                "reference": "a66e8771d1a06d0031529c0adbb5c9d9d32c93d2"
+                "reference": "c319d9414c9c5d3bbb5d74715cff7429593c9282"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Facebook/zipball/a66e8771d1a06d0031529c0adbb5c9d9d32c93d2",
-                "reference": "a66e8771d1a06d0031529c0adbb5c9d9d32c93d2",
+                "url": "https://api.github.com/repos/Kdyby/Facebook/zipball/c319d9414c9c5d3bbb5d74715cff7429593c9282",
+                "reference": "c319d9414c9c5d3bbb5d74715cff7429593c9282",
                 "shasum": ""
             },
             "require": {
@@ -1183,7 +1183,7 @@
                 "nette",
                 "sdk"
             ],
-            "time": "2014-05-06 20:12:52"
+            "time": "2014-05-07 14:13:55"
         },
         {
             "name": "kdyby/github",
@@ -1191,12 +1191,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Github.git",
-                "reference": "a5dc0cf095bccc7bd69b484c3bc60523bf24ff85"
+                "reference": "5c55f606b79a6d64a09e02dc7463f178c3a9971d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Github/zipball/a5dc0cf095bccc7bd69b484c3bc60523bf24ff85",
-                "reference": "a5dc0cf095bccc7bd69b484c3bc60523bf24ff85",
+                "url": "https://api.github.com/repos/Kdyby/Github/zipball/5c55f606b79a6d64a09e02dc7463f178c3a9971d",
+                "reference": "5c55f606b79a6d64a09e02dc7463f178c3a9971d",
                 "shasum": ""
             },
             "require": {
@@ -1243,7 +1243,7 @@
                 "nette",
                 "sdk"
             ],
-            "time": "2014-05-06 14:26:11"
+            "time": "2014-05-06 23:12:53"
         },
         {
             "name": "kdyby/google",
@@ -1251,12 +1251,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Google.git",
-                "reference": "d69c91e6e23044d530c9b9c401313deec5fc39eb"
+                "reference": "70e9b82c857d44a9c42dea44d9a92d5f6ca875cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Google/zipball/d69c91e6e23044d530c9b9c401313deec5fc39eb",
-                "reference": "d69c91e6e23044d530c9b9c401313deec5fc39eb",
+                "url": "https://api.github.com/repos/Kdyby/Google/zipball/70e9b82c857d44a9c42dea44d9a92d5f6ca875cd",
+                "reference": "70e9b82c857d44a9c42dea44d9a92d5f6ca875cd",
                 "shasum": ""
             },
             "require": {
@@ -1307,7 +1307,7 @@
                 "login",
                 "nette"
             ],
-            "time": "2014-05-06 15:01:09"
+            "time": "2014-05-07 14:32:41"
         },
         {
             "name": "kdyby/translation",
