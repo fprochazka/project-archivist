@@ -16,6 +16,7 @@ use Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby;
 use Nette;
+use Nette\Utils\Json;
 
 
 
@@ -77,7 +78,18 @@ class Google extends Identity
 
 	public function updateToken(Kdyby\Google\Google $google)
 	{
-		$this->token = json_encode($google->getAccessToken());
+		$token = $google->getAccessToken();
+		$previous = $this->token ? Json::decode($this->token, Json::FORCE_ARRAY) : array();
+
+		if (!isset($token['id_token']) && isset($previous['id_token'])) {
+			$token['id_token'] = $previous['id_token'];
+		}
+
+		if (!isset($token['refresh_token']) && isset($previous['refresh_token'])) {
+			$token['refresh_token'] = $previous['refresh_token'];
+		}
+
+		$this->token = Json::encode($token);
 	}
 
 }

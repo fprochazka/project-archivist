@@ -22,7 +22,6 @@ use Archivist\Users\GoogleConnect;
 use Archivist\Users\Identity;
 use Archivist\Users\Manager;
 use Archivist\Users\ManualMergeRequiredException;
-use Archivist\Users\MissingEmailException;
 use Archivist\Users\PermissionsNotProvidedException;
 use Archivist\Users\UsernameAlreadyTakenException;
 use Archivist\Users\UserNotFoundException;
@@ -271,11 +270,13 @@ class SingInControl extends BaseControl
 			$dialog->open();
 
 		} catch (AccountConflictException $e) {
-			$this->view = 'facebook/connect';
 
 		} catch (ManualMergeRequiredException $e) {
-			$this->view = 'facebook/connect';
+
 		}
+
+		$this->view = 'social/connect';
+		$this->template->form = $this['mergeWithFacebook'];
 	}
 
 
@@ -313,100 +314,22 @@ class SingInControl extends BaseControl
 
 
 
-	/**
-	 * @return BaseForm
-	 */
-	protected function createComponentMergeWithFacebook()
+	protected function createComponentMergeWithFacebook(IMergeWithSocialNetworkControlFactory $factory)
 	{
-		/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
-		$form = new BaseForm();
-		$form->setTranslator($this->getTranslator()->domain('front.mergeWithFacebook'));
+		$control = $factory->create();
+		$control->translationDomain .= 'Facebook';
+		$control->setDialog($this['facebook']);
+		$control->setSocialConnect($this->facebookConnect);
 
-		$form->addText('username', 'username.title')
-			->setRequired('username.required');
-
-		$form->addCheckbox('merge', 'merge.title');
-
-		$form->addText('email', 'email.title')
-			->addConditionOn($form['merge'], $form::EQUAL, TRUE)
-				->addRule($form::FILLED, 'email.required')
-				->addRule($form::EMAIL, 'email.invalid');
-
-		$form->addPassword('password', 'password.title')
-			->addConditionOn($form['merge'], $form::EQUAL, TRUE)
-				->addRule($form::FILLED, 'password.required');
-
-		$profile = NULL;
-		try {
-			$profile = $this->facebookConnect->readUserData();
-
-		} catch (PermissionsNotProvidedException $e) {
-			if (!$this->httpResponse->isSent()) {
-				$this->getPresenter()->flashMessage('front.mergeWithFacebook.missingFacebookPermissions', 'warning');
-				$this->redirect('facebookConnect!');
-			}
-
-			$form->addError('front.mergeWithFacebook.missingFacebookPermissions');
-		}
-
-		$form->onAttached[] = function (BaseForm $form) use ($profile) {
-			/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
-			$form['merge']->addCondition($form::EQUAL, TRUE)
-				->toggle('mergeWithFacebook-password')
-				->toggle('mergeWithFacebook-email');
-
-
-			if ($profile) {
-				$form->setDefaults([
-					'username' => $profile['name'],
-					'email' => $profile['email'],
-				]);
-
-				if ($this->manager->identityWithEmailExists($profile['email'])) { // todo: check profile uid
-					$form['merge']->setDefaultValue(TRUE)
-						->addRule($form::EQUAL, 'merge.forced', TRUE);
-				}
-			}
+		$control->onFailure[] = function () {
+			$this->view = 'social/connect';
+			$this->template->form = $this['mergeWithFacebook'];
+		};
+		$control->onSingIn[] = function ($self, Identity $identity) {
+			$this->onSingIn($this, $identity);
 		};
 
-		$form->addSubmit('connect');
-		$form->onSuccess[] = function (BaseForm $form) use ($profile) {
-			/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
-
-			/** @var SecuredFacebookLoginDialog $dialog */
-			$dialog = $this['facebook'];
-
-			try {
-				$vals = $form->values;
-
-				if (!$vals->merge && $profile) {
-					$this->facebookConnect->register($vals->username);
-
-				} else {
-					$this->facebookConnect->mergeAndLogin($vals->email, $vals->password);
-				}
-
-				$this->getPresenter()->flashMessage('front.mergeWithFacebook.success', 'success');
-				$this->onSingIn($this, $this->user->getIdentity());
-
-			} catch (Nette\Security\AuthenticationException $e) {
-				$form->addError('validation.loginFailed');
-				$this->view = 'facebook/connect';
-
-			} catch (UsernameAlreadyTakenException $e) {
-				$form->addError('validation.username.taken');
-				$this->view = 'facebook/connect';
-
-			} catch (PermissionsNotProvidedException $e) {
-				$dialog->open();
-
-			} catch (MissingEmailException $e) {
-				$this->view = 'facebook/connect';
-			}
-		};
-
-		$form->setupBootstrap3Rendering();
-		return $form;
+		return $control;
 	}
 
 
@@ -428,11 +351,13 @@ class SingInControl extends BaseControl
 			$dialog->open();
 
 		} catch (AccountConflictException $e) {
-			$this->view = 'github/connect';
 
 		} catch (ManualMergeRequiredException $e) {
-			$this->view = 'github/connect';
+
 		}
+
+		$this->view = 'social/connect';
+		$this->template->form = $this['mergeWithGithub'];
 	}
 
 
@@ -470,100 +395,22 @@ class SingInControl extends BaseControl
 
 
 
-	/**
-	 * @return BaseForm
-	 */
-	protected function createComponentMergeWithGithub()
+	protected function createComponentMergeWithGithub(IMergeWithSocialNetworkControlFactory $factory)
 	{
-		/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
-		$form = new BaseForm();
-		$form->setTranslator($this->getTranslator()->domain('front.mergeWithGithub'));
+		$control = $factory->create();
+		$control->translationDomain .= 'Github';
+		$control->setDialog($this['github']);
+		$control->setSocialConnect($this->githubConnect);
 
-		$form->addText('username', 'username.title')
-			->setRequired('username.required');
-
-		$form->addCheckbox('merge', 'merge.title');
-
-		$form->addText('email', 'email.title')
-			->addConditionOn($form['merge'], $form::EQUAL, TRUE)
-			->addRule($form::FILLED, 'email.required')
-			->addRule($form::EMAIL, 'email.invalid');
-
-		$form->addPassword('password', 'password.title')
-			->addConditionOn($form['merge'], $form::EQUAL, TRUE)
-			->addRule($form::FILLED, 'password.required');
-
-		$profile = NULL;
-		try {
-			$profile = $this->githubConnect->readUserData();
-
-		} catch (PermissionsNotProvidedException $e) {
-			if (!$this->httpResponse->isSent()) {
-				$this->getPresenter()->flashMessage('front.mergeWithGithub.missingGithubPermissions', 'warning');
-				$this->redirect('facebookConnect!');
-			}
-
-			$form->addError('front.mergeWithGithub.missingGithubPermissions');
-		}
-
-		$form->onAttached[] = function (BaseForm $form) use ($profile) {
-			/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
-			$form['merge']->addCondition($form::EQUAL, TRUE)
-				->toggle('mergeWithGithub-password')
-				->toggle('mergeWithGithub-email');
-
-
-			if ($profile) {
-				$form->setDefaults([
-					'username' => $profile['name'],
-					'email' => $profile['email'],
-				]);
-
-				if ($this->manager->identityWithEmailExists($profile['email'])) { // todo: check profile uid
-					$form['merge']->setDefaultValue(TRUE)
-						->addRule($form::EQUAL, 'merge.forced', TRUE);
-				}
-			}
+		$control->onFailure[] = function () {
+			$this->view = 'social/connect';
+			$this->template->form = $this['mergeWithGithub'];
+		};
+		$control->onSingIn[] = function ($self, Identity $identity) {
+			$this->onSingIn($this, $identity);
 		};
 
-		$form->addSubmit('connect');
-		$form->onSuccess[] = function (BaseForm $form) use ($profile) {
-			/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
-
-			/** @var Kdyby\Github\UI\LoginDialog $dialog */
-			$dialog = $this['github'];
-
-			try {
-				$vals = $form->values;
-
-				if (!$vals->merge && $profile) {
-					$this->githubConnect->register($vals->username);
-
-				} else {
-					$this->githubConnect->mergeAndLogin($vals->email, $vals->password);
-				}
-
-				$this->getPresenter()->flashMessage('front.mergeWithGithub.success', 'success');
-				$this->onSingIn($this, $this->user->getIdentity());
-
-			} catch (Nette\Security\AuthenticationException $e) {
-				$form->addError('validation.loginFailed');
-				$this->view = 'github/connect';
-
-			} catch (UsernameAlreadyTakenException $e) {
-				$form->addError('validation.username.taken');
-				$this->view = 'github/connect';
-
-			} catch (PermissionsNotProvidedException $e) {
-				$dialog->open();
-
-			} catch (MissingEmailException $e) {
-				$this->view = 'github/connect';
-			}
-		};
-
-		$form->setupBootstrap3Rendering();
-		return $form;
+		return $control;
 	}
 
 
@@ -585,11 +432,13 @@ class SingInControl extends BaseControl
 			$dialog->open();
 
 		} catch (AccountConflictException $e) {
-			$this->view = 'google/connect';
 
 		} catch (ManualMergeRequiredException $e) {
-			$this->view = 'google/connect';
+
 		}
+
+		$this->view = 'social/connect';
+		$this->template->form = $this['mergeWithGoogle'];
 	}
 
 
@@ -632,99 +481,22 @@ class SingInControl extends BaseControl
 
 
 
-	/**
-	 * @return BaseForm
-	 */
-	protected function createComponentMergeWithGoogle()
+	protected function createComponentMergeWithGoogle(IMergeWithSocialNetworkControlFactory $factory)
 	{
-		/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
-		$form = new BaseForm();
-		$form->setTranslator($this->getTranslator()->domain('front.mergeWithGoogle'));
+		$control = $factory->create();
+		$control->translationDomain .= 'Google';
+		$control->setDialog($this['google']);
+		$control->setSocialConnect($this->googleConnect);
 
-		$form->addText('username', 'username.title')
-			->setRequired('username.required');
-
-		$form->addCheckbox('merge', 'merge.title');
-
-		$form->addText('email', 'email.title')
-			->addConditionOn($form['merge'], $form::EQUAL, TRUE)
-			->addRule($form::FILLED, 'email.required')
-			->addRule($form::EMAIL, 'email.invalid');
-
-		$form->addPassword('password', 'password.title')
-			->addConditionOn($form['merge'], $form::EQUAL, TRUE)
-			->addRule($form::FILLED, 'password.required');
-
-		$profile = NULL;
-		try {
-			$profile = $this->googleConnect->readUserData();
-
-		} catch (PermissionsNotProvidedException $e) {
-			if (!$this->httpResponse->isSent()) {
-				$this->getPresenter()->flashMessage('front.mergeWithGoogle.missingGooglePermissions', 'warning');
-				$this->redirect('facebookConnect!');
-			}
-
-			$form->addError('front.mergeWithGoogle.missingGooglePermissions');
-		}
-
-		$form->onAttached[] = function (BaseForm $form) use ($profile) {
-			/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
-			$form['merge']->addCondition($form::EQUAL, TRUE)
-				->toggle('mergeWithGoogle-password')
-				->toggle('mergeWithGoogle-email');
-
-			if ($profile) {
-				$form->setDefaults([
-					'username' => $profile['name'],
-					'email' => $profile['email'],
-				]);
-
-				if ($this->manager->identityWithEmailExists($profile['email'])) { // todo: check profile uid
-					$form['merge']->setDefaultValue(TRUE)
-						->addRule($form::EQUAL, 'merge.forced', TRUE);
-				}
-			}
+		$control->onFailure[] = function () {
+			$this->view = 'social/connect';
+			$this->template->form = $this['mergeWithGoogle'];
+		};
+		$control->onSingIn[] = function ($self, Identity $identity) {
+			$this->onSingIn($this, $identity);
 		};
 
-		$form->addSubmit('connect');
-		$form->onSuccess[] = function (BaseForm $form) use ($profile) {
-			/** @var BaseForm|Nette\Forms\Controls\BaseControl[] $form */
-
-			/** @var Kdyby\Google\Dialog\LoginDialog $dialog */
-			$dialog = $this['google'];
-
-			try {
-				$vals = $form->values;
-
-				if (!$vals->merge && $profile) {
-					$this->googleConnect->register($vals->username);
-
-				} else {
-					$this->googleConnect->mergeAndLogin($vals->email, $vals->password);
-				}
-
-				$this->getPresenter()->flashMessage('front.mergeWithGoogle.success', 'success');
-				$this->onSingIn($this, $this->user->getIdentity());
-
-			} catch (Nette\Security\AuthenticationException $e) {
-				$form->addError('validation.loginFailed');
-				$this->view = 'google/connect';
-
-			} catch (UsernameAlreadyTakenException $e) {
-				$form->addError('validation.username.taken');
-				$this->view = 'google/connect';
-
-			} catch (PermissionsNotProvidedException $e) {
-				$dialog->open();
-
-			} catch (MissingEmailException $e) {
-				$this->view = 'google/connect';
-			}
-		};
-
-		$form->setupBootstrap3Rendering();
-		return $form;
+		return $control;
 	}
 
 }

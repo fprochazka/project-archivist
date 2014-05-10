@@ -24,7 +24,7 @@ use Tracy\Debugger;
 /**
  * @author Filip Procházka <filip@prochazka.su>
  */
-class GoogleConnect extends Nette\Object
+class GoogleConnect extends Nette\Object implements ISocialConnect
 {
 
 	/**

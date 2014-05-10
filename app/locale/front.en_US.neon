@@ -63,10 +63,14 @@ mergeWithFacebook:
 	password:
 		title: Password
 		required: "To be able to merge two accounts, you must fill in your current password"
+	modal:
+		title: Facebook connect
+	button:
+		title: Connect
 	validation:
 		username:
 			taken: "You've picked up a great name, but someone else has been here before you and picked it earlier. You'll have to choose another one if you wanna continue."
-		missingFacebookPermissions: "The required facebook permissions were not provided, you have to allow us to access your profile before logging in."
+		missingPermissions: "The required facebook permissions were not provided, you have to allow us to access your profile before logging in."
 		loginFailed: "The email or password is invalid, think twice and try again."
 	success: "Your account has been successfully connected to your Facebook account!"
 
@@ -84,10 +88,14 @@ mergeWithGithub:
 	password:
 		title: Password
 		required: "To be able to merge two accounts, you must fill in your current password"
+	modal:
+		title: Github connect
+	button:
+		title: Connect
 	validation:
 		username:
 			taken: "You've picked up a great name, but someone else has been here before you and picked it earlier. You'll have to choose another one if you wanna continue."
-		missingGithubPermissions: "The required github permissions were not provided, you have to allow us to access your profile before logging in."
+		missingPermissions: "The required github permissions were not provided, you have to allow us to access your profile before logging in."
 		loginFailed: "The email or password is invalid, think twice and try again."
 	success: "Your account has been successfully connected to your Github account!"
 
@@ -105,9 +113,13 @@ mergeWithGoogle:
 	password:
 		title: Password
 		required: "To be able to merge two accounts, you must fill in your current password"
+	modal:
+		title: Google connect
+	button:
+		title: Connect
 	validation:
 		username:
 			taken: "You've picked up a great name, but someone else has been here before you and picked it earlier. You'll have to choose another one if you wanna continue."
-		missingGooglePermissions: "The required Google permissions were not provided, you have to allow us to access your profile before logging in."
+		missingPermissions: "The required Google permissions were not provided, you have to allow us to access your profile before logging in."
 		loginFailed: "The email or password is invalid, think twice and try again."
 	success: "Your account has been successfully connected to your Google account!"

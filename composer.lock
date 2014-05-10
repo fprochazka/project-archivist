@@ -947,17 +947,65 @@
             "time": "2014-05-06 00:21:36"
         },
         {
+            "name": "kdyby/curl-ca-bundle",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Kdyby/CurlCaBundle.git",
+                "reference": "44557bb1141a437479d9dfbaf384d7734bb1c258"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Kdyby/CurlCaBundle/zipball/44557bb1141a437479d9dfbaf384d7734bb1c258",
+                "reference": "44557bb1141a437479d9dfbaf384d7734bb1c258",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Filip Procházka",
+                    "email": "filip@prochazka.su",
+                    "homepage": "http://filip-prochazka.com"
+                }
+            ],
+            "description": "This package provides root certificates for usage in api clients on systems that have missing or outdated certificates.",
+            "homepage": "http://kdyby.org",
+            "keywords": [
+                "bundle",
+                "ca",
+                "certificate",
+                "curl",
+                "https",
+                "ssl"
+            ],
+            "time": "2014-05-08 13:23:25"
+        },
+        {
             "name": "kdyby/doctrine",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Doctrine.git",
-                "reference": "58661a07379e646664fe71bf0c523dd80276fc28"
+                "reference": "8325c5392b8fabd3c6b8a9dacd4e0a54cf7c8b56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Doctrine/zipball/58661a07379e646664fe71bf0c523dd80276fc28",
-                "reference": "58661a07379e646664fe71bf0c523dd80276fc28",
+                "url": "https://api.github.com/repos/Kdyby/Doctrine/zipball/8325c5392b8fabd3c6b8a9dacd4e0a54cf7c8b56",
+                "reference": "8325c5392b8fabd3c6b8a9dacd4e0a54cf7c8b56",
                 "shasum": ""
             },
             "require": {
@@ -1010,7 +1058,7 @@
                 "nette",
                 "orm"
             ],
-            "time": "2014-05-06 00:41:59"
+            "time": "2014-05-09 13:58:55"
         },
         {
             "name": "kdyby/doctrine-cache",
@@ -1070,12 +1118,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Events.git",
-                "reference": "19e761b04c99f6d35a0426fc1600b4c564ae9c74"
+                "reference": "4059b0a718dd82a264c8dba5fd6c635f936e00b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Events/zipball/19e761b04c99f6d35a0426fc1600b4c564ae9c74",
-                "reference": "19e761b04c99f6d35a0426fc1600b4c564ae9c74",
+                "url": "https://api.github.com/repos/Kdyby/Events/zipball/4059b0a718dd82a264c8dba5fd6c635f936e00b3",
+                "reference": "4059b0a718dd82a264c8dba5fd6c635f936e00b3",
                 "shasum": ""
             },
             "require": {
@@ -1121,7 +1169,7 @@
                 "kdyby",
                 "nette"
             ],
-            "time": "2014-05-07 15:50:22"
+            "time": "2014-05-07 23:37:10"
         },
         {
             "name": "kdyby/facebook",
@@ -1129,17 +1177,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Facebook.git",
-                "reference": "e1263da7414b55d9882db95c03f5ee6d88c8042d"
+                "reference": "901cc8e8be4ab32e96737d2b4547c53cbdc8cf7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Facebook/zipball/e1263da7414b55d9882db95c03f5ee6d88c8042d",
-                "reference": "e1263da7414b55d9882db95c03f5ee6d88c8042d",
+                "url": "https://api.github.com/repos/Kdyby/Facebook/zipball/901cc8e8be4ab32e96737d2b4547c53cbdc8cf7a",
+                "reference": "901cc8e8be4ab32e96737d2b4547c53cbdc8cf7a",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
+                "kdyby/curl-ca-bundle": "~1.0",
                 "nette/nette": "~2.1@dev"
             },
             "require-dev": {
@@ -1183,7 +1232,7 @@
                 "nette",
                 "sdk"
             ],
-            "time": "2014-05-07 14:38:31"
+            "time": "2014-05-08 13:30:34"
         },
         {
             "name": "kdyby/github",
@@ -1191,17 +1240,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Github.git",
-                "reference": "00977fe325d0a35d475b34ea88a5492fe9e10995"
+                "reference": "c10914d70c3d20ef99acc250421877dce3def0c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Github/zipball/00977fe325d0a35d475b34ea88a5492fe9e10995",
-                "reference": "00977fe325d0a35d475b34ea88a5492fe9e10995",
+                "url": "https://api.github.com/repos/Kdyby/Github/zipball/c10914d70c3d20ef99acc250421877dce3def0c0",
+                "reference": "c10914d70c3d20ef99acc250421877dce3def0c0",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
+                "kdyby/curl-ca-bundle": "~1.0",
                 "nette/nette": "~2.1@dev"
             },
             "require-dev": {
@@ -1243,7 +1293,7 @@
                 "nette",
                 "sdk"
             ],
-            "time": "2014-05-07 15:45:14"
+            "time": "2014-05-08 13:36:03"
         },
         {
             "name": "kdyby/google",
@@ -1251,12 +1301,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Google.git",
-                "reference": "70e9b82c857d44a9c42dea44d9a92d5f6ca875cd"
+                "reference": "f02b930f013563e5c8d93197dc4b64195c85ff0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Google/zipball/70e9b82c857d44a9c42dea44d9a92d5f6ca875cd",
-                "reference": "70e9b82c857d44a9c42dea44d9a92d5f6ca875cd",
+                "url": "https://api.github.com/repos/Kdyby/Google/zipball/f02b930f013563e5c8d93197dc4b64195c85ff0a",
+                "reference": "f02b930f013563e5c8d93197dc4b64195c85ff0a",
                 "shasum": ""
             },
             "require": {
@@ -1269,6 +1319,11 @@
                 "nette/tester": "@dev"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Kdyby\\Google\\": "src/"
@@ -1307,7 +1362,7 @@
                 "login",
                 "nette"
             ],
-            "time": "2014-05-07 14:32:41"
+            "time": "2014-05-10 19:12:34"
         },
         {
             "name": "kdyby/translation",

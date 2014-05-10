@@ -25,7 +25,7 @@ use Tracy\Debugger;
 /**
  * @author Filip Procházka <filip@prochazka.su>
  */
-class FacebookConnect extends Nette\Object
+class FacebookConnect extends Nette\Object implements ISocialConnect
 {
 
 	/**

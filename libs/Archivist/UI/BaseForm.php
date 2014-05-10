@@ -20,6 +20,7 @@ use Nette\Forms\Controls;
  * @author Filip Procházka <filip@prochazka.su>
  * @method onAttached(\Archivist\UI\BaseForm $form, \Archivist\BasePresenter $presenter)
  * @method onError(\Nette\Forms\Form $form)
+ * @method Kdyby\Translation\Translator getTranslator()
  *
  * @property \Archivist\BasePresenter $presenter
  */

@@ -23,7 +23,7 @@ use Tracy\Debugger;
 /**
  * @author Filip Procházka <filip@prochazka.su>
  */
-class GithubConnect extends Nette\Object
+class GithubConnect extends Nette\Object implements ISocialConnect
 {
 
 	/**
