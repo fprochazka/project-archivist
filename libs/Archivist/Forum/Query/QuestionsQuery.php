@@ -12,6 +12,7 @@ namespace Archivist\Forum\Query;
 
 use Archivist\Forum\Answer;
 use Archivist\Forum\Category;
+use Archivist\Forum\Question;
 use Archivist\InvalidArgumentException;
 use Archivist\Users\Identity;
 use Archivist\Users\User;
@@ -157,7 +158,8 @@ class QuestionsQuery extends Kdyby\Doctrine\QueryObject
 
 	private function createBasicDql(Queryable $repository)
 	{
-		$qb = $repository->createQueryBuilder('q')
+		$qb = $repository->createQueryBuilder()
+			->select('q')->from(Question::class, 'q')
 			->andWhere('q.spam = FALSE AND q.deleted = FALSE')
 			->innerJoin('q.author', 'i')
 			->innerJoin('i.user', 'u');
