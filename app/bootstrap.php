@@ -1,7 +1,6 @@
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
-Nette\Loaders\NetteLoader::getInstance()->createAliases();
 
 $configurator = new Nette\Configurator;
 
