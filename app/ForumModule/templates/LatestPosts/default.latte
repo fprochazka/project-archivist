@@ -1,0 +1,16 @@
+{block head}
+	{control rss:link}
+{/block}
+
+{block content}
+
+<div class="page-header">
+	<h1 n:block=title>
+		Latest posts
+	</h1>
+	<a href="{plink //rss-feed!}" class="pull-right rss-feed hidden-xs hidden-sm">RSS</a>
+	<a n:href="Categories:" class="hidden-xs hidden-sm">&laquo; All categories</a>
+</div>
+
+{control posts}
+{control posts-vp}

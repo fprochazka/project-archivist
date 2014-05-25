@@ -6,7 +6,6 @@ use Archivist\Forum\Query\QuestionsQuery;
 use Archivist\ForumModule\Questions\IThreadsControlFactory;
 use Archivist\Rss\FeedControl;
 use Archivist\Rss\IFeedControlFactory;
-use Kdyby\NewsFeed\Channel;
 use Nette;
 
 

@@ -21,6 +21,7 @@ services:
 	# componnets
 	- Archivist\ForumModule\IPostFormFactory
 	- Archivist\ForumModule\Questions\IThreadsControlFactory
+	- Archivist\ForumModule\Posts\IPostsControlFactory
 	- Archivist\SignDialog\ISingInControlFactory
 	- Archivist\Rss\IFeedControlFactory
 	- Archivist\SignDialog\IMergeWithSocialNetworkControlFactory
