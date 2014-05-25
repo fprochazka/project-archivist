@@ -624,12 +624,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fprochazka/Gravatar.git",
-                "reference": "4605ad7610ffe17d52985d29d837c8fecdf05ca2"
+                "reference": "a6196e2bd4e1e4dc867e664b28d5c70d194f47de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fprochazka/Gravatar/zipball/4605ad7610ffe17d52985d29d837c8fecdf05ca2",
-                "reference": "4605ad7610ffe17d52985d29d837c8fecdf05ca2",
+                "url": "https://api.github.com/repos/fprochazka/Gravatar/zipball/a6196e2bd4e1e4dc867e664b28d5c70d194f47de",
+                "reference": "a6196e2bd4e1e4dc867e664b28d5c70d194f47de",
                 "shasum": ""
             },
             "require": {
@@ -665,7 +665,7 @@
                 "issues": "https://github.com/iPublikuj/Gravatar/issues",
                 "source": "https://github.com/fprochazka/Gravatar/tree/feature/compatibility"
             },
-            "time": "2014-04-28 18:19:38"
+            "time": "2014-05-25 13:43:16"
         },
         {
             "name": "janmarek/webloader",
@@ -2382,16 +2382,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/safe-stream.git",
-                "reference": "655c8421e7bc650f551973a58e957e01ccf19e25"
+                "reference": "003654d659141035ec5d326ce5a8ed304ed11286"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/safe-stream/zipball/655c8421e7bc650f551973a58e957e01ccf19e25",
-                "reference": "655c8421e7bc650f551973a58e957e01ccf19e25",
+                "url": "https://api.github.com/repos/nette/safe-stream/zipball/003654d659141035ec5d326ce5a8ed304ed11286",
+                "reference": "003654d659141035ec5d326ce5a8ed304ed11286",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.1"
+            },
+            "conflict": {
+                "nette/nette": "<2.2"
             },
             "require-dev": {
                 "nette/tester": "~1.0"
@@ -2420,7 +2423,7 @@
             ],
             "description": "Nette SafeStream: Atomic Operations",
             "homepage": "http://nette.org",
-            "time": "2014-05-11 16:56:47"
+            "time": "2014-05-25 06:22:32"
         },
         {
             "name": "nette/security",
@@ -2475,16 +2478,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/tokenizer.git",
-                "reference": "a11f23d4ace3795007a608ceb9ee75c1f72231ff"
+                "reference": "962b2b6f08c17018f5e37a85f8de631091eb3398"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/tokenizer/zipball/a11f23d4ace3795007a608ceb9ee75c1f72231ff",
-                "reference": "a11f23d4ace3795007a608ceb9ee75c1f72231ff",
+                "url": "https://api.github.com/repos/nette/tokenizer/zipball/962b2b6f08c17018f5e37a85f8de631091eb3398",
+                "reference": "962b2b6f08c17018f5e37a85f8de631091eb3398",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.1"
+            },
+            "conflict": {
+                "nette/nette": "<2.2"
             },
             "require-dev": {
                 "nette/tester": "~1.0"
@@ -2513,7 +2519,7 @@
             ],
             "description": "Nette Tokenizer",
             "homepage": "http://nette.org",
-            "time": "2014-05-11 16:58:48"
+            "time": "2014-05-25 06:19:43"
         },
         {
             "name": "nette/utils",
@@ -2521,19 +2527,27 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "94f2d07d1b72cfcc568e4615e40fc42516500541"
+                "reference": "57aef4e01083dd1b3b7e3bdd7006659a56fb23b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/94f2d07d1b72cfcc568e4615e40fc42516500541",
-                "reference": "94f2d07d1b72cfcc568e4615e40fc42516500541",
+                "url": "https://api.github.com/repos/nette/utils/zipball/57aef4e01083dd1b3b7e3bdd7006659a56fb23b3",
+                "reference": "57aef4e01083dd1b3b7e3bdd7006659a56fb23b3",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.1"
             },
+            "conflict": {
+                "nette/nette": "<2.2"
+            },
             "require-dev": {
                 "nette/tester": "~1.0"
+            },
+            "suggest": {
+                "ext-gd": "to use Image",
+                "ext-iconv": "to use Strings::webalize() and toAscii()",
+                "ext-mbstring": "to use Strings::lower() etc..."
             },
             "type": "library",
             "autoload": {
@@ -2559,7 +2573,7 @@
             ],
             "description": "Nette Utility Classes",
             "homepage": "http://nette.org",
-            "time": "2014-05-11 17:06:28"
+            "time": "2014-05-25 06:14:53"
         },
         {
             "name": "nextras/secured-links",
