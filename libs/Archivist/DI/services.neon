@@ -9,7 +9,7 @@ services:
 	- Archivist\Users\GithubConnect()
 	- Archivist\Users\GoogleConnect()
 
-	nette.latte:
+	nette.latteFactory:
 		setup:
 			- addFilter(NULL, Archivist\UI\TemplateHelpers::register(@self))
 	- Archivist\Forum\Preprocessor\CachingRenderer(%productionMode%, Archivist\Forum\Preprocessor\TexyRenderer())

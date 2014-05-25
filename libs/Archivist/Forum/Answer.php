@@ -51,4 +51,14 @@ class Answer extends Post
 		return $this->question;
 	}
 
+
+
+	/**
+	 * @return string
+	 */
+	public function getTitle()
+	{
+		return $this->getQuestion()->getTitle();
+	}
+
 }
