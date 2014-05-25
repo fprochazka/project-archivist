@@ -43,6 +43,8 @@ class Github extends Identity
 
 	public function __construct(Kdyby\Github\Profile $profile)
 	{
+		parent::__construct();
+
 		$this->uid = $profile->getId();
 		$this->setEmail($profile->getDetails('email'));
 

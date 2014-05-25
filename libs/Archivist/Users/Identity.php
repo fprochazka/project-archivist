@@ -75,6 +75,19 @@ abstract class Identity extends Identified implements Nette\Security\IIdentity
 	 */
 	protected $verified = FALSE;
 
+	/**
+	 * @ORM\Column(type="datetime", nullable=FALSE)
+	 * @var \DateTime
+	 */
+	private $createdAt;
+
+
+
+	public function __construct()
+	{
+		$this->createdAt = new \DateTime();
+	}
+
 
 
 	/**

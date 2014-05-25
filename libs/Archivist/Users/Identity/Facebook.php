@@ -43,6 +43,8 @@ class Facebook extends Identity
 
 	public function __construct(Kdyby\Facebook\Profile $profile)
 	{
+		parent::__construct();
+
 		$this->uid = $profile->getId();
 		$this->setEmail($profile->getDetails('email'));
 

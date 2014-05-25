@@ -37,7 +37,9 @@ class EmailPassword extends Identity
 
 	public function __construct($email, $rawPassword)
 	{
-		$this->email = $email;
+		parent::__construct();
+
+		$this->setEmail($email);
 		$this->hashPassword($rawPassword);
 	}
 

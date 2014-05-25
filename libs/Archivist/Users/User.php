@@ -64,6 +64,12 @@ class User extends Identified
 	 */
 	protected $roles;
 
+	/**
+	 * @ORM\Column(type="datetime", nullable=FALSE)
+	 * @var \DateTime
+	 */
+	private $createdAt;
+
 
 
 	public function __construct($email)
@@ -71,6 +77,7 @@ class User extends Identified
 		$this->setEmail($email);
 		$this->identities = new ArrayCollection();
 		$this->roles = new ArrayCollection();
+		$this->createdAt = new \DateTime();
 	}
 
 

@@ -44,6 +44,8 @@ class Google extends Identity
 
 	public function __construct(\Google_Service_Oauth2_Userinfoplus $profile)
 	{
+		parent::__construct();
+
 		$this->uid = $profile->getId();
 		$this->setEmail($profile->getEmail());
 
