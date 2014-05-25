@@ -32,7 +32,7 @@ class ProfilePresenter extends BasePresenter
 
 	public function actionDefault($userId)
 	{
-		if (!$this->user = $this->users->find($userId)) {
+		if (!is_numeric($userId) || !$this->user = $this->users->find($userId)) {
 			$this->error();
 		}
 	}
