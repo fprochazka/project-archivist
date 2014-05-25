@@ -95,7 +95,7 @@ class Reader extends Nette\Object
 	 */
 	public function readCategory($categoryId)
 	{
-		if (!$categoryId || !($category = $this->categories->find($categoryId))) {
+		if (!$categoryId || !is_numeric($categoryId) || !($category = $this->categories->find($categoryId))) {
 			return NULL;
 		}
 
@@ -112,7 +112,7 @@ class Reader extends Nette\Object
 	public function readQuestion($questionId)
 	{
 		/** @var Question $question */
-		if (!$questionId || !($question = $this->questions->find($questionId))) {
+		if (!$questionId || !is_numeric($questionId) || !($question = $this->questions->find($questionId))) {
 			return NULL;
 		}
 
@@ -132,7 +132,7 @@ class Reader extends Nette\Object
 	public function readAnswer($postId, Question $question = NULL)
 	{
 		/** @var Answer $post */
-		if (!$postId || !($post = $this->answers->find($postId))) {
+		if (!$postId || !is_numeric($postId) || !($post = $this->answers->find($postId))) {
 			return NULL;
 		}
 
@@ -186,7 +186,7 @@ class Reader extends Nette\Object
 	public function readForModification($postId)
 	{
 		/** @var Answer|Question $post */
-		if (!$postId || !($post = $this->posts->find($postId))) {
+		if (!$postId || !is_numeric($postId) || !($post = $this->posts->find($postId))) {
 			return NULL;
 		}
 
@@ -230,7 +230,7 @@ class Reader extends Nette\Object
 	public function calculatePostPosition($permalinkId, Nette\Utils\Paginator $paginator)
 	{
 		/** @var Question|Answer $post */
-		if (!$post = $this->posts->find($permalinkId)) {
+		if (!is_numeric($permalinkId) || !$post = $this->posts->find($permalinkId)) {
 			return NULL;
 		}
 

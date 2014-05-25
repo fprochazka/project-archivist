@@ -238,6 +238,10 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 	 */
 	public function find($id)
 	{
+		if (!$id || !is_numeric($id)) {
+			return NULL;
+		}
+
 		return $this->users->find($id);
 	}
 
@@ -249,6 +253,10 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 	 */
 	public function findOneByFacebook($id)
 	{
+		if (!$id || !is_numeric($id)) {
+			return NULL;
+		}
+
 		return $this->facebookIdentities->findOneBy(['uid' => $id]);
 	}
 
@@ -260,6 +268,10 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 	 */
 	public function findOneByGithub($id)
 	{
+		if (!$id || !is_numeric($id)) {
+			return NULL;
+		}
+
 		return $this->githubIdentities->findOneBy(['uid' => $id]);
 	}
 
@@ -271,6 +283,10 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 	 */
 	public function findOneByGoogle($id)
 	{
+		if (!$id || !is_numeric($id)) {
+			return NULL;
+		}
+
 		return $this->googleIdentities->findOneBy(['uid' => $id]);
 	}
 
