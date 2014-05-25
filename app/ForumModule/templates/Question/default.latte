@@ -20,7 +20,7 @@
 	<div class="panel-body">
 		{$post|texifyForumPost|noescape}
 	</div>
-	<div class="panel-footer" n:if="$user->isInRole(moderator) || (!$question->locked && $post->isAuthor($user->identity))">
+	<div class="panel-footer" n:if="$user->isInRole(moderator) || (!$question->locked && $question->isAuthor($user->identity))">
 		<div class="text-right pull-right">
 			{if !$post->isQuestion() && ((!$question->locked && $question->isAuthor($user->identity)) || $user->isInRole(moderator))}
 				<a n:href="toggleResolved!, postId => $post->id"><span n:class="glyphicon, $question->solution !== $post? glyphicon-check : glyphicon-unchecked"></span>
