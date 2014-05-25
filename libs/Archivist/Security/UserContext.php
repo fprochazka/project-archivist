@@ -12,11 +12,13 @@ namespace Archivist\Security;
 
 use Archivist\InvalidArgumentException;
 use Archivist\Users\User;
+use Doctrine\ORM\EntityNotFoundException;
 use Kdyby;
 use Nette;
 use Nette\Security\IAuthenticator;
 use Nette\Security\IAuthorizator;
 use Nette\Security\IUserStorage;
+use Tracy\Debugger;
 
 
 
@@ -56,15 +58,20 @@ class UserContext extends Nette\Security\User
 
 	public function &__get($name)
 	{
-		if ($identity = $this->getIdentity()) {
-			if (property_exists($identity, $name)) {
-				$tmp = $identity->{$name};
-				return $tmp;
+		try {
+			if ($identity = $this->getIdentity()) {
+				if (property_exists($identity, $name)) {
+					$tmp = $identity->{$name};
+					return $tmp;
 
-			} elseif (property_exists($identityUser = $identity->getUser(), $name)) {
-				$tmp = $identityUser->{$name};
-				return $tmp;
+				} elseif (property_exists($identityUser = $identity->getUser(), $name)) {
+					$tmp = $identityUser->{$name};
+					return $tmp;
+				}
 			}
+
+		} catch (EntityNotFoundException $e) {
+			Debugger::log($e->getMessage() . ': ' . $this->getId(), Debugger::WARNING);
 		}
 
 		return parent::__get($name);
