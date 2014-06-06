@@ -3,12 +3,14 @@
 namespace Archivist\ForumModule;
 
 use Archivist\Forum\Category;
+use Archivist\Forum\Query\PostsQuery;
 use Archivist\Forum\Query\QuestionsQuery;
 use Archivist\Forum\Question;
 use Archivist\ForumModule\Questions\IThreadsControlFactory;
 use Archivist\Rss\FeedControl;
 use Archivist\Rss\IFeedControlFactory;
 use Archivist\UI\BaseForm;
+use Kdyby\Doctrine\Hydration\HashHydrator;
 use Kdyby\NewsFeed\Channel;
 use Kdyby\NewsFeed\Item;
 use Kdyby\NewsFeed\Responses\RssResponse;
@@ -68,10 +70,29 @@ class TopicsPresenter extends BasePresenter
 
 		$control->onAttached[] = function (FeedControl $control) {
 			$control->getChannel()
-				->setTitle($this->category->name . (($parent = $this->category->getParent()) ? ' - ' . $parent->name : '') . ' - help.kdyby.org');
+				->setTitle($this->category->name . (($parent = $this->category->getParent()) ? ' - ' . $parent->name : '') . ' Questions - help.kdyby.org');
 
 			$control->setQuery((new QuestionsQuery())
 				->inCategory($this->category));
+		};
+
+		return $control;
+	}
+
+
+
+	protected function createComponentPosts(IFeedControlFactory $factory)
+	{
+		$control = $factory->create();
+
+		$control->onAttached[] = function (FeedControl $control) {
+			$control->getChannel()
+				->setTitle($this->category->name . (($parent = $this->category->getParent()) ? ' - ' . $parent->name : '') . ' Posts - help.kdyby.org');
+
+			$control->setQuery((new PostsQuery())
+				->withCategory()
+				->withQuestion()
+				->inCategory($this->category), HashHydrator::NAME);
 		};
 
 		return $control;

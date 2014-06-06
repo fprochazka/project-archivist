@@ -12,10 +12,13 @@ namespace Archivist\Rss;
 
 use Archivist\Forum\Answer;
 use Archivist\Forum\IRenderer;
+use Archivist\Forum\Post;
 use Archivist\Forum\Question;
 use Archivist\Forum\Reader;
 use Archivist\InvalidStateException;
+use Archivist\NotImplementedException;
 use Archivist\UI\BaseControl;
+use Doctrine\ORM\AbstractQuery;
 use Kdyby;
 use Kdyby\Doctrine\QueryObject;
 use Kdyby\NewsFeed\Channel;
@@ -41,6 +44,11 @@ class FeedControl extends BaseControl
 	 * @var QueryObject
 	 */
 	private $query;
+
+	/**
+	 * @var int
+	 */
+	private $queryHydration;
 
 	/**
 	 * @var Reader
@@ -79,9 +87,10 @@ class FeedControl extends BaseControl
 
 
 
-	public function setQuery(QueryObject $query)
+	public function setQuery(QueryObject $query, $hydration = AbstractQuery::HYDRATE_OBJECT)
 	{
 		$this->query = $query;
+		$this->queryHydration = $hydration;
 		return $this;
 	}
 
@@ -96,19 +105,38 @@ class FeedControl extends BaseControl
 		$channel = clone $this->getChannel();
 		$presenter = $this->getPresenter();
 
-		$results = $this->reader->fetch($this->query)->setFetchJoinCollection(FALSE);
-		foreach ($results->applyPaging(0, 100) as $post) {
-			/** @var Answer|Question $post */
+		$results = $this->reader->fetch($this->query)
+			->setFetchJoinCollection(FALSE)
+			->applyPaging(0, 100)
+			->getIterator($this->queryHydration);
 
-			$permalink = $presenter->link('//Question:', ['permalinkId' => $post->getId()]);
-			$title = $post->isQuestion() ? $post->getTitle() : $post->getQuestion()->getTitle();
-			$link = $post->isQuestion() ? $presenter->link('//Question:', $post->getId()) : $permalink;
+		foreach ($results as $post) {
+			/** @var Answer|Question|\stdClass $post */
 
-			$item = (new Item($title, $link, $post->getCreatedAt()))
-				->setCreator($post->getAuthor()->name)
-				->setDescription($this->postRenderer->toHtml($post->getContent()))
-				->setCategories([$post->category->name, $post->category->parent->name])
-				->setGuid($permalink);
+			if ($post instanceof Post) {
+				$permalink = $presenter->link('//Question:', ['permalinkId' => $post->getId()]);
+				$link = $post->isQuestion() ? $presenter->link('//Question:', $post->getId()) : $permalink;
+
+				$item = (new Item($post->getTitle(), $link, $post->getCreatedAt()))
+					->setCreator($post->getAuthor()->name)
+					->setDescription($this->postRenderer->toHtml($post->getContent()))
+					->setCategories([$post->category->name, $post->category->parent->name])
+					->setGuid($permalink);
+
+			} elseif (isset($post->p_id, $post->p_type, $post->p_content, $post->p_created_at)) {
+				$permalink = $presenter->link('//Question:', ['permalinkId' => $post->p_id]);
+				$link = $post->p_type === 'question' ? $presenter->link('//Question:', $post->p_id) : $permalink;
+				$title = $post->p_type === 'question' ? $post->p_title : $post->q_title;
+
+				$item = (new Item($title, $link, $post->p_created_at))
+					->setCreator($post->u_name)
+					->setDescription($this->postRenderer->toHtml($post->p_content))
+					->setCategories([$post->c_name, $post->cp_name])
+					->setGuid($permalink);
+
+			} else {
+				throw new NotImplementedException;
+			}
 
 			$channel->addItem($item);
 		}

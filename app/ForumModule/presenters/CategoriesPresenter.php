@@ -3,10 +3,12 @@
 namespace Archivist\ForumModule;
 
 use Archivist\Forum\Category;
+use Archivist\Forum\Query\PostsQuery;
 use Archivist\Forum\Query\QuestionsQuery;
 use Archivist\Forum\Question;
 use Archivist\Rss\FeedControl;
 use Archivist\Rss\IFeedControlFactory;
+use Kdyby\Doctrine\Hydration\HashHydrator;
 use Nette;
 
 
@@ -61,6 +63,25 @@ class CategoriesPresenter extends BasePresenter
 		$control->onAttached[] = function (FeedControl $control) {
 			$control->getChannel()->setTitle('Newest questions - help.kdyby.org');
 			$control->setQuery(new QuestionsQuery());
+		};
+
+		return $control;
+	}
+
+
+
+	protected function createComponentPosts(IFeedControlFactory $factory)
+	{
+		$control = $factory->create();
+
+		$control->onAttached[] = function (FeedControl $control) {
+			$control->getChannel()->setTitle('Newest posts - help.kdyby.org');
+
+			$query = (new PostsQuery())
+				->withCategory()
+				->withQuestion();
+
+			$control->setQuery($query, HashHydrator::NAME);
 		};
 
 		return $control;

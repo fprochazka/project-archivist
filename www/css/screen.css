@@ -157,12 +157,14 @@ table tr th.text-middle {
 	background-size: 16px;
 	padding-left: 21px;
 	margin-right: 3px;
+	line-height: 21px;
+	font-size: 17px;
 }
 
-.page-header.categories .rss-feed {
+.page-header.categories .rss-feeds {
 	position: absolute;
 	right: 3px;
-	bottom: 10px;
+	bottom: 18px;
 }
 
 

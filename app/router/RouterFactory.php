@@ -20,11 +20,17 @@ class RouterFactory
 	 */
 	private $productionMode;
 
+	/**
+	 * @var \Nette\Http\Request
+	 */
+	private $httpRequest;
 
 
-	public function __construct($productionMode)
+
+	public function __construct($productionMode, Nette\Http\Request $httpRequest)
 	{
 		$this->productionMode = (bool) $productionMode;
+		$this->httpRequest = $httpRequest;
 	}
 
 

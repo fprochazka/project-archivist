@@ -1,5 +1,6 @@
 {block head}
 	{control rss:link}
+	{control posts:link}
 {/block}
 
 {block content}
@@ -9,7 +10,8 @@
 		<small class="hidden-xs" n:if="$category->parent">{$category->parent->name} /</small>
 		{$category->name}
 	</h1>
-	<a href="{plink //rss-feed!}" class="pull-right rss-feed hidden-xs hidden-sm">RSS</a>
+	<a href="{plink //posts-feed!}" class="pull-right rss-feed hidden-xs hidden-sm">Posts</a>
+	<a href="{plink //rss-feed!}" class="pull-right rss-feed hidden-xs hidden-sm">Questions</a>
 	<a n:href="Categories:" class="hidden-xs hidden-sm">&laquo; All categories</a>
 </div>
 

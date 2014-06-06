@@ -1,0 +1,28 @@
+<div class="topics">
+	{if}
+	<div class="row topic visible-md visible-lg" n:if="$options[author]">
+		<div class="col-md-2 text-right"><strong>Category</strong></div>
+		<div class="col-md-offset-8 col-md-2 text-right"><strong>Author</strong></div>
+	</div>
+	{foreach $posts as $post}
+	<div n:class="row, topic">
+		<div class="text-right col-md-2">
+			{if $post->cp_name}{$post->cp_name}<br class="hidden-xs hidden-sm"><span class="hidden-md hidden-lg"> / </span>{/if}
+			<a href="{plink Topics:, $post->c_id}">{$post->c_name}</a>
+		</div>
+		<div n:class="title, $options[author] ? col-md-8 : col-md-10">
+			<a href="{plink Question:, questionId => NULL, permalinkId => $post->p_id}" class="row-target">{if $post->p_type === 'question'}{$post->p_title}{else}{$post->q_title}{/if}</a>
+		</div>
+		<div class="col-md-2 col-sm-12 text-right" n:if="$options[author]">
+			<a href="{plink Profile:, $post->u_id}">{$post->u_name}</a><br class="hidden-xs hidden-sm"> at {$post->p_created_at|date:'j.n.Y G:i'}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-2 text-right"><img n:gravatar="$post->u_email, 64" class="hidden-xs hidden-sm" /></div>
+		<div class="col-md-8">{$post|texifyForumPost|noescape}</div>
+	</div>
+	{/foreach}
+	{/if $iterations}
+
+	<div class="row" n:if="!$iterations"><div class="col-lg-12"><p>No open discussions</p></div></div>
+</div>
