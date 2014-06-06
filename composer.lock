@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "a3a38819431fffd47b058ca453061e5c",
+    "hash": "b87c3ff234099277f396aa4b63dc0a59",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -2846,16 +2846,16 @@
         },
         {
             "name": "texy/texy",
-            "version": "v2.5",
+            "version": "2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dg/texy.git",
-                "reference": "0d5fe6c51ff28e6705d42a380184bd3d58c0bdab"
+                "reference": "e5cf6f4f808e5a39a12fbefefcc62e06fa22b985"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dg/texy/zipball/0d5fe6c51ff28e6705d42a380184bd3d58c0bdab",
-                "reference": "0d5fe6c51ff28e6705d42a380184bd3d58c0bdab",
+                "url": "https://api.github.com/repos/dg/texy/zipball/e5cf6f4f808e5a39a12fbefefcc62e06fa22b985",
+                "reference": "e5cf6f4f808e5a39a12fbefefcc62e06fa22b985",
                 "shasum": ""
             },
             "require": {
@@ -2898,7 +2898,7 @@
                 "wiki",
                 "xhtml"
             ],
-            "time": "2014-05-12 15:28:49"
+            "time": "2014-06-02 13:13:58"
         },
         {
             "name": "tracy/tracy",
@@ -2962,12 +2962,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/tester.git",
-                "reference": "f1a9ed70f84027cf86e477a1ff138df139a60cfe"
+                "reference": "1c2b040cba800fec7620ce3383515173a83d0a06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/tester/zipball/f1a9ed70f84027cf86e477a1ff138df139a60cfe",
-                "reference": "f1a9ed70f84027cf86e477a1ff138df139a60cfe",
+                "url": "https://api.github.com/repos/nette/tester/zipball/1c2b040cba800fec7620ce3383515173a83d0a06",
+                "reference": "1c2b040cba800fec7620ce3383515173a83d0a06",
                 "shasum": ""
             },
             "require": {
@@ -3011,13 +3011,14 @@
                 "testing",
                 "unit"
             ],
-            "time": "2014-06-06 09:38:27"
+            "time": "2014-06-06 21:41:08"
         }
     ],
     "aliases": [],
     "minimum-stability": "RC",
     "stability-flags": {
         "janmarek/webloader": 20,
+        "texy/texy": 20,
         "kdyby/doctrine": 20,
         "majkl578/nette-identity-doctrine": 20,
         "beberlei/doctrineextensions": 20,

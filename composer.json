@@ -15,8 +15,10 @@
 		"php": ">= 5.5",
 		"nette/nette": "~2.2",
 
-		"jantvrdik/nette-doc-converter": "~1.0",
 		"janmarek/webloader": "dev-master",
+
+		"jantvrdik/nette-doc-converter": "~1.0",
+		"texy/texy": "~2.5@dev",
 
 		"kdyby/doctrine": "@dev",
 		"majkl578/nette-identity-doctrine": "@dev",
