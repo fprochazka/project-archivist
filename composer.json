@@ -20,7 +20,9 @@
 		"jantvrdik/nette-doc-converter": "~1.0",
 		"texy/texy": "~2.5@dev",
 
-		"kdyby/doctrine": "@dev",
+		"kdyby/doctrine": "~2.1@dev",
+		"kdyby/annotations": "~2.1@dev",
+		"kdyby/doctrine-cache": "~2.3@dev",
 		"majkl578/nette-identity-doctrine": "@dev",
 		"beberlei/DoctrineExtensions": "@dev",
 
