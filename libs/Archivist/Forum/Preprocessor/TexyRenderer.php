@@ -67,4 +67,15 @@ class TexyRenderer extends Converter implements IRenderer
 		return $texy;
 	}
 
+
+
+	public function blockHandler($invocation, $blockType, $content, $lang, $modifier)
+	{
+		if (in_array($blockType, array('block/yml', 'block/yaml'))) {
+			$blockType = 'block/neon';
+		}
+
+		return parent::blockHandler($invocation, $blockType, $content, $lang, $modifier);
+	}
+
 }
