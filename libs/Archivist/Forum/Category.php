@@ -57,6 +57,12 @@ class Category extends Identified
 	protected $url;
 
 	/**
+	 * @ORM\Column(type="text", nullable=TRUE)
+	 * @var string
+	 */
+	protected $description;
+
+	/**
 	 * @ORM\Column(type="smallint", nullable=FALSE)
 	 * @var integer
 	 */

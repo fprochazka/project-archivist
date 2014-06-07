@@ -24,13 +24,15 @@
 	<div class="panel-body">
 
 		<div n:foreach="$children as $child" class="row">
-			<div class="col-md-4">
+			<div class="col-md-4 category-name">
 				<span n:inner-if="!$child->c2_url" class="hidden-lg hidden-md pull-right">
 					<span title="Unresolved questions" n:class="label, $child['unsolved_count'] ? label-warning : label-success" data-toggle="tooltip" data-placement="left">{$child['unsolved_count']}</span>
 					/ <span title="Total questions" class="label label-primary" data-toggle="tooltip" data-placement="left">{$child['posts_count']}</span>
 				</span>
 
 				<a n:href="Topics:, categoryId => $child->c2_id"><h2>{$child->c2_name}</h2></a>
+
+				<p n:if="$child->c2_description">{$child->c2_description}</p>
 			</div>
 			<div n:inner-if="$child->l_id" class="col-md-7 text-right">
 				by <a href="{plink Profile:, $child->l_author_id}">{$child->l_author_name}</a> at <a n:href="Question:, $child->l_id">{$child->l_createdAt|date:'j.n.Y G:i'}</a><br>

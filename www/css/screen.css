@@ -167,6 +167,15 @@ table tr th.text-middle {
 	bottom: 18px;
 }
 
+.panel.category .category-name p {
+	margin-bottom: 0;
+	padding: 2px 0 0 0;
+}
+
+.panel.category h3.panel-title {
+	font-size: 23px;
+}
+
 
 
 /* Sticky footer styles
