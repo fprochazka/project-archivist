@@ -30,7 +30,7 @@
 					/ <span title="Total questions" class="label label-primary" data-toggle="tooltip" data-placement="left">{$child['posts_count']}</span>
 				</span>
 
-				<a n:href="Topics:, categoryId => $child->c2_id"><h2>{$child->c2_name}</h2></a>
+				<a n:href="Topics:, categoryId => $child->c2_id" n:attr="target => $child->c2_url?_blank"><h2>{$child->c2_name}</h2></a>
 
 				<p n:if="$child->c2_description">{$child->c2_description}</p>
 			</div>
