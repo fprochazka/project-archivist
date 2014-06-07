@@ -64,6 +64,30 @@ class VisualPaginator extends Control
 
 
 	/**
+	 * @param boolean $alwaysShow
+	 * @return VisualPaginator
+	 */
+	public function setAlwaysShow($alwaysShow)
+	{
+		$this->alwaysShow = $alwaysShow;
+		return $this;
+	}
+
+
+
+	/**
+	 * @param boolean $showWords
+	 * @return VisualPaginator
+	 */
+	public function setShowWords($showWords)
+	{
+		$this->showWords = $showWords;
+		return $this;
+	}
+
+
+
+	/**
 	 * @return Paginator
 	 */
 	public function getPaginator()
@@ -86,18 +110,11 @@ class VisualPaginator extends Control
 	 */
 	public function render()
 	{
-		echo $this->getControl();
-	}
+		if ($this->getPaginator()->pageCount < 1 && !$this->alwaysShow) {
+			return;
+		}
 
-
-
-	/**
-	 * @return Html
-	 */
-	public function getControl()
-	{
-		return Html::el('div', ['class' => 'paginator'])
-			->setHtml(($this->getPaginator()->pageCount > 1 || $this->alwaysShow) ? $this->template : '');
+		$this->template->render();
 	}
 
 

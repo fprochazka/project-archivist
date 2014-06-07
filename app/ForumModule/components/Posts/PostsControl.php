@@ -115,7 +115,8 @@ class PostsControl extends BaseControl
 
 	protected function createComponentVp()
 	{
-		return new VisualPaginator($this->perPage);
+		return (new VisualPaginator($this->perPage))
+			->setAlwaysShow(TRUE);
 	}
 
 
