@@ -1,7 +1,8 @@
 <div class="topics">
 	{if}
 	<div class="row topic visible-md visible-lg" n:if="$options[author]">
-		<div class="col-md-offset-7 col-md-2 text-right"><strong>Last post</strong></div>
+		<div class="col-md-2"><a href="#create-topic" class="btn btn-primary btn-sm">Create new topic</a></div>
+		<div class="col-md-offset-5 col-md-2 text-right"><strong>Last post</strong></div>
 		<div class="col-md-2 text-right"><strong>Author</strong></div>
 	</div>
 	<div n:foreach="$topics as $item" n:class="row, topic, $item[0]->pinned ? bg-warning : ($item[0]->solution? bg-success)">
