@@ -176,6 +176,24 @@ table tr th.text-middle {
 	font-size: 23px;
 }
 
+.profile .oauth-connectors {
+	margin-top: 30px;
+}
+
+.profile .oauth-connectors dt,
+.profile .oauth-connectors dd  {
+	height: 50px;
+}
+
+.profile .oauth-connectors dt {
+	width: 100px;
+	line-height: 38px;
+}
+
+.profile .oauth-connectors dd {
+	margin-left: 120px;
+}
+
 
 
 /* Sticky footer styles

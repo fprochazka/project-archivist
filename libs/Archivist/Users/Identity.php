@@ -13,6 +13,7 @@ namespace Archivist\Users;
 use Archivist\Forum\Identified;
 use Archivist\InvalidStateException;
 use Doctrine;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby;
 use Nette;
@@ -85,6 +86,7 @@ abstract class Identity extends Identified implements Nette\Security\IIdentity
 
 	public function __construct()
 	{
+		$this->posts = new ArrayCollection();
 		$this->createdAt = new \DateTime();
 	}
 
@@ -167,6 +169,28 @@ abstract class Identity extends Identified implements Nette\Security\IIdentity
 	public function isVerified()
 	{
 		return $this->verified;
+	}
+
+
+
+	/**
+	 * @return Identity|static
+	 */
+	public function invalidate()
+	{
+		$this->invalid = TRUE;
+		return $this;
+	}
+
+
+
+	public function __clone()
+	{
+		parent::__clone();
+		$this->user = NULL;
+		$this->posts = new ArrayCollection();
+		$this->createdAt = new \DateTime();
+		$this->invalid = $this->verified = FALSE;
 	}
 
 }

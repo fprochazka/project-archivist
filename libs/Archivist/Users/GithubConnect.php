@@ -102,7 +102,7 @@ class GithubConnect extends Nette\Object implements ISocialConnect
 		$user = $this->readUserData();
 
 		if ($identity = $this->manager->findOneByGithub($user['id'])) {
-			return $this->completeLogin($identity->getUser());
+			return $this->completeLogin($identity->getUser(), $identity);
 
 		} elseif ($this->user->isLoggedIn()) {
 			$user = $this->user->getUserEntity();
@@ -176,9 +176,9 @@ class GithubConnect extends Nette\Object implements ISocialConnect
 
 
 
-	private function completeLogin(User $user)
+	private function completeLogin(User $user, Github $identity = NULL)
 	{
-		if (!$identity = $user->getIdentity(Github::class)) {
+		if (!$identity = $identity ?: $user->getIdentity(Github::class)) {
 			$identity = new Github($this->github->getProfile());
 			$user->addIdentity($identity);
 		}
@@ -186,8 +186,10 @@ class GithubConnect extends Nette\Object implements ISocialConnect
 		$identity->updateToken($this->github);
 		$this->em->flush();
 
-		$this->user->login($identity);
-		$this->github->setAccessToken($identity->getToken()); // it must be fixed after login
+		if (!$this->user->isLoggedIn() || $this->user->getUserEntity() !== $user) {
+			$this->user->login($identity);
+			$this->github->setAccessToken($identity->getToken()); // it must be fixed after login
+		}
 
 		return TRUE;
 	}

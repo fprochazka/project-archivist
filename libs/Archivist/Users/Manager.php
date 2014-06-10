@@ -40,6 +40,11 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 	/**
 	 * @var \Kdyby\Doctrine\EntityDao
 	 */
+	private $identities;
+
+	/**
+	 * @var \Kdyby\Doctrine\EntityDao
+	 */
 	private $passwordIdentities;
 
 	/**
@@ -68,6 +73,7 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 	{
 		$this->em = $em;
 		$this->users = $em->getDao(User::class);
+		$this->identities = $em->getDao(Identity::class);
 		$this->passwordIdentities = $em->getDao(EmailPassword::class);
 		$this->facebookIdentities = $em->getDao(Facebook::class);
 		$this->githubIdentities = $em->getDao(Github::class);
@@ -86,7 +92,7 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 	 */
 	public function registerWithPassword($email, $password, $username)
 	{
-		if ($this->users->findOneBy(['email' => $email]) || $this->passwordIdentities->findOneBy(['email' => $email])) {
+		if ($this->identityWithEmailExists($email)) {
 			throw new EmailAlreadyTakenException();
 		}
 
@@ -209,6 +215,24 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 
 
 
+	public function changeEmail(User $user, $email)
+	{
+		if (($identity = $this->identityWithEmailExists($email)) && $identity->getUser() !== $user) {
+			throw new EmailAlreadyTakenException();
+		}
+
+		$user->changeActiveEmail($email);
+	}
+
+
+
+	public function changePassword(User $user, $newPassword, $oldPassword = NULL)
+	{
+		$user->changePassword($newPassword, $oldPassword);
+	}
+
+
+
 	/**
 	 * @param array $credentials
 	 * @return EmailPassword|Nette\Security\IIdentity
@@ -217,7 +241,7 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 	public function authenticate(array $credentials)
 	{
 		/** @var EmailPassword $identity */
-		if (!$identity = $this->passwordIdentities->findOneBy(['email' => $credentials[self::USERNAME]])) {
+		if (!$identity = $this->passwordIdentities->findOneBy(['email' => $credentials[self::USERNAME], 'invalid' => FALSE])) {
 			throw new UserNotFoundException('User not found', self::IDENTITY_NOT_FOUND);
 		}
 
@@ -243,6 +267,21 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 		}
 
 		return $this->users->find($id);
+	}
+
+
+
+	/**
+	 * @param int $id
+	 * @return Identity
+	 */
+	public function findIdentity($id)
+	{
+		if (!$id || !is_numeric($id)) {
+			return NULL;
+		}
+
+		return $this->identities->findOneBy(['id' => $id]);
 	}
 
 
@@ -309,6 +348,13 @@ class Manager extends Nette\Object implements Nette\Security\IAuthenticator
 		} catch (NoResultException $e) {
 			return NULL;
 		}
+	}
+
+
+
+	public function revokeConnection(Identity $identity)
+	{
+		$this->em->flush($identity->invalidate());
 	}
 
 }

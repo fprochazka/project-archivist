@@ -80,6 +80,18 @@ class Facebook extends Identity
 	public function updateToken(Kdyby\Facebook\Facebook $facebook)
 	{
 		$this->token = $facebook->getAccessToken();
+		$this->invalid = FALSE;
+	}
+
+
+
+	/**
+	 * @return Facebook
+	 */
+	public function invalidate()
+	{
+		$this->token = NULL;
+		return parent::invalidate();
 	}
 
 }

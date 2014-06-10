@@ -77,3 +77,10 @@ class MissingEmailException extends InvalidArgumentException
 {
 
 }
+
+
+
+class PasswordRequiredException extends InvalidArgumentException
+{
+
+}

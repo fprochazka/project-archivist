@@ -93,7 +93,7 @@ class GoogleConnect extends Nette\Object implements ISocialConnect
 		$user = $this->readUserData();
 
 		if ($identity = $this->manager->findOneByGoogle($user['id'])) {
-			return $this->completeLogin($identity->getUser());
+			return $this->completeLogin($identity->getUser(), $identity);
 
 		} elseif ($this->user->isLoggedIn()) {
 			$user = $this->user->getUserEntity();
@@ -167,9 +167,9 @@ class GoogleConnect extends Nette\Object implements ISocialConnect
 
 
 
-	private function completeLogin(User $user)
+	private function completeLogin(User $user, Google $identity = NULL)
 	{
-		if (!$identity = $user->getIdentity(Google::class)) {
+		if (!$identity = $identity ?: $user->getIdentity(Google::class)) {
 			$identity = new Google($this->google->getProfile());
 			$user->addIdentity($identity);
 		}
@@ -177,8 +177,10 @@ class GoogleConnect extends Nette\Object implements ISocialConnect
 		$identity->updateToken($this->google);
 		$this->em->flush();
 
-		$this->user->login($identity);
-		$this->google->setAccessToken($identity->getToken()); // it must be fixed after login
+		if (!$this->user->isLoggedIn() || $this->user->getUserEntity() !== $user) {
+			$this->user->login($identity);
+			$this->google->setAccessToken($identity->getToken()); // it must be fixed after login
+		}
 
 		return TRUE;
 	}

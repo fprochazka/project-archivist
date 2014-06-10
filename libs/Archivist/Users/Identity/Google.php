@@ -92,6 +92,18 @@ class Google extends Identity
 		}
 
 		$this->token = Json::encode($token);
+		$this->invalid = FALSE;
+	}
+
+
+
+	/**
+	 * @return Google
+	 */
+	public function invalidate()
+	{
+		$this->token = NULL;
+		return parent::invalidate();
 	}
 
 }

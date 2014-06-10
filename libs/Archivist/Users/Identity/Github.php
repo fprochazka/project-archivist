@@ -80,6 +80,18 @@ class Github extends Identity
 	public function updateToken(Kdyby\Github\Client $github)
 	{
 		$this->token = $github->getAccessToken();
+		$this->invalid = FALSE;
+	}
+
+
+
+	/**
+	 * @return Github
+	 */
+	public function invalidate()
+	{
+		$this->token = NULL;
+		return parent::invalidate();
 	}
 
 }

@@ -123,3 +123,19 @@ mergeWithGoogle:
 		missingPermissions: "The required Google permissions were not provided, you have to allow us to access your profile before logging in."
 		loginFailed: "The email or password is invalid, think twice and try again."
 	success: "Your account has been successfully connected to your Google account!"
+
+profile:
+	oauth:
+		Github: Github
+		Google: Google
+		Facebook: Facebook
+
+	edit:
+		username:
+			success: Your username has been successfuly changed
+
+		email:
+			success: Your email has been successfuly changed
+
+		password:
+			success: Your password has been successfuly changed

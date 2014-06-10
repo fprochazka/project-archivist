@@ -62,6 +62,19 @@ class EmailPassword extends Identity
 
 
 
+	public function changePassword($newPassword, $oldPassword = NULL)
+	{
+		if ($oldPassword !== NULL && !$this->verifyPassword($oldPassword)) {
+			throw new Nette\Security\AuthenticationException();
+		}
+
+		$this->hashPassword($newPassword);
+
+		return $this;
+	}
+
+
+
 	private function hashPassword($rawPassword)
 	{
 		$this->password = Passwords::hash($rawPassword, ['cost' => 10]);

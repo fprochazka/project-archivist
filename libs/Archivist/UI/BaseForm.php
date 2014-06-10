@@ -77,18 +77,20 @@ class BaseForm extends \Nette\Application\UI\Form
 		// make form and controls compatible with Twitter Bootstrap
 		$this->getElementPrototype()->class('form-horizontal');
 
-		foreach ($this->getControls() as $control) {
-			if ($control instanceof Controls\Button) {
-				$control->getControlPrototype()->addClass(empty($usedPrimary) ? 'btn btn-primary' : 'btn btn-default');
-				$usedPrimary = TRUE;
+		$this->onAttached[] = function () {
+			foreach ($this->getControls() as $control) {
+				if ($control instanceof Controls\Button) {
+					$control->getControlPrototype()->addClass(empty($usedPrimary) ? 'btn btn-primary' : 'btn btn-default');
+					$usedPrimary = TRUE;
 
-			} elseif ($control instanceof Controls\TextBase || $control instanceof Controls\SelectBox || $control instanceof Controls\MultiSelectBox) {
-				$control->getControlPrototype()->addClass('form-control');
+				} elseif ($control instanceof Controls\TextBase || $control instanceof Controls\SelectBox || $control instanceof Controls\MultiSelectBox) {
+					$control->getControlPrototype()->addClass('form-control');
 
-			} elseif ($control instanceof Controls\Checkbox || $control instanceof Controls\CheckboxList || $control instanceof Controls\RadioList) {
-				$control->getSeparatorPrototype()->setName('div')->addClass($control->getControlPrototype()->type);
+				} elseif ($control instanceof Controls\Checkbox || $control instanceof Controls\CheckboxList || $control instanceof Controls\RadioList) {
+					$control->getSeparatorPrototype()->setName('div')->addClass($control->getControlPrototype()->type);
+				}
 			}
-		}
+		};
 	}
 
 

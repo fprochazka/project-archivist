@@ -98,7 +98,7 @@ class FacebookConnect extends Nette\Object implements ISocialConnect
 		$fbUser = $this->readUserData();
 
 		if ($identity = $this->manager->findOneByFacebook($fbUser['id'])) {
-			return $this->completeLogin($identity->getUser());
+			return $this->completeLogin($identity->getUser(), $identity);
 
 		} elseif ($this->user->isLoggedIn()) {
 			$user = $this->user->getUserEntity();
@@ -172,13 +172,9 @@ class FacebookConnect extends Nette\Object implements ISocialConnect
 
 
 
-	/**
-	 * @param User $user
-	 * @return bool
-	 */
-	private function completeLogin(User $user)
+	private function completeLogin(User $user, Facebook $identity = NULL)
 	{
-		if (!$identity = $user->getIdentity(Facebook::class)) {
+		if (!$identity = $identity ?: $user->getIdentity(Facebook::class)) {
 			$identity = new Facebook($this->facebook->getProfile());
 			$user->addIdentity($identity);
 		}
@@ -186,8 +182,10 @@ class FacebookConnect extends Nette\Object implements ISocialConnect
 		$identity->updateToken($this->facebook);
 		$this->em->flush();
 
-		$this->user->login($identity);
-		$this->facebook->setAccessToken($identity->getToken()); // it must be fixed after login
+		if (!$this->user->isLoggedIn() || $this->user->getUserEntity() !== $user) {
+			$this->user->login($identity);
+			$this->facebook->setAccessToken($identity->getToken()); // it must be fixed after login
+		}
 
 		return TRUE;
 	}
