@@ -125,8 +125,7 @@ class Reader extends Nette\Object
 			->setMaxResults(1);
 
 		$qb
-			->addSelect('v')
-			->leftJoin('q.votes', 'v', Join::WITH, 'v.user = :user')
+			->leftJoin('q.votes', 'v', Join::WITH, 'v.user = :user')->addSelect('v')
 				->setParameter('user', $this->user->loggedIn ? $this->user->getUserEntity()->getId() : 0);
 
 		try {
@@ -173,7 +172,11 @@ class Reader extends Nette\Object
 	 */
 	public function readAnswers(Question $question)
 	{
-		return new ResultSet($this->buildAnswersDql($question)->getQuery());
+		$qb = $this->buildAnswersDql($question)
+			->leftJoin('a.votes', 'v', Join::WITH, 'v.user = :user')->addSelect('v')
+				->setParameter('user', $this->user->loggedIn ? $this->user->getUserEntity()->getId() : 0);
+
+		return new ResultSet($qb->getQuery());
 	}
 
 
@@ -191,11 +194,6 @@ class Reader extends Nette\Object
 			->leftJoin('a.question', 'q')
 			->addSelect('FIELD(q.solution, a) as HIDDEN hasSolution')
 			->addOrderBy('hasSolution', 'ASC');
-
-		$qb
-			->addSelect('v')
-			->leftJoin('a.votes', 'v', Join::WITH, 'v.user = :user')
-				->setParameter('user', $this->user->loggedIn ? $this->user->getUserEntity()->getId() : 0);
 
 		return $qb
 			->addOrderBy('a.votesSum', 'DESC')
