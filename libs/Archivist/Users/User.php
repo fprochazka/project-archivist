@@ -11,6 +11,7 @@
 namespace Archivist\Users;
 
 use Archivist\Forum\Identified;
+use Archivist\Forum\Vote;
 use Archivist\Security\Role;
 use Archivist\Users\Identity\EmailPassword;
 use Archivist\Users\Identity\Facebook;
@@ -69,6 +70,12 @@ class User extends Identified
 	protected $roles;
 
 	/**
+	 * @ORM\OneToMany(targetEntity="\Archivist\Forum\Vote", mappedBy="user", cascade={"persist"})
+	 * @var Vote
+	 */
+	protected $votes;
+
+	/**
 	 * @ORM\Column(type="datetime", nullable=FALSE)
 	 * @var \DateTime
 	 */
@@ -81,6 +88,7 @@ class User extends Identified
 		$this->setEmail($email);
 		$this->identities = new ArrayCollection();
 		$this->roles = new ArrayCollection();
+		$this->votes = new ArrayCollection();
 		$this->createdAt = new \DateTime();
 	}
 

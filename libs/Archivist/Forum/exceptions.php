@@ -36,3 +36,8 @@ class ThreadLockedException extends InsufficientPermissionsException
 {
 
 }
+
+class CannotVoteOnOwnPostException extends InsufficientPermissionsException
+{
+
+}

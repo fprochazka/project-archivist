@@ -390,9 +390,9 @@ $.nette.ext('forms', {
 
 // default snippet handler
 $.nette.ext('snippets', {
-	success: function (payload) {
+	success: function (payload, status, xhr, settings) {
 		if (payload.snippets) {
-			this.updateSnippets(payload.snippets);
+			this.updateSnippets(payload.snippets, undefined, settings);
 		}
 	}
 }, {
@@ -408,7 +408,7 @@ $.nette.ext('snippets', {
 	complete: function (callback) {
 		this.completeQueue.add(callback);
 	},
-	updateSnippets: function (snippets, back) {
+	updateSnippets: function (snippets, back, settings) {
 		var that = this;
 		var elements = [];
 		for (var i in snippets) {
@@ -416,20 +416,20 @@ $.nette.ext('snippets', {
 			if ($el.get(0)) {
 				elements.push($el.get(0));
 			}
-			this.updateSnippet($el, snippets[i], back);
+			this.updateSnippet($el, snippets[i], back, settings);
 		}
 		$(elements).promise().done(function () {
 			that.completeQueue.fire();
 		});
 	},
-	updateSnippet: function ($el, html, back) {
+	updateSnippet: function ($el, html, back, settings) {
 		// Fix for setting document title in IE
 		if ($el.is('title')) {
 			document.title = html;
 		} else {
-			this.beforeQueue.fire($el);
+			this.beforeQueue.fire($el, settings);
 			this.applySnippet($el, html, back);
-			this.afterQueue.fire($el);
+			this.afterQueue.fire($el, settings);
 		}
 	},
 	getElement: function (id) {

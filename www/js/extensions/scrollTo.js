@@ -5,7 +5,11 @@
  */
 $.nette.ext('scrollTo', {
 	init: function () {
-		this.ext('snippets', true).before($.proxy(function ($el) {
+		this.ext('snippets', true).before($.proxy(function ($el, settings) {
+			if ($.inArray('scrollTo', settings.off) !== -1) {
+				this.shouldTry = false;
+			}
+
 			if (this.shouldTry && !$el.is('title')) {
 				var offset = $el.offset();
 				scrollTo(offset.left, offset.top);
@@ -13,7 +17,7 @@ $.nette.ext('scrollTo', {
 			}
 		}, this));
 	},
-	success: function (payload) {
+	success: function (payload, status, xhr, settings) {
 		this.shouldTry = true;
 	}
 }, {

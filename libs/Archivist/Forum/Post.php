@@ -13,6 +13,7 @@ namespace Archivist\Forum;
 use Archivist\InvalidStateException;
 use Archivist\Users\Identity;
 use Doctrine;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby;
 use Nette;
@@ -66,6 +67,18 @@ abstract class Post extends Identified
 	private $user;
 
 	/**
+	 * @ORM\OneToMany(targetEntity="Vote", mappedBy="post", cascade={"persist"})
+	 * @var Vote|ArrayCollection
+	 */
+	protected $votes;
+
+	/**
+	 * @ORM\Column(type="integer", name="votes", nullable=FALSE, options={"default":0})
+	 * @var string
+	 */
+	protected $votesSum = 0;
+
+	/**
 	 * @ORM\Column(type="datetime", nullable=FALSE)
 	 * @var \DateTime
 	 */
@@ -94,6 +107,7 @@ abstract class Post extends Identified
 	public function __construct($content)
 	{
 		$this->content = $content;
+		$this->votes = new ArrayCollection();
 		$this->createdAt = new \DateTime();
 	}
 
@@ -239,6 +253,19 @@ abstract class Post extends Identified
 	public function isAnswer()
 	{
 		return $this instanceof Answer;
+	}
+
+
+
+	/**
+	 * @param Identity $author
+	 * @return Vote|NULL
+	 */
+	public function getVoteOfAuthor(Identity $author)
+	{
+		return $this->votes->filter(function (Vote $v) use ($author) {
+			return $v->getUser() === $author->getUser();
+		})->first();
 	}
 
 

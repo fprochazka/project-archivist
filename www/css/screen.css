@@ -80,15 +80,31 @@ table tr th.text-middle {
 }
 
 .forum-post {
+	display:block;
 	position: relative;
+}
+
+@media (min-width: 992px) {
+	.forum-post {
+		margin-left: 76px;
+	}
+}
+
+.forum-post .panel-body {
+	min-height: 100px;
 }
 
 .forum-post .panel-body p:last-child {
 	margin-bottom: 0;
 }
 
-.forum-post .panel-footer a {
+.forum-post .panel-footer > div > a {
 	padding-left: 15px;
+}
+
+.forum-post .panel-footer > div > a:first-child,
+.forum-post .panel-footer > div > a:first-child {
+	padding-left: 0;
 }
 
 .forum-post .panel-footer a .glyphicon {
@@ -117,14 +133,84 @@ table tr th.text-middle {
 	top: -60px;
 }
 
-.forum-post .panel-title {
+.forum-post .panel-heading {
 	position: relative;
 }
 
-.forum-post .panel-title img.gravatar {
+.forum-post .panel-heading .prepend {
 	position: absolute;
-	left: -90px;
-	top: -10px;
+	left: -74px;
+	top: 3px;
+	width: 70px;
+	color: black;
+}
+
+.forum-post .prepend .post-vote {
+	padding: 10px 0 0 0;
+	width: 64px;
+	font-size: 30px;
+	text-align: center;
+	line-height: 1;
+}
+
+.forum-post .prepend .post-vote .vote {
+	display:block;
+	text-align: center;
+	margin: 0;
+}
+
+.forum-post .prepend .post-vote .vote:first-child {
+	padding-left: 2px;
+}
+
+.forum-post .prepend .post-vote .vote:last-child {
+	padding-right: 2px;
+}
+
+.forum-post .prepend .post-vote strong {
+	display: block;
+	background-color: #e9e9e9;
+	padding: 0 3px;
+	border-radius: 4px;
+	min-width: 50px;
+	text-align: center;
+}
+
+.forum-post .gravatar {
+	width: 64px;
+	height: 64px;
+}
+
+.forum-post .moderate {
+	float: right;
+	padding-left: 15px;
+	margin: 0;
+}
+
+.forum-post .moderate > .dropdown {
+	text-align: left;
+}
+
+.forum-post .moderate > .dropdown > a {
+	padding: 0;
+	background: transparent;
+}
+
+.forum-post .moderate > .dropdown > a:hover {
+	background: transparent;
+}
+
+.forum-post .panel-footer .post-vote .vote {
+	padding: 0 3px;
+}
+
+.forum-post .post-vote .vote,
+.forum-post .post-vote .vote > span {
+	color: #8c8c8c;
+}
+
+.forum-post .post-vote span.vote > span {
+	color: #e0e0e0;
 }
 
 .modal.login-modal .modal-content .modal-footer {
@@ -150,6 +236,10 @@ table tr th.text-middle {
 	position: absolute;
 	right: 0;
 	bottom: 10px;
+}
+
+.page-header.profile h1 {
+	padding-right: 110px;
 }
 
 .rss-feed {
@@ -193,7 +283,6 @@ table tr th.text-middle {
 .profile .oauth-connectors dd {
 	margin-left: 120px;
 }
-
 
 
 /* Sticky footer styles

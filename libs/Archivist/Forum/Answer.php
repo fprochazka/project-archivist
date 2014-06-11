@@ -26,16 +26,6 @@ class Answer extends Post
 {
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Rank", cascade={"persist"})
-	 * @ORM\JoinTable(name="forum_answer_ranks",
-	 *        joinColumns={@ORM\JoinColumn(name="post_id")},
-	 *        inverseJoinColumns={@ORM\JoinColumn(name="rank")}
-	 *    )
-	 * @var Rank[]|\Doctrine\Common\Collections\ArrayCollection
-	 */
-	protected $ranks;
-
-	/**
 	 * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers", cascade={"persist"})
 	 * @var Question
 	 */

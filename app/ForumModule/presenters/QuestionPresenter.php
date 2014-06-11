@@ -4,13 +4,15 @@ namespace Archivist\ForumModule;
 
 use Archivist\Forum\Answer;
 use Archivist\Forum\ModificationsNotAllowedException;
+use Archivist\Forum\Post;
 use Archivist\Forum\PostIsNotReadableException;
 use Archivist\Forum\Question;
 use Archivist\Forum\ThreadLockedException;
-use Archivist\Security\Role;
+use Archivist\ForumModule\Vote\IVotesControlFactory;
 use Archivist\UI\BaseForm;
 use Archivist\VisualPaginator;
 use Nette;
+use Nette\Application\UI\Multiplier;
 use Nette\Forms\Controls\SubmitButton;
 
 
@@ -327,6 +329,17 @@ class QuestionPresenter extends BasePresenter
 
 		$form->setupBootstrap3Rendering();
 		return $form;
+	}
+
+
+
+	protected function createComponentVote(IVotesControlFactory $factory)
+	{
+		$posts = $this->em->getDao(Post::class);
+
+		return new Multiplier(function ($postId) use ($factory, $posts) {
+			return $factory->create()->setPost($posts->find($postId));
+		});
 	}
 
 }

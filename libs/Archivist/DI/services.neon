@@ -18,10 +18,13 @@ services:
 	- Archivist\Forum\Writer()
 	- {class: Archivist\Forum\Events\LastPostListener(), tags: [kdyby.subscriber]}
 
+	- Archivist\Forum\Voter()
+
 	# componnets
 	- Archivist\ForumModule\IPostFormFactory
 	- Archivist\ForumModule\Questions\IThreadsControlFactory
 	- Archivist\ForumModule\Posts\IPostsControlFactory
+	- Archivist\ForumModule\Vote\IVotesControlFactory
 	- Archivist\SignDialog\ISingInControlFactory
 	- Archivist\Rss\IFeedControlFactory
 	- Archivist\SignDialog\IMergeWithSocialNetworkControlFactory

@@ -15,6 +15,8 @@ use Archivist\ForumModule\TopicsPresenter;
 use Archivist\Security\Role;
 use Archivist\Security\UserContext;
 use Doctrine\DBAL\SQLParserUtils;
+use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Kdyby;
 use Kdyby\Doctrine\EntityManager;
@@ -112,7 +114,25 @@ class Reader extends Nette\Object
 	public function readQuestion($questionId)
 	{
 		/** @var Question $question */
-		if (!$questionId || !is_numeric($questionId) || !($question = $this->questions->find($questionId))) {
+		if (!$questionId || !is_numeric($questionId)) {
+			return NULL;
+		}
+
+		$qb = $this->questions->createQueryBuilder('q')
+			->leftJoin('q.author', 'a')->addSelect('a')
+			->leftJoin('a.user', 'u')->addSelect('u')
+			->andWhere('q.id = :question')->setParameter('question', $questionId)
+			->setMaxResults(1);
+
+		$qb
+			->addSelect('v')
+			->leftJoin('q.votes', 'v', Join::WITH, 'v.user = :user')
+				->setParameter('user', $this->user->loggedIn ? $this->user->getUserEntity()->getId() : 0);
+
+		try {
+			$question = $qb->getQuery()->getSingleResult();
+
+		} catch (NoResultException $e) {
 			return NULL;
 		}
 
@@ -172,7 +192,14 @@ class Reader extends Nette\Object
 			->addSelect('FIELD(q.solution, a) as HIDDEN hasSolution')
 			->addOrderBy('hasSolution', 'ASC');
 
-		return $qb->addOrderBy('a.createdAt', 'ASC');
+		$qb
+			->addSelect('v')
+			->leftJoin('a.votes', 'v', Join::WITH, 'v.user = :user')
+				->setParameter('user', $this->user->loggedIn ? $this->user->getUserEntity()->getId() : 0);
+
+		return $qb
+			->addOrderBy('a.votesSum', 'DESC')
+			->addOrderBy('a.createdAt', 'ASC');
 	}
 
 
