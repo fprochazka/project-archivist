@@ -100,6 +100,8 @@ class PostsControl extends BaseControl
 			return;
 		}
 
+		$this->injectGravatar($this->gravatar);
+
 		/** @var PostsControl|VisualPaginator[] $this */
 
 		$this->template->posts = $this->reader->fetch($this->query)
@@ -108,7 +110,8 @@ class PostsControl extends BaseControl
 			->getIterator(HashHydrator::NAME);
 
 		$this->template->options = $options + ['author' => TRUE];
-		$this->template->setFile(__DIR__ . '/' . $this->view . '.latte')->render();
+		$this->template->setFile(__DIR__ . '/' . $this->view . '.latte')
+			->render();
 	}
 
 
@@ -117,24 +120,6 @@ class PostsControl extends BaseControl
 	{
 		return (new VisualPaginator($this->perPage))
 			->setAlwaysShow(TRUE);
-	}
-
-
-
-	protected function createTemplate($class = NULL)
-	{
-		/** @var Nette\Bridges\ApplicationLatte\Template|\stdClass $template */
-		$template = parent::createTemplate($class);
-
-		// Add gravatar to template
-		$template->_gravatar = $this->gravatar;
-
-		// Register template helpers
-		$template->addFilter('gravatar', function ($email, $size = NULL) {
-			return $this->gravatar->buildUrl($email, $size);
-		});
-
-		return $template;
 	}
 
 }

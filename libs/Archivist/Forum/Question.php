@@ -181,7 +181,7 @@ class Question extends Post
 	 */
 	public function setLastPost(Answer $lastPost = NULL)
 	{
-		if ($lastPost && ($lastPost->getQuestion() !== $this || $lastPost->isSpam() || $lastPost->isDeleted())) {
+		if ($lastPost && ($lastPost->getQuestion() !== $this || $lastPost->isSpam() || $lastPost->isDeleted() || $lastPost->getParentPost())) {
 			throw new InvalidArgumentException;
 		}
 

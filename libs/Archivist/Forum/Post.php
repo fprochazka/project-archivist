@@ -79,6 +79,13 @@ abstract class Post extends Identified
 	protected $votesSum = 0;
 
 	/**
+	 * @ORM\OrderBy(value={"votesSum": "DESC", "createdAt": "ASC"})
+	 * @ORM\OneToMany(targetEntity="Answer", mappedBy="parentPost", cascade={"persist"})
+	 * @var Answer|ArrayCollection
+	 */
+	protected $comments;
+
+	/**
 	 * @ORM\Column(type="datetime", nullable=FALSE)
 	 * @var \DateTime
 	 */
@@ -108,6 +115,7 @@ abstract class Post extends Identified
 	{
 		$this->content = $content;
 		$this->votes = new ArrayCollection();
+		$this->comments = new ArrayCollection();
 		$this->createdAt = new \DateTime();
 	}
 
@@ -266,6 +274,26 @@ abstract class Post extends Identified
 		return $this->votes->filter(function (Vote $v) use ($author) {
 			return $v->getUser() === $author->getUser();
 		})->first();
+	}
+
+
+
+	/**
+	 * @return bool
+	 */
+	public function hasComments()
+	{
+		return $this->comments->count() > 0;
+	}
+
+
+
+	/**
+	 * @return Answer
+	 */
+	public function getComments()
+	{
+		return $this->comments->toArray();
 	}
 
 

@@ -16,6 +16,7 @@ use Archivist\NotSupportedException;
 use Kdyby;
 use Latte\Engine;
 use Nette;
+use Nette\Utils\Callback;
 
 
 
@@ -39,14 +40,19 @@ class TemplateHelpers extends Nette\Object
 
 
 
-	public function texifyForumPost($post)
+	public function texifyForumPost($post, $options = NULL)
 	{
+		$processor = Callback::closure($this->postRenderer, 'toHtml');
+		if ($options === 'inline') {
+			$processor = Callback::closure($this->postRenderer, 'toHtmlLine');
+		}
+
 		if ($post instanceof Post) {
-			return $this->postRenderer->toHtml($post->getContent(), (string) $post);
+			return $processor($post->getContent(), (string) $post);
 
 		} elseif (isset($post->p_id, $post->p_type, $post->p_content, $post->p_created_at)) {
 			$id = ucfirst($post->p_type) . ' ' . $post->p_id . '#' . Nette\Utils\DateTime::from(isset($post->p_edited_at) ? $post->p_edited_at : $post->p_created_at)->format('YmdHis');
-			return $this->postRenderer->toHtml($post->p_content, $id);
+			return $processor($post->p_content, $id);
 
 		} else {
 			throw new NotSupportedException;

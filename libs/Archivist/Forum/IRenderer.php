@@ -29,4 +29,12 @@ interface IRenderer
 	 */
 	function toHtml($content);
 
+	/**
+	 * Renders content provided by the user to sanitized HTML.
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	function toHtmlLine($content);
+
 }

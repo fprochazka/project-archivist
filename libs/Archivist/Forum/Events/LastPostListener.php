@@ -94,7 +94,7 @@ class LastPostListener extends Nette\Object implements Kdyby\Events\Subscriber
 
 		$question = $post->getQuestion();
 
-		if ($post->isDeleted() || $post->isSpam()) {
+		if ($post->isDeleted() || $post->isSpam() || $post->getParentPost()) {
 			if (!$question->lastPost || $question->lastPost === $post) {
 				$question->setLastPost($this->findLastPost($question, $post));
 			}
@@ -146,6 +146,7 @@ class LastPostListener extends Nette\Object implements Kdyby\Events\Subscriber
 		$lastPostQb = $answers->createQueryBuilder('a')
 			->andWhere('a.question = :question')->setParameter('question', $question->getId())
 			->andWhere('a.spam = FALSE AND a.deleted = FALSE')
+			->andWhere('a.parentPost IS NULL')
 			->addOrderBy('a.createdAt', 'DESC')
 			->setMaxResults(1);
 

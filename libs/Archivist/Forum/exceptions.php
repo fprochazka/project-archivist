@@ -41,3 +41,8 @@ class CannotVoteOnOwnPostException extends InsufficientPermissionsException
 {
 
 }
+
+class CannotBeSolvedByCommentException extends InvalidArgumentException
+{
+
+}

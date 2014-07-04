@@ -31,6 +31,20 @@ class Answer extends Post
 	 */
 	protected $question;
 
+	/**
+	 * @ORM\ManyToOne(targetEntity="Post", inversedBy="comments", cascade={"persist"})
+	 * @var Post
+	 */
+	protected $parentPost;
+
+
+
+	public function __construct($content, Post $parent = NULL)
+	{
+		parent::__construct($content);
+		$this->parentPost = $parent;
+	}
+
 
 
 	/**
@@ -39,6 +53,16 @@ class Answer extends Post
 	public function getQuestion()
 	{
 		return $this->question;
+	}
+
+
+
+	/**
+	 * @return Post
+	 */
+	public function getParentPost()
+	{
+		return $this->parentPost;
 	}
 
 

@@ -66,6 +66,10 @@ class Writer extends Nette\Object
 			throw new ThreadLockedException;
 		}
 
+		if (($parent = $answer->getParentPost()) && ($parent->isDeleted() || $parent->isSpam()) && !$this->user->isInRole(Role::MODERATOR)) {
+			throw new PostIsNotReadableException;
+		}
+
 		$question->addAnswer($answer);
 		$answer->setAuthor($this->user->getIdentity());
 
@@ -82,8 +86,16 @@ class Writer extends Nette\Object
 			throw new ModificationsNotAllowedException();
 		}
 
+		if (($question->isDeleted() || $question->isSpam()) && !$this->user->isInRole(Role::MODERATOR)) {
+			throw new PostIsNotReadableException;
+		}
+
 		if ($question->isLocked() && !$this->user->isInRole(Role::MODERATOR)) {
 			throw new ThreadLockedException;
+		}
+
+		if ($answer->getParentPost()) {
+			throw new CannotBeSolvedByCommentException;
 		}
 
 		if ($question->solution === $answer) {
@@ -102,6 +114,10 @@ class Writer extends Nette\Object
 	{
 		if (!$post->isAuthor($this->user->getIdentity()) && !$this->user->isInRole(Role::MODERATOR)) {
 			throw new ModificationsNotAllowedException;
+		}
+
+		if (($question->isDeleted() || $question->isSpam()) && !$this->user->isInRole(Role::MODERATOR)) {
+			throw new PostIsNotReadableException;
 		}
 
 		if ($question->isLocked() && !$this->user->isInRole(Role::MODERATOR)) {

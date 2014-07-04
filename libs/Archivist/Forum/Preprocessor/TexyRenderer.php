@@ -30,9 +30,20 @@ class TexyRenderer extends Converter implements IRenderer
 
 
 
-	public function toHtml($texy)
+	public function toHtml($text)
 	{
-		$this->parse($texy);
+		$this->parse($text);
+		return $this->html;
+	}
+
+
+
+	public function toHtmlLine($text)
+	{
+		$texy = $this->createTexy();
+		$this->html = $texy->processLine($text);
+		$this->title = $texy->headingModule->title;
+
 		return $this->html;
 	}
 

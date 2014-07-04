@@ -66,4 +66,24 @@ class CachingRenderer extends Nette\Object implements IRenderer
 		});
 	}
 
+
+
+	/**
+	 * Renders content provided by the user to sanitized HTML.
+	 *
+	 * @param string $content
+	 * @param string|array $cacheKey
+	 * @return string
+	 */
+	public function toHtmlLine($content, $cacheKey = NULL)
+	{
+		if (!$this->productionMode) {
+			return $this->renderer->toHtmlLine($content);
+		}
+
+		return $this->cache->load($cacheKey ? : md5($content), function (&$dp) use ($content) {
+			return $this->renderer->toHtmlLine($content);
+		});
+	}
+
 }

@@ -10,6 +10,7 @@
 
 namespace Archivist\UI;
 
+use IPub\Gravatar\Gravatar;
 use Kdyby;
 use Kdyby\Translation\Translator;
 use Nette;
@@ -22,13 +23,16 @@ use Nextras;
  *
  * @method onAttached(BaseControl $control, Nette\Application\UI\PresenterComponent $parent)
  * @method \Archivist\BasePresenter getPresenter()
+ * @method \Archivist\BasePresenter|\Archivist\BasePresenter|BaseControl getParent()
+ * @method \Nette\Templating\FileTemplate|Nette\Bridges\ApplicationLatte\Template|\stdClass getTemplate()
+ * @method \Archivist\BasePresenter|BaseControl[] offsetGet($name)
  *
  * @property \Archivist\BasePresenter|BaseControl[] $presenter
  * @property-read \Archivist\BasePresenter|BaseControl[] $presenter
- * @property \Nette\Templating\FileTemplate|\stdClass $template
- * @property-read \Nette\Templating\FileTemplate|\stdClass $template
+ * @property \Nette\Templating\FileTemplate|Nette\Bridges\ApplicationLatte\Template|\stdClass $template
+ * @property-read \Nette\Templating\FileTemplate|Nette\Bridges\ApplicationLatte\Template|\stdClass $template
  */
-class BaseControl extends Nette\Application\UI\Control
+abstract class BaseControl extends Nette\Application\UI\Control
 {
 
 	use Kdyby\Autowired\AutowireComponentFactories;
@@ -96,6 +100,22 @@ class BaseControl extends Nette\Application\UI\Control
 
 
 
+	public function injectGravatar(Gravatar $gravatar)
+	{
+		/** @var Nette\Bridges\ApplicationLatte\Template|\stdClass $template */
+		$template = $this->getTemplate();
+
+		// Add gravatar to template
+		$template->_gravatar = $gravatar;
+
+		// Register template helpers
+		$template->addFilter('gravatar', function ($email, $size = NULL) use ($gravatar) {
+			return $gravatar->buildUrl($email, $size);
+		});
+	}
+
+
+
 	/**
 	 * @param \Nette\ComponentModel\Container $obj
 	 */
@@ -144,6 +164,36 @@ class BaseControl extends Nette\Application\UI\Control
 		$flash->count = NULL;
 		$flash->parameters = [];
 		return $flash;
+	}
+
+
+
+	/**
+	 * @throws \Nette\Application\BadRequestException
+	 */
+	public function error($message = NULL)
+	{
+		$this->getPresenter()->error($message);
+	}
+
+
+
+	/**
+	 * @throws \Nette\Application\ForbiddenRequestException
+	 */
+	public function notAllowed($message = NULL)
+	{
+		$this->getPresenter()->notAllowed($message);
+	}
+
+
+
+	/**
+	 * @return bool
+	 */
+	public function isAjax()
+	{
+		return $this->getPresenter()->isAjax();
 	}
 
 

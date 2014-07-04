@@ -25,6 +25,8 @@ services:
 	- Archivist\ForumModule\Questions\IThreadsControlFactory
 	- Archivist\ForumModule\Posts\IPostsControlFactory
 	- Archivist\ForumModule\Vote\IVotesControlFactory
+	- Archivist\ForumModule\Comment\IReplyControlFactory
+	- Archivist\ForumModule\OnePost\IPostControlFactory
 	- Archivist\SignDialog\ISingInControlFactory
 	- Archivist\Rss\IFeedControlFactory
 	- Archivist\SignDialog\IMergeWithSocialNetworkControlFactory

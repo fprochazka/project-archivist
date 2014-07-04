@@ -76,6 +76,12 @@ class User extends Identified
 	protected $votes;
 
 	/**
+	 * @ORM\OneToMany(targetEntity="\Archivist\Forum\Post", mappedBy="user", cascade={"persist"})
+	 * @var Vote
+	 */
+	protected $posts;
+
+	/**
 	 * @ORM\Column(type="datetime", nullable=FALSE)
 	 * @var \DateTime
 	 */

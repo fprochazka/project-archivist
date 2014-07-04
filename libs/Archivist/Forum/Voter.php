@@ -51,11 +51,6 @@ class Voter extends Nette\Object
 	 */
 	private $postsClass;
 
-	/**
-	 * @var \Kdyby\Doctrine\EntityDao
-	 */
-	private $postsDao;
-
 
 
 	public function __construct(Kdyby\Doctrine\EntityManager $em, UserContext $user)
@@ -64,7 +59,6 @@ class Voter extends Nette\Object
 		$this->db = $this->em->getConnection();
 		$this->votesClass = $this->em->getClassMetadata(Vote::class);
 		$this->postsClass = $this->em->getClassMetadata(Post::class);
-		$this->postsDao = $this->em->getDao(Post::class);
 		$this->user = $user;
 	}
 
@@ -111,7 +105,6 @@ class Voter extends Nette\Object
 	/**
 	 * @param int $value
 	 * @param Post $post
-	 * @return Post
 	 */
 	protected function updateVotes($value, Post $post)
 	{
@@ -133,25 +126,6 @@ class Voter extends Nette\Object
 			$sql = sprintf('UPDATE "%s" SET votes = (SELECT SUM(points) FROM "%s" WHERE post_id = ?) WHERE id = ?', $postsTbl, $votesTbl);
 			$db->prepare($sql)->execute([$post->getId(), $post->getId()]);
 		});
-
-		$this->em->clear();
-
-		$refreshPostQuery = $this->postsDao->createQueryBuilder('p')
-			->addSelect('v')
-			->leftJoin('p.author', 'a')->addSelect('a')
-			->leftJoin('a.user', 'u')->addSelect('u')
-			->leftJoin('p.votes', 'v', Join::WITH, 'v.user = :user')->setParameter('user', $this->user->getUserEntity()->getId())
-			->andWhere('p.id = :post')->setParameter('post', $post->getId())
-			->getQuery()->setMaxResults(1);
-
-		try {
-			$post = $refreshPostQuery->getSingleResult();
-
-		} catch (NoResultException $e) {
-			// fuck !
-		}
-
-		return $post;
 	}
 
 }

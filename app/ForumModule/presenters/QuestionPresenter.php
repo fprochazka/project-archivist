@@ -7,8 +7,7 @@ use Archivist\Forum\ModificationsNotAllowedException;
 use Archivist\Forum\Post;
 use Archivist\Forum\PostIsNotReadableException;
 use Archivist\Forum\Question;
-use Archivist\Forum\ThreadLockedException;
-use Archivist\ForumModule\Vote\IVotesControlFactory;
+use Archivist\ForumModule\OnePost\IPostControlFactory;
 use Archivist\UI\BaseForm;
 use Archivist\VisualPaginator;
 use Nette;
@@ -115,6 +114,17 @@ class QuestionPresenter extends BasePresenter
 
 
 
+	protected function createComponentPost(IPostControlFactory $factory)
+	{
+		$posts = $this->em->getDao(Post::class);
+
+		return new Multiplier(function ($postId) use ($factory, $posts) {
+			return $factory->create()->setPost($posts->find($postId));
+		});
+	}
+
+
+
 	/**
 	 * @return BaseForm
 	 */
@@ -161,8 +171,6 @@ class QuestionPresenter extends BasePresenter
 		} catch (ModificationsNotAllowedException $e) {
 			$this->notAllowed($e->getMessage());
 		}
-
-		return $this->editingPost;
 	}
 
 
@@ -170,93 +178,6 @@ class QuestionPresenter extends BasePresenter
 	public function renderEdit($postId)
 	{
 		$this->template->editingPost = $this->editingPost;
-	}
-
-
-
-	/**
-	 * @secured
-	 */
-	public function handleToggleResolved($postId)
-	{
-		try {
-			if (!$answer = $this->reader->readAnswer($postId, $this->question)) {
-				$this->error("Post not found");
-			}
-
-			$this->writer->toggleResolvedBy($this->question, $answer);
-			$this->em->flush();
-
-		} catch (PostIsNotReadableException $e) {
-			$this->error($e->getMessage());
-
-		} catch (ThreadLockedException $e) {
-			$this->notAllowed($e->getMessage());
-		}
-
-		$this->redirect('this', ['postId' => NULL]);
-	}
-
-
-
-	/**
-	 * @secured
-	 */
-	public function handleDelete($postId)
-	{
-		if (!$this->actionEdit($postId)) {
-			$this->error();
-		}
-
-		try {
-			$this->writer->markAsDeleted($this->question, $this->editingPost);
-			$this->em->flush();
-
-		} catch (ModificationsNotAllowedException $e) {
-			$this->notAllowed($e->getMessage());
-
-		} catch (ThreadLockedException $e) {
-			$this->notAllowed($e->getMessage());
-		}
-
-		if ($this->editingPost->isQuestion()) {
-			$this->flashMessage("Topic '" . $this->editingPost->getTitle() . "' was deleted.", 'danger');
-			$this->redirect('Topics:', ['categoryId' => $this->editingPost->category->getId()]);
-		}
-
-		$this->flashMessage("Post was deleted.", 'danger');
-		$this->redirect('this', ['postId' => NULL]);
-	}
-
-
-
-	/**
-	 * @secured
-	 */
-	public function handleMarkAsSpam($postId)
-	{
-		if (!$this->actionEdit($postId)) {
-			$this->error();
-		}
-
-		try {
-			$this->writer->markAsSpam($this->question, $this->editingPost);
-			$this->em->flush();
-
-		} catch (ModificationsNotAllowedException $e) {
-			$this->notAllowed($e->getMessage());
-
-		} catch (ThreadLockedException $e) {
-			$this->notAllowed($e->getMessage());
-		}
-
-		if ($this->editingPost->isQuestion()) {
-			$this->flashMessage("Topic '" . $this->editingPost->getTitle() . "' was marked as spam.", 'danger');
-			$this->redirect('Topics:', ['categoryId' => $this->editingPost->category->getId()]);
-		}
-
-		$this->flashMessage("Post was marked as spam.", 'danger');
-		$this->redirect('this', ['postId' => NULL]);
 	}
 
 
@@ -329,17 +250,6 @@ class QuestionPresenter extends BasePresenter
 
 		$form->setupBootstrap3Rendering();
 		return $form;
-	}
-
-
-
-	protected function createComponentVote(IVotesControlFactory $factory)
-	{
-		$posts = $this->em->getDao(Post::class);
-
-		return new Multiplier(function ($postId) use ($factory, $posts) {
-			return $factory->create()->setPost($posts->find($postId));
-		});
 	}
 
 }

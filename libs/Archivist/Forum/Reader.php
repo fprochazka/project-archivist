@@ -188,7 +188,8 @@ class Reader extends Nette\Object
 			->innerJoin('i.user', 'u')->addSelect('u')
 			->innerJoin('a.category', 'c')->addSelect('c')
 			->andWhere('a.question = :question')->setParameter('question', $question->getId())
-			->andWhere('a.deleted = FALSE AND a.spam = FALSE');
+			->andWhere('a.deleted = FALSE AND a.spam = FALSE')
+			->andWhere('a.parentPost IS NULL');
 
 		$qb
 			->leftJoin('a.question', 'q')
@@ -252,15 +253,20 @@ class Reader extends Nette\Object
 
 
 
-	public function calculatePostPosition($permalinkId, Nette\Utils\Paginator $paginator)
+    /**
+     * Returns [$questionId, $page, $anchor]
+     */
+    public function calculatePostPosition($permalinkId, Nette\Utils\Paginator $paginator)
 	{
 		/** @var Question|Answer $post */
 		if (!is_numeric($permalinkId) || !$post = $this->posts->find($permalinkId)) {
 			return NULL;
 		}
 
-		if ($post instanceof Question) {
-			return [$post->getId(), 1, ''];
+        $parent = $post->getParentPost() ?: $post;
+
+		if ($parent instanceof Question) {
+			return [$parent->getId(), 1, '#post' . $post->getId()];
 		}
 
 		$answersQb = $this->buildAnswersDql($post->getQuestion())
@@ -274,7 +280,7 @@ class Reader extends Nette\Object
 
 		$answersSql = $answersQb->getQuery()->getSQL();
 		$positionQuery = $this->em->createNativeQuery("SELECT t.* FROM ($answersSql) t WHERE t.id0 = ?", $rsm)
-			->setParameters([$answersQb->getParameter('question')->getValue(), $post->getId()]);
+			->setParameters([$answersQb->getParameter('question')->getValue(), $parent->getId()]);
 
 		$position = (new NativeQueryWrapper($positionQuery))
 			->setMaxResults(1)->getScalarResult();

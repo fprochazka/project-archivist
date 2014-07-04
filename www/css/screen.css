@@ -213,6 +213,64 @@ table tr th.text-middle {
 	color: #e0e0e0;
 }
 
+.forum-post .list-group li:last-child {
+	border-bottom: 0;
+}
+
+.forum-post .comments {
+	margin: 0 30px 0 10px;
+	box-shadow: none;
+	color: #828282;
+}
+
+.forum-post .comments > li.heading {
+	border: 0;
+	list-style-type: none;
+}
+
+.forum-post .comments > li {
+	padding-left: 10px;
+}
+
+.forum-post .comments h4 {
+	color: #828282;
+	margin: 4px 0;
+	font-size: 14px;
+}
+
+.forum-post .comments > li > p {
+	display:inline;
+	margin: 0;
+}
+
+.forum-post .comments > li a {
+	color: inherit;
+}
+
+.forum-post .comments .comment-footer {
+	padding-top: 10px;
+	display:none;
+}
+
+.forum-post .comments li:hover .comment-footer {
+	display: block;
+}
+
+.forum-post .comments .comment-footer .moderate {
+	float:left;
+	padding-left: 0;
+	padding-right: 15px;
+}
+
+.forum-post .comments .comment-footer .moderate > li {
+	padding-left: 0;
+}
+
+.forum-post .comments .comment-footer > a {
+	padding-left: 0;
+	padding-right: 10px;
+}
+
 .modal.login-modal .modal-content .modal-footer {
 	margin-top: 0;
 }
