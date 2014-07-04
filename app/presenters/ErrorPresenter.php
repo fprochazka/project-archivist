@@ -37,4 +37,12 @@ class ErrorPresenter extends BasePresenter
 		}
 	}
 
+
+
+	protected function beforeRender()
+	{
+		$this->template->robots = "noindex, nofollow";
+		parent::beforeRender();
+	}
+
 }

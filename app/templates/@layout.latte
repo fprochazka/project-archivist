@@ -11,6 +11,7 @@
 	{control webloaderCss}
 	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
 	<link rel="shortcut icon" href="{$basePath}/images/logo.png">
+	<link rel="canonical" href="{plink //this}" />
 	{block head}{/block}
 
 	<script src="{$basePath}/js/modernizr.js"></script>
@@ -65,9 +66,9 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li n:if="!$user->loggedIn">
 					{if $presenter->isLinkCurrent(':Sign:*')}
-						<a href="{plink :Sign:in}">Log in</a>
+						<a href="{plink :Sign:in}" rel="nofollow">Log in</a>
 					{else}
-						<a href="{plink login-showModal!}" class="ajax">Log in</a>
+						<a href="{plink login-showModal!}" class="ajax" rel="nofollow">Log in</a>
 					{/if}
 				</li>
 				<li class="dropdown" n:if="$user->loggedIn">
@@ -77,7 +78,7 @@
 					</a>
 					<ul class="dropdown-menu">
 						<li><a n:href=":Forum:Profile:, $user->identity->user->id"><span class="glyphicon glyphicon-user pull-right"></span>Profile</a></li>
-						<li><a n:href="signOut!"><span class="glyphicon glyphicon-log-out pull-right"></span>Sign out</a></li>
+						<li><a n:href="signOut!" rel="nofollow"><span class="glyphicon glyphicon-log-out pull-right"></span>Sign out</a></li>
 					</ul>
 				</li>
 			</ul>

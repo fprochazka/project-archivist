@@ -48,4 +48,12 @@ class LatestPostsPresenter extends BasePresenter
 			->setQuery($query);
 	}
 
+
+
+	protected function beforeRender()
+	{
+		$this->template->robots = "noindex, nofollow";
+		parent::beforeRender();
+	}
+
 }

@@ -23,4 +23,12 @@ class SignPresenter extends BasePresenter
 		return $control;
 	}
 
+
+
+	protected function beforeRender()
+	{
+		$this->template->robots = "noindex, nofollow";
+		parent::beforeRender();
+	}
+
 }
