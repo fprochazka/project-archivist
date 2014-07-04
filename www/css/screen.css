@@ -92,6 +92,12 @@ table tr th.text-middle {
 	.forum-post {
 		margin-left: 76px;
 	}
+
+	.topic-answered {
+		text-align: center;
+		margin-right: 30%;
+		margin-left: 10%;
+	}
 }
 
 .forum-post .panel-body {

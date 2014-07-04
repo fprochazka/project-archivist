@@ -194,11 +194,13 @@ class Reader extends Nette\Object
 		$qb
 			->leftJoin('a.question', 'q')
 			->addSelect('FIELD(q.solution, a) as HIDDEN hasSolution')
-			->addOrderBy('hasSolution', 'ASC');
+//			->addOrderBy('hasSolution', 'ASC')
+		;
 
 		return $qb
-			->addOrderBy('a.votesSum', 'DESC')
-			->addOrderBy('a.createdAt', 'ASC');
+//			->addOrderBy('a.votesSum', 'DESC')
+			->addOrderBy('a.createdAt', 'ASC')
+			;
 	}
 
 

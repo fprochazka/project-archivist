@@ -9,6 +9,13 @@
 	{control "post-{$question->id}"}
 {/if}
 
+<div class="topic-answered" n:if="$solution = $question->getSolution()">
+	<p class="alert alert-success" role="alert"><strong>
+		This question was answered by <a href="{plink Profile:, $solution->author->user->id}">{$solution->author->name}</a>,
+		you can <a href="{plink Question:, questionId => NULL, permalinkId => $solution->id}">jump directly to the answer</a>
+	</strong></p>
+</div>
+
 {foreach $answers as $answer}
 	{control "post-{$answer->id}"}
 {/foreach}
