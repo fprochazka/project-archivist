@@ -1416,12 +1416,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Github.git",
-                "reference": "29ec0b333530833dbda8c5352acd7eaf563a6777"
+                "reference": "503a9f9e8f1a66e5b7ab3918a41216c2cf929794"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Github/zipball/29ec0b333530833dbda8c5352acd7eaf563a6777",
-                "reference": "29ec0b333530833dbda8c5352acd7eaf563a6777",
+                "url": "https://api.github.com/repos/Kdyby/Github/zipball/503a9f9e8f1a66e5b7ab3918a41216c2cf929794",
+                "reference": "503a9f9e8f1a66e5b7ab3918a41216c2cf929794",
                 "shasum": ""
             },
             "require": {
