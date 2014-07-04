@@ -124,7 +124,7 @@ class Writer extends Nette\Object
 			throw new ModificationsNotAllowedException();
 		}
 
-		$post->setSpam(TRUE);
+		$post->setDeleted(TRUE);
 	}
 
 

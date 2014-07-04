@@ -14,6 +14,7 @@ use Archivist\InvalidStateException;
 use Archivist\Users\Identity;
 use Doctrine;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby;
 use Nette;
@@ -283,7 +284,12 @@ abstract class Post extends Identified
 	 */
 	public function hasComments()
 	{
-		return $this->comments->count() > 0;
+		$criteria = Criteria::create();
+		$criteria->andWhere($criteria->expr()->eq('deleted', false));
+		$criteria->andWhere($criteria->expr()->eq('spam', false));
+		$criteria->setMaxResults(1);
+
+		return $this->comments->matching($criteria)->count() > 0;
 	}
 
 
@@ -293,7 +299,11 @@ abstract class Post extends Identified
 	 */
 	public function getComments()
 	{
-		return $this->comments->toArray();
+		$criteria = Criteria::create();
+		$criteria->andWhere($criteria->expr()->eq('deleted', FALSE));
+		$criteria->andWhere($criteria->expr()->eq('spam', FALSE));
+
+		return $this->comments->matching($criteria)->toArray();
 	}
 
 
