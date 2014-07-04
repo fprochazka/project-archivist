@@ -61,6 +61,12 @@ doctrine:
 			row_number: Archivist\Doctrine\Dql\RowNumber
 
 
+console:
+	url: https://help.kdyby.org/
+	commands:
+		- Archivist\Cli\GenerateSitemapCommand
+
+
 facebook:
 	permissions: [basic_info, email]
 
