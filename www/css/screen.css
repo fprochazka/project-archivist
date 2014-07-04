@@ -57,6 +57,10 @@ table tr th.text-middle {
 	padding: 8px 0;
 }
 
+.topics .row img {
+	max-width: 100%;
+}
+
 .topics .row.topic:first-child {
 	border-top: 0;
 }
