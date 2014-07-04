@@ -174,6 +174,12 @@ class Question extends Post
 	}
 
 
+	public function getParentPost()
+	{
+		return $this;
+	}
+
+
 
 	/**
 	 * @param Answer $lastPost
