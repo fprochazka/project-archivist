@@ -101,7 +101,7 @@ table tr th.text-middle {
 }
 
 .forum-post .panel-body {
-	min-height: 100px;
+	min-height: 130px;
 }
 
 .forum-post .panel-body p:last-child {
