@@ -105,6 +105,7 @@ class Voter extends Nette\Object
 	/**
 	 * @param int $value
 	 * @param Post $post
+	 * @return Post
 	 */
 	protected function updateVotes($value, Post $post)
 	{
@@ -126,6 +127,8 @@ class Voter extends Nette\Object
 			$sql = sprintf('UPDATE "%s" SET votes = (SELECT SUM(points) FROM "%s" WHERE post_id = ?) WHERE id = ?', $postsTbl, $votesTbl);
 			$db->prepare($sql)->execute([$post->getId(), $post->getId()]);
 		});
+
+		return $post;
 	}
 
 }
