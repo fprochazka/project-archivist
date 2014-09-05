@@ -218,10 +218,13 @@ table tr th.text-middle {
 .forum-post .post-vote .vote,
 .forum-post .post-vote .vote > span {
 	color: #8c8c8c;
+	cursor: pointer;
 }
 
-.forum-post .post-vote span.vote > span {
+.forum-post .post-vote span.disabled,
+.forum-post .post-vote span.disabled > span {
 	color: #e0e0e0;
+	cursor: default;
 }
 
 .forum-post .list-group li:last-child {

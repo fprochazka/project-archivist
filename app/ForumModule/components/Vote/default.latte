@@ -1,17 +1,13 @@
 {snippet}
 	{var $disableUp = ($vote && $vote->isUp()) || $post->isAuthor($user->identity) || !$user->loggedIn}
-	<a n:tag-if="!$disableUp" n:href="voteUp!" class="vote ajax" data-ajax-off="scrollTo" rel="nofollow">
-	<span n:tag-if="$disableUp" class="vote">
+	<span n:attr="data-vote-link => !$disableUp?$control->link('voteUp!')" n:class="vote, $disableUp?disabled">
 		<span class="glyphicon glyphicon-chevron-up"></span>
 	</span>
-	</a>
 
 	<strong n:class="$post->votesSum>0?text-success,$post->votesSum<0?text-danger">{if $post->votesSum > 0}+{elseif $post->votesSum < 0}-{/if}{=abs($post->votesSum)}</strong>
 
 	{var $disableDown = ($vote && $vote->isDown()) || $post->isAuthor($user->identity) || !$user->loggedIn}
-	<a n:tag-if="!$disableDown" n:href="voteDown!" class="vote ajax" data-ajax-off="scrollTo" rel="nofollow">
-	<span n:tag-if="$disableDown" class="vote">
+	<span n:attr="data-vote-link => !$disableDown?$control->link('voteDown!')" n:class="vote, $disableDown?disabled">
 		<span class="glyphicon glyphicon-chevron-down"></span>
 	</span>
-	</a>
 {/snippet}
