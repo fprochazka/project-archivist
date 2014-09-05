@@ -1074,12 +1074,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Doctrine.git",
-                "reference": "2845d71bd46706150c9ef0c4a7e057b3189af296"
+                "reference": "ae5c83f6cdb56576bdeaf313faf1cc0a5477e551"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Doctrine/zipball/2845d71bd46706150c9ef0c4a7e057b3189af296",
-                "reference": "2845d71bd46706150c9ef0c4a7e057b3189af296",
+                "url": "https://api.github.com/repos/Kdyby/Doctrine/zipball/ae5c83f6cdb56576bdeaf313faf1cc0a5477e551",
+                "reference": "ae5c83f6cdb56576bdeaf313faf1cc0a5477e551",
                 "shasum": ""
             },
             "require": {
@@ -1153,7 +1153,7 @@
                 "nette",
                 "orm"
             ],
-            "time": "2014-09-02 17:34:09"
+            "time": "2014-09-05 21:50:30"
         },
         {
             "name": "kdyby/doctrine-cache",
