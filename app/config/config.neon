@@ -43,6 +43,7 @@ extensions:
 	facebook: Kdyby\Facebook\DI\FacebookExtension
 	github: Kdyby\Github\DI\GithubExtension
 	google: Kdyby\Google\DI\GoogleExtension
+	monolog: Kdyby\Monolog\DI\MonologExtension
 
 
 annotations:
@@ -81,6 +82,13 @@ google:
 
 gravatar:
 	defaultImage: identicon
+
+
+monolog:
+	name: archivist
+	handlers:
+		- Monolog\Handler\SyslogHandler('archivist', 'local4')
+		- Kdyby\Monolog\Handler\NewRelicHandler(Monolog\Logger::NOTICE)
 
 
 includes:

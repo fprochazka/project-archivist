@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2186d4c8efa685040c180c82d588ad8d",
+    "hash": "37ff8e7264412365e9f9dfa7e5b482d7",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -1074,12 +1074,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Doctrine.git",
-                "reference": "ae5c83f6cdb56576bdeaf313faf1cc0a5477e551"
+                "reference": "05bcccb49ae3993c3558a331bb1030c35581b35a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Doctrine/zipball/ae5c83f6cdb56576bdeaf313faf1cc0a5477e551",
-                "reference": "ae5c83f6cdb56576bdeaf313faf1cc0a5477e551",
+                "url": "https://api.github.com/repos/Kdyby/Doctrine/zipball/05bcccb49ae3993c3558a331bb1030c35581b35a",
+                "reference": "05bcccb49ae3993c3558a331bb1030c35581b35a",
                 "shasum": ""
             },
             "require": {
@@ -1153,7 +1153,7 @@
                 "nette",
                 "orm"
             ],
-            "time": "2014-09-05 21:50:30"
+            "time": "2014-09-06 14:15:02"
         },
         {
             "name": "kdyby/doctrine-cache",
@@ -1407,12 +1407,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kdyby/Github.git",
-                "reference": "00540d0006184db6723a2c9928a9a5ef1bb09f59"
+                "reference": "eff0247f3c44b3b27918eac6b6624d960b2243b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kdyby/Github/zipball/00540d0006184db6723a2c9928a9a5ef1bb09f59",
-                "reference": "00540d0006184db6723a2c9928a9a5ef1bb09f59",
+                "url": "https://api.github.com/repos/Kdyby/Github/zipball/eff0247f3c44b3b27918eac6b6624d960b2243b0",
+                "reference": "eff0247f3c44b3b27918eac6b6624d960b2243b0",
                 "shasum": ""
             },
             "require": {
@@ -1481,7 +1481,7 @@
                 "nette",
                 "sdk"
             ],
-            "time": "2014-07-28 00:53:57"
+            "time": "2014-09-06 19:59:13"
         },
         {
             "name": "kdyby/google",
@@ -1552,6 +1552,89 @@
                 "nette"
             ],
             "time": "2014-07-27 21:40:58"
+        },
+        {
+            "name": "kdyby/monolog",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Kdyby/Monolog.git",
+                "reference": "73ef3766801a55b3f9f5743387ad0ab24b203fb6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Kdyby/Monolog/zipball/73ef3766801a55b3f9f5743387ad0ab24b203fb6",
+                "reference": "73ef3766801a55b3f9f5743387ad0ab24b203fb6",
+                "shasum": ""
+            },
+            "require": {
+                "monolog/monolog": "~1.9",
+                "nette/di": "~2.2@dev",
+                "tracy/tracy": "~2.2@dev"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "~0.7",
+                "latte/latte": "~2.2@dev",
+                "nette/application": "~2.2@dev",
+                "nette/bootstrap": "~2.2@dev",
+                "nette/caching": "~2.2@dev",
+                "nette/component-model": "~2.2@dev",
+                "nette/database": "~2.2@dev",
+                "nette/di": "~2.2@dev",
+                "nette/finder": "~2.2@dev",
+                "nette/forms": "~2.2@dev",
+                "nette/http": "~2.2@dev",
+                "nette/mail": "~2.2@dev",
+                "nette/neon": "~2.2@dev",
+                "nette/nette": "~2.2@dev",
+                "nette/php-generator": "~2.2@dev",
+                "nette/reflection": "~2.2@dev",
+                "nette/robot-loader": "~2.2@dev",
+                "nette/safe-stream": "~2.2@dev",
+                "nette/security": "~2.2@dev",
+                "nette/tester": "@dev",
+                "nette/tokenizer": "~2.2@dev",
+                "nette/utils": "~2.2@dev",
+                "tracy/tracy": "~2.2@dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Kdyby\\Monolog\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Filip Procházka",
+                    "email": "filip@prochazka.su",
+                    "homepage": "http://filip-prochazka.com"
+                },
+                {
+                    "name": "Martin Bažík",
+                    "email": "martin@bazo.sk",
+                    "homepage": "http://bazo.sk"
+                }
+            ],
+            "description": "Integration of Monolog into Nette Framework",
+            "homepage": "http://kdyby.org",
+            "keywords": [
+                "diagnostics",
+                "logging",
+                "monolog",
+                "nette"
+            ],
+            "time": "2014-09-08 19:09:34"
         },
         {
             "name": "kdyby/translation",
@@ -1780,6 +1863,74 @@
                 "security"
             ],
             "time": "2014-05-21 00:16:06"
+        },
+        {
+            "name": "monolog/monolog",
+            "version": "1.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Seldaek/monolog.git",
+                "reference": "25b16e801979098cb2f120e697bfce454b18bf23"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/25b16e801979098cb2f120e697bfce454b18bf23",
+                "reference": "25b16e801979098cb2f120e697bfce454b18bf23",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "psr/log": "~1.0"
+            },
+            "require-dev": {
+                "aws/aws-sdk-php": "~2.4, >2.4.8",
+                "doctrine/couchdb": "~1.0@dev",
+                "graylog2/gelf-php": "~1.0",
+                "phpunit/phpunit": "~3.7.0",
+                "raven/raven": "~0.5",
+                "ruflin/elastica": "0.90.*"
+            },
+            "suggest": {
+                "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
+                "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
+                "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
+                "ext-mongo": "Allow sending log messages to a MongoDB server",
+                "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
+                "raven/raven": "Allow sending log messages to a Sentry server",
+                "rollbar/rollbar": "Allow sending log messages to Rollbar",
+                "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.10.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Monolog\\": "src/Monolog"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
+            "homepage": "http://github.com/Seldaek/monolog",
+            "keywords": [
+                "log",
+                "logging",
+                "psr-3"
+            ],
+            "time": "2014-06-04 16:30:04"
         },
         {
             "name": "nette/application",
@@ -2839,6 +2990,44 @@
             "time": "2014-05-07 15:05:53"
         },
         {
+            "name": "psr/log",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "fe0936ee26643249e916849d48e3a51d5f5e278b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/fe0936ee26643249e916849d48e3a51d5f5e278b",
+                "reference": "fe0936ee26643249e916849d48e3a51d5f5e278b",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Psr\\Log\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for logging libraries",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "time": "2012-12-21 11:40:51"
+        },
+        {
             "name": "symfony/config",
             "version": "v2.5.4",
             "target-dir": "Symfony/Component/Config",
@@ -3161,12 +3350,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/tester.git",
-                "reference": "c0a9c06d707453f7932495e4d1f668ba49d228e6"
+                "reference": "d7c2dde0e9e47d0f8079c6331e48a767a8fa6a61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/tester/zipball/c0a9c06d707453f7932495e4d1f668ba49d228e6",
-                "reference": "c0a9c06d707453f7932495e4d1f668ba49d228e6",
+                "url": "https://api.github.com/repos/nette/tester/zipball/d7c2dde0e9e47d0f8079c6331e48a767a8fa6a61",
+                "reference": "d7c2dde0e9e47d0f8079c6331e48a767a8fa6a61",
                 "shasum": ""
             },
             "require": {
@@ -3212,7 +3401,7 @@
                 "testing",
                 "unit"
             ],
-            "time": "2014-09-02 21:22:49"
+            "time": "2014-09-08 13:27:52"
         }
     ],
     "aliases": [],
@@ -3225,6 +3414,7 @@
         "kdyby/doctrine-cache": 20,
         "majkl578/nette-identity-doctrine": 20,
         "beberlei/doctrineextensions": 20,
+        "kdyby/monolog": 20,
         "kdyby/events": 20,
         "kdyby/console": 20,
         "kdyby/translation": 20,
