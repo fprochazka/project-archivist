@@ -69,7 +69,7 @@ console:
 
 
 facebook:
-	permissions: [basic_info, email]
+	permissions: [email, public_profile]
 
 
 github:
