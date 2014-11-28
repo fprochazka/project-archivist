@@ -140,7 +140,7 @@ class PostControl extends BaseControl
 
 		if ($post->isQuestion()) {
 			$this->flashMessage("Topic '" . $post->getTitle() . "' was deleted.", 'danger');
-			$this->redirect('Topics:', ['categoryId' => $post->category->getId()]);
+			$this->presenter->redirect('Topics:', ['categoryId' => $post->category->getId()]);
 		}
 
 		$this->flashMessage("Post was deleted.", 'danger');
@@ -160,7 +160,7 @@ class PostControl extends BaseControl
 
 		if ($post->isQuestion()) {
 			$this->flashMessage("Topic '" . $post->getTitle() . "' was marked as spam.", 'danger');
-			$this->redirect('Topics:', ['categoryId' => $post->category->getId()]);
+			$this->presenter->redirect('Topics:', ['categoryId' => $post->category->getId()]);
 		}
 
 		$this->flashMessage("Post was marked as spam.", 'danger');
