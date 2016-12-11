@@ -48,7 +48,7 @@ class XmlElement extends \SimpleXMLElement
 			$attributes = array();
 		}
 
-		$child = parent::addChild($name, $this->formatValue($value), $namespace);
+		$child = parent::addChild($name, \Latte\Runtime\Filters::escapeXML($this->formatValue($value)), $namespace);
 
 		foreach ($attributes as $name => $value) {
 			$child->addAttribute($name, $value);
@@ -82,7 +82,7 @@ class XmlElement extends \SimpleXMLElement
 	 */
 	public function addAttribute($name, $value = NULL, $namespace = NULL)
 	{
-		parent::addAttribute($name, $this->formatValue($value), $namespace);
+		parent::addAttribute($name, \Latte\Runtime\Filters::escapeXML($this->formatValue($value)), $namespace);
 		return $this;
 	}
 
@@ -120,7 +120,7 @@ class XmlElement extends \SimpleXMLElement
 			$value = $value->format('D, d M Y H:i:s O');
 		}
 
-		return htmlspecialchars($value);
+		return $value;
 	}
 
 
