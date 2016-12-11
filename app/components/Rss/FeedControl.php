@@ -118,9 +118,9 @@ class FeedControl extends BaseControl
 				$link = $post->isQuestion() ? $presenter->link('//Question:', $post->getId()) : $permalink;
 
 				$item = (new Item($post->getTitle(), $link, $post->getCreatedAt()))
-					->setCreator($post->getAuthor()->name)
+					->setCreator($post->getAuthor()->getUser()->getName())
 					->setDescription($this->postRenderer->toHtml($post->getContent()))
-					->setCategories([$post->category->name, $post->category->parent->name])
+					->setCategories([$post->getCategory()->getName(), $post->getCategory()->getParent()->getName()])
 					->setGuid($permalink);
 
 			} elseif (isset($post->p_id, $post->p_type, $post->p_content, $post->p_created_at)) {

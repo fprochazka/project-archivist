@@ -120,7 +120,7 @@ class XmlElement extends \SimpleXMLElement
 			$value = $value->format('D, d M Y H:i:s O');
 		}
 
-		return $value;
+		return htmlspecialchars($value);
 	}
 
 
